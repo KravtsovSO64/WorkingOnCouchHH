@@ -3,4 +3,9 @@
     <string name="main_screen">Главная</string>
     <string name="favourite">Избранное</string>
     <string name="team">Команда</string>
+    <string name="team_1">Егор</string>
+    <string name="team_2">Дмитрий</string>
+    <string name="team_3">Варвара</string>
+    <string name="team_4">Сергей</string>
+    <string name="working_on_app">Над приложением работали</string>
 </resources>
