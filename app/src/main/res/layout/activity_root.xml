@@ -23,7 +23,7 @@
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:background="#E6E8EB"
+        android:background="@color/light_gray"
         app:layout_constraintTop_toBottomOf="@+id/fragment_container_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:backgroundTint="@color/color_white"
+        app:backgroundTint="?attr/colorSurface"
         app:itemIconTint="@color/nav_item_color"
         app:itemTextColor="@color/nav_item_color"
         app:menu="@menu/navigation_menu" />
