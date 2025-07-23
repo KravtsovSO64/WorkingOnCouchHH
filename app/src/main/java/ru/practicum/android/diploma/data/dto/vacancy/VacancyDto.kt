@@ -1,10 +1,10 @@
-package ru.practicum.android.diploma.data.dto
+package ru.practicum.android.diploma.data.dto.vacancy
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.data.dto.elements_vacancy_dto.ElementDto
-import ru.practicum.android.diploma.data.dto.elements_vacancy_dto.EmployerDto
-import ru.practicum.android.diploma.data.dto.elements_vacancy_dto.SalaryDto
-import ru.practicum.android.diploma.data.dto.elements_vacancy_dto.SnippetDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.EmployerDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.SalaryDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.SnippetDto
 
 data class VacancyDto(
     val name: String,

@@ -4,7 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
-import ru.practicum.android.diploma.data.dto.VacancyDto
+import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 import ru.practicum.android.diploma.domain.models.ProfessionalRole
 import ru.practicum.android.diploma.domain.models.Vacancy
 
@@ -45,12 +46,17 @@ class VacanciesRepositoryImpl : VacanciesRepository {
                     employerLogo = employer?.logos?.size90 ?: "",
                     snippetTitle = snippet.requirement ?: "",
                     snippetDescription = snippet.requirement ?: "",
-                    professionalRoles = professionalRoles?.map {
-                        ProfessionalRole(it.id, it.name)
-                    } ?: listOf(),
+                    professionalRoles = convertToListProfessionalRole(professionalRoles ?: listOf()) ,
                     employment = employment.name,
                 )
             }
+        }
+    }
+
+    private fun convertToListProfessionalRole(listDto: List<ElementDto>): List<ProfessionalRole> {
+
+        return listDto.map { it ->
+            ProfessionalRole(id = it.id, name =it.name)
         }
     }
 }
