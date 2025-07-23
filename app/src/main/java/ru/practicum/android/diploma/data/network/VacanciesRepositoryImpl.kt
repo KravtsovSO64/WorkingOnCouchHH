@@ -46,7 +46,7 @@ class VacanciesRepositoryImpl : VacanciesRepository {
                     employerLogo = employer?.logos?.size90 ?: "",
                     snippetTitle = snippet.requirement ?: "",
                     snippetDescription = snippet.requirement ?: "",
-                    professionalRoles = convertToListProfessionalRole(professionalRoles ?: listOf()) ,
+                    professionalRoles = convertToListProfessionalRole(professionalRoles ?: listOf()),
                     employment = employment.name,
                 )
             }
@@ -54,9 +54,8 @@ class VacanciesRepositoryImpl : VacanciesRepository {
     }
 
     private fun convertToListProfessionalRole(listDto: List<ElementDto>): List<ProfessionalRole> {
-
-        return listDto.map { it ->
-            ProfessionalRole(id = it.id, name =it.name)
+        return listDto.map {
+            ProfessionalRole(id = it.id, name = it.name)
         }
     }
 }
