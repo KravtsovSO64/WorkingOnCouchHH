@@ -10,7 +10,7 @@ class VacanciesInteractorImpl : VacanciesInteractor {
     val repo = VacanciesRepositoryImpl()
 
     override fun searchVacancies(page: Int): Flow<List<Vacancy>> {
-        //добавить проверку состояния
+        // добавить проверку состояния
         return repo.searchVacancies(page)
 
     }

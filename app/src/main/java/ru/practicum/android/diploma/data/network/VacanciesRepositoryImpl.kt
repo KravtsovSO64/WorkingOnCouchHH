@@ -9,12 +9,11 @@ import ru.practicum.android.diploma.domain.models.ProfessionalRole
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacanciesRepositoryImpl : VacanciesRepository {
-
-
-    companion object{
+    companion object {
         const val NET_SUCCESS = 200
         const val NET_BAD_REQUEST = 400
     }
+
     val networkClient = RetrofitNetworkClient()
 
     override fun searchVacancies(
@@ -32,7 +31,7 @@ class VacanciesRepositoryImpl : VacanciesRepository {
         }
     }
 
-    private fun convertFromDto(listVacancyDto: List<VacancyDto>): List<Vacancy>{
+    private fun convertFromDto(listVacancyDto: List<VacancyDto>): List<Vacancy> {
         return listVacancyDto.map {
             with(it) {
                 Vacancy(
