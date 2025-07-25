@@ -8,4 +8,12 @@
     <string name="team_3">Варвара</string>
     <string name="team_4">Сергей</string>
     <string name="working_on_app">Над приложением работали</string>
+    <string name="empty_salary">Зарплата не указана</string>
+    <string name="min_salary">от %1$s %2$s</string>
+    <string name="max_salary">до %1$s %2$s</string>
+    <string name="can_not_get_vacancies">Не удалось получить список вакансий</string>
+    <string name="no_internet_connection">Нет интернета</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="no_vacancies">Таких вакансий нет</string>
+
 </resources>
