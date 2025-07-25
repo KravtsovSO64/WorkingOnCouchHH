@@ -34,22 +34,26 @@ class VacanciesRepositoryImpl : VacanciesRepository {
 
     private fun convertFromDto(listVacancyDto: List<VacancyDto>): List<Vacancy> {
         return listVacancyDto.map {
-            with(it) {
-                Vacancy(
-                    name = name,
-                    area = area?.name ?: "",
-                    employer = employer?.name ?: "",
-                    salaryFrom = salary?.from ?: 0,
-                    salaryTo = salary?.to ?: 0,
-                    schedule = schedule.name,
-                    experience = experience?.name ?: "",
-                    employerLogo = employer?.logos?.size90 ?: "",
-                    snippetTitle = snippet.requirement ?: "",
-                    snippetDescription = snippet.requirement ?: "",
-                    professionalRoles = convertToListProfessionalRole(professionalRoles ?: listOf()),
-                    employment = employment.name,
-                )
-            }
+            convertToVacancy(it)
+        }
+    }
+
+    private fun convertToVacancy(vacancyDto: VacancyDto): Vacancy {
+        return with(vacancyDto) {
+            Vacancy(
+                name = name,
+                area = area?.name.orEmpty(),
+                employer = employer?.name.orEmpty(),
+                salaryFrom = salary?.from ?: 0,
+                salaryTo = salary?.to ?: 0,
+                schedule = schedule.name,
+                experience = experience?.name.orEmpty(),
+                employerLogo = employer?.logos?.size90.orEmpty(),
+                snippetTitle = snippet.requirement.orEmpty(),
+                snippetDescription = snippet.requirement.orEmpty(),
+                professionalRoles = convertToListProfessionalRole(professionalRoles.orEmpty()),
+                employment = employment.name,
+            )
         }
     }
 
