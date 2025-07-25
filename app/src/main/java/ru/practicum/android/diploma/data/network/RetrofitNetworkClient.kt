@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.data.network.VacanciesRepositoryImpl.Compani
 import ru.practicum.android.diploma.data.network.VacanciesRepositoryImpl.Companion.NET_SUCCESS
 
 class RetrofitNetworkClient(
-    private val hhApi: HHApi
+    private val yandexVacanciesApi: YandexVacanciesApi
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
@@ -14,7 +14,10 @@ class RetrofitNetworkClient(
             return Response().apply { resultCode = NET_BAD_REQUEST }
         }
 
-        val response = hhApi.getVacancies(dto.page)
+        val response = yandexVacanciesApi.getVacancies(
+            //dto.token,
+            "UX",
+            dto.page)
         response.apply { resultCode = NET_SUCCESS }
         return response
     }

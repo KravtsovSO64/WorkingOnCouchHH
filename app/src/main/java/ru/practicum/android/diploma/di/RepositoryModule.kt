@@ -13,7 +13,9 @@ val repository = module {
         )
     }
 
-    single<VacanciesRepository> {
-        VacanciesRepositoryImpl()
+    factory <VacanciesRepository> {
+        VacanciesRepositoryImpl(
+            networkClient = get()
+        )
     }
 }

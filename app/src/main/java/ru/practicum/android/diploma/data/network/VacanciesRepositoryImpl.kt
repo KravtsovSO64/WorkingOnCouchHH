@@ -2,29 +2,36 @@ package ru.practicum.android.diploma.data.network
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
-import ru.practicum.android.diploma.data.dto.VacanciesResponse
+import ru.practicum.android.diploma.data.dto.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
-import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
-import ru.practicum.android.diploma.domain.models.ProfessionalRole
 import ru.practicum.android.diploma.domain.models.Vacancy
+import kotlin.Int
 
-class VacanciesRepositoryImpl : VacanciesRepository {
+class VacanciesRepositoryImpl(
+    private val networkClient: NetworkClient
+) : VacanciesRepository {
     companion object {
         const val NET_SUCCESS = 200
         const val NET_BAD_REQUEST = 400
     }
 
-    val networkClient = RetrofitNetworkClient()
 
     override fun searchVacancies(
-        page: Int
+        page: Int,
     ): Flow<List<Vacancy>> = flow {
-        val networkClientResponse = networkClient.doRequest(VacanciesRequest(page))
+        val networkClientResponse = networkClient.doRequest(
+            VacanciesRequest(
+                //BuildConfig.HH_ACCESS_TOKEN,
+                "",
+                page
+            )
+        )
 
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(convertFromDto((networkClientResponse as VacanciesResponse).vacanciesList))
+                emit(convertFromDto((networkClientResponse as VacancyResponse).items))
             }
 
             NET_BAD_REQUEST -> {}
@@ -32,7 +39,7 @@ class VacanciesRepositoryImpl : VacanciesRepository {
         }
     }
 
-    private fun convertFromDto(listVacancyDto: List<VacancyDto>): List<Vacancy> {
+    private fun convertFromDto(listVacancyDto: Array<VacancyDto>): List<Vacancy> {
         return listVacancyDto.map {
             convertToVacancy(it)
         }
@@ -41,25 +48,28 @@ class VacanciesRepositoryImpl : VacanciesRepository {
     private fun convertToVacancy(vacancyDto: VacancyDto): Vacancy {
         return with(vacancyDto) {
             Vacancy(
+                id = id,
                 name = name,
-                area = area?.name.orEmpty(),
-                employer = employer?.name.orEmpty(),
+                description = description,
                 salaryFrom = salary?.from ?: 0,
                 salaryTo = salary?.to ?: 0,
+                salaryCurrency = salary?.currency ?: "",
+                addressCity = address.city,
+                addressStreet = address.street,
+                addressBuilding = address.building,
+                experience = experience.name,
                 schedule = schedule.name,
-                experience = experience?.name.orEmpty(),
-                employerLogo = employer?.logos?.size90.orEmpty(),
-                snippetTitle = snippet.requirement.orEmpty(),
-                snippetDescription = snippet.requirement.orEmpty(),
-                professionalRoles = convertToListProfessionalRole(professionalRoles.orEmpty()),
                 employment = employment.name,
+                contactsName = contacts.name,
+                contactsEmail = contacts.email,
+                contactsPhone = listOf(),
+                employerName = employer.name,
+                employerLogo = employer.logo,
+                //area: FilterAreaDto //id, parentId, name, areas
+                skills = skills,
+                url = "url",
+                //industry: FilterIndustryDto //id, name
             )
-        }
-    }
-
-    private fun convertToListProfessionalRole(listDto: List<ElementDto>): List<ProfessionalRole> {
-        return listDto.map {
-            ProfessionalRole(id = it.id, name = it.name)
         }
     }
 }

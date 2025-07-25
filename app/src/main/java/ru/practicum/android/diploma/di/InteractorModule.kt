@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.domain.impl.VacanciesInteractorImpl
 
 val interactor = module {
 
-    factory<VacanciesInteractor> {
+    single<VacanciesInteractor> {
         VacanciesInteractorImpl(
             vacanciesRepository = get()
         )
