@@ -7,7 +7,7 @@ import retrofit2.http.Query
 import ru.practicum.android.diploma.data.dto.VacancyResponse
 
 interface YandexVacanciesApi {
-    @Headers("Authorization: Bearer !!!token!!!")
+    //@Headers("Authorization: Bearer")
     @GET("vacancies")
     suspend fun getVacancies(
         //@Header("Authorization") token: String,

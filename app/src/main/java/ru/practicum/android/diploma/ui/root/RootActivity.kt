@@ -39,7 +39,7 @@ class RootActivity (): AppCompatActivity() {
         var list = listOf<Vacancy>()
 
         lifecycleScope.launch {
-            intertactor.searchVacancies(1)
+            intertactor.searchVacancies("UX", 0)
                 .collect { item ->
                     list = item
                 }

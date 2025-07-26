@@ -16,7 +16,7 @@ class RetrofitNetworkClient(
 
         val response = yandexVacanciesApi.getVacancies(
             //dto.token,
-            "UX",
+            dto.text,
             dto.page)
         response.apply { resultCode = NET_SUCCESS }
         return response

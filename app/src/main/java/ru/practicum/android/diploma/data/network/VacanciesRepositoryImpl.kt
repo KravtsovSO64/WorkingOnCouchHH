@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.data.network
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
@@ -19,14 +18,12 @@ class VacanciesRepositoryImpl(
 
 
     override fun searchVacancies(
+        text: String,
         page: Int,
     ): Flow<List<Vacancy>> = flow {
+
         val networkClientResponse = networkClient.doRequest(
-            VacanciesRequest(
-                //BuildConfig.HH_ACCESS_TOKEN,
-                "",
-                page
-            )
+            VacanciesRequest(text, page)
         )
 
         when (networkClientResponse.resultCode) {
@@ -54,20 +51,20 @@ class VacanciesRepositoryImpl(
                 salaryFrom = salary?.from ?: 0,
                 salaryTo = salary?.to ?: 0,
                 salaryCurrency = salary?.currency ?: "",
-                addressCity = address.city,
-                addressStreet = address.street,
-                addressBuilding = address.building,
+                addressCity = address?.city.orEmpty(),
+                addressStreet = address?.street.orEmpty(),
+                addressBuilding = address?.building.orEmpty(),
                 experience = experience.name,
                 schedule = schedule.name,
                 employment = employment.name,
-                contactsName = contacts.name,
-                contactsEmail = contacts.email,
+                contactsName = contacts?.name.orEmpty(),
+                contactsEmail = contacts?.email.orEmpty(),
                 contactsPhone = listOf(),
                 employerName = employer.name,
                 employerLogo = employer.logo,
                 //area: FilterAreaDto //id, parentId, name, areas
-                skills = skills,
-                url = "url",
+                skills = skills.orEmpty(),
+                url = url,
                 //industry: FilterIndustryDto //id, name
             )
         }
