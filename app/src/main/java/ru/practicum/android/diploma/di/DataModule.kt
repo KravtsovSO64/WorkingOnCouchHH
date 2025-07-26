@@ -8,9 +8,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.db.AppDatabase
-import ru.practicum.android.diploma.data.network.YandexVacanciesApi
-import ru.practicum.android.diploma.data.network.NetworkClient
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.network.api.YandexVacanciesApi
+import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
+import ru.practicum.android.diploma.data.network.impl.RetrofitNetworkClient
 
 val data = module {
     single {

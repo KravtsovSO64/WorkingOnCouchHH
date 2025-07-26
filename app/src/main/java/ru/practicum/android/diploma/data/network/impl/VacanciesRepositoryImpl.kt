@@ -1,12 +1,14 @@
-package ru.practicum.android.diploma.data.network
+package ru.practicum.android.diploma.data.network.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
+import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
+import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
-import kotlin.Int
+import ru.practicum.android.diploma.util.Resource
 
 class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient
@@ -20,7 +22,7 @@ class VacanciesRepositoryImpl(
     override fun searchVacancies(
         text: String,
         page: Int,
-    ): Flow<List<Vacancy>> = flow {
+    ): Flow<Resource<List<Vacancy>>> = flow {
 
         val networkClientResponse = networkClient.doRequest(
             VacanciesRequest(text, page)
@@ -28,11 +30,15 @@ class VacanciesRepositoryImpl(
 
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(convertFromDto((networkClientResponse as VacancyResponse).items))
+                emit(Resource.Success(convertFromDto((networkClientResponse as VacancyResponse).items)))
             }
 
-            NET_BAD_REQUEST -> {}
-            else -> {}
+            NET_BAD_REQUEST -> {
+                emit(Resource.Error("Проверьте подключение к интернету"))
+            }
+            else -> {
+                emit(Resource.Error("Ошибка сервера"))
+            }
         }
     }
 

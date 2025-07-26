@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.data.network.VacanciesRepositoryImpl
+import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.impl.VacanciesInteractorImpl
@@ -36,14 +36,15 @@ class RootActivity (): AppCompatActivity() {
 
 
 
-        var list = listOf<Vacancy>()
+        var pair = Pair(listOf<Vacancy>(), "")
 
         lifecycleScope.launch {
             intertactor.searchVacancies("UX", 0)
                 .collect { item ->
-                    list = item
+                    pair = Pair(item.first.orEmpty(), item.second.orEmpty())
                 }
-            Log.i("HH response", list.toString())
+            Log.i("HH response data", pair.first.toString())
+            Log.i("HH response error", pair.second)
         }
     }
 }

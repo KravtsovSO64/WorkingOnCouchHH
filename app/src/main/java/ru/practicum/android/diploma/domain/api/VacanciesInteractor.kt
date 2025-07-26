@@ -7,5 +7,5 @@ interface VacanciesInteractor {
     fun searchVacancies(
         text: String,
         page: Int,
-    ): Flow<List<Vacancy>>
+    ): Flow<Pair<List<Vacancy>?, String?>>
 }
