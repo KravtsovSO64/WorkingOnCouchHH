@@ -24,8 +24,8 @@ data class Vacancy(
     val contactsPhone: List<String>,
     val employerName: String,
     val employerLogo: String,
-    //val area: FilterAreaDto //id, parentId, name, areas
+    val area: FilterArea,
     val skills: List<String>,
     val url: String,
-    //val industry: FilterIndustryDto //id, name
+    val industry: FilterIndustry,
 )

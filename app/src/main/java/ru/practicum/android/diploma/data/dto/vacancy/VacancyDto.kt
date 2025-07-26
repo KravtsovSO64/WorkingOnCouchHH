@@ -4,6 +4,8 @@ import ru.practicum.android.diploma.data.dto.vacancy.elements.AddressDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.ContactsDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.EmployerDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterAreaDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterIndustryDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.SalaryDto
 
 data class VacancyDto(
@@ -17,10 +19,10 @@ data class VacancyDto(
     val employment: ElementDto,
     val contacts: ContactsDto?,
     val employer: EmployerDto,
-    //val area: FilterArea //id, parentId, name, areas
+    val area: FilterAreaDto,
     val skills: List<String>?,
     val url: String,
-    //val industry: FilterIndustry //id, name
+    val industry: FilterIndustryDto
 
 
 )

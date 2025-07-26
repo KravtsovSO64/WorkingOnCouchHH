@@ -7,6 +7,8 @@ import ru.practicum.android.diploma.data.dto.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
 import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
+import ru.practicum.android.diploma.domain.models.FilterArea
+import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
@@ -68,10 +70,18 @@ class VacanciesRepositoryImpl(
                 contactsPhone = listOf(),
                 employerName = employer.name,
                 employerLogo = employer.logo,
-                //area: FilterAreaDto //id, parentId, name, areas
+                area = FilterArea(
+                    area.id,
+                    area.parentId,
+                    area.name,
+                    area.areas
+                ),
                 skills = skills.orEmpty(),
                 url = url,
-                //industry: FilterIndustryDto //id, name
+                industry = FilterIndustry(
+                    industry.id,
+                    industry.name,
+                ),
             )
         }
     }
