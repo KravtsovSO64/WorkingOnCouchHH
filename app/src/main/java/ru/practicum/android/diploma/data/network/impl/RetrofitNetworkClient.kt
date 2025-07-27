@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.network.impl
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.Response
@@ -28,9 +29,14 @@ class RetrofitNetworkClient(
                 )
                 response.apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
             } catch (e: UnknownHostException) {
+                Log.e("NetworkClient ERROR", e.message.orEmpty())
                 Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNKNW_HOST }
             } catch (e: SocketTimeoutException) {
-                Response().apply {resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT}
+                Log.e("NetworkClient ERROR", e.message.orEmpty())
+                Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
+            } catch (e: Exception) {
+                Log.e("NetworkClient ERROR", e.message.orEmpty())
+                Response().apply { resultCode = 1 }
             }
         }
     }

@@ -7,7 +7,6 @@ import androidx.navigation.ui.setupWithNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
-
 class RootActivity : AppCompatActivity() {
 
     private var _binding: ActivityRootBinding? = null
