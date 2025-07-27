@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode
 import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.domain.search.SearchInteractor
 import ru.practicum.android.diploma.presentation.search.state.SearchState
-import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
     val searchTextState = MutableLiveData("")
     private val totalFoundLiveData = MutableLiveData<Int>()
@@ -57,7 +56,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         vacancyList.clear()
         viewModelScope.launch {
             searchState.postValue(SearchState.Loading)
-            searchInteractor.search(text = text, 0)
+            vacanciesInteractor.searchVacancies(text = text, 0)
                 .catch {
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
                 }
@@ -73,8 +72,8 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
                                 searchState.postValue(SearchState.Error(ErrorType.EMPTY))
                             } else {
                                 currentPage = 1
-                                maxPages = resource.pages
-                                totalFoundLiveData.value = resource.total
+//                                maxPages = resource.pages
+//                                totalFoundLiveData.value = resource.total //Потом при загрузки страниц мониторить по адаптеру
                                 vacancyList.addAll(resource.data)
                                 searchState.postValue(SearchState.Content(vacancyList, false))
                             }
@@ -100,7 +99,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
             isNextPageLoading = true
             viewModelScope.launch {
                 searchState.postValue(SearchState.PageLoading)
-                searchInteractor.search(latestSearchText!!, currentPage).catch {
+                vacanciesInteractor.searchVacancies(latestSearchText!!, currentPage).catch {
                     currentPage = 0
                     maxPages = null
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))

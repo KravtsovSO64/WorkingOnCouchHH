@@ -28,7 +28,7 @@ class JobAdapter (
                     .placeholder(R.drawable.ic_placeholder)
                     .into(logo)
                 vacancyNameTextView.text = name
-                vacancyEmployerTextView.text = employer
+                vacancyEmployerTextView.text = employerName
                 vacancySalaryTextView.text = salaryFrom.toString()+"  "+salaryTo.toString()
             }
         }
