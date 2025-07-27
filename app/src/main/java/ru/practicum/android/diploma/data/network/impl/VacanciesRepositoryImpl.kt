@@ -37,15 +37,15 @@ class VacanciesRepositoryImpl(
             }
 
             UNKNW_HOST -> {
-                emit(Resource.Error("Проверьте подключение к интернету"))
+                emit(Resource.Error(-1,"Проверьте подключение к интернету"))
             }
 
             REQ_TIMEOUT -> {
-                emit(Resource.Error("Время подключение к серверу истекло"))
+                emit(Resource.Error(408,"Время подключение к серверу истекло"))
             }
 
             else -> {
-                emit(Resource.Error("Ошибка сервера"))
+                emit(Resource.Error(400,"Ошибка сервера"))
             }
         }
     }
