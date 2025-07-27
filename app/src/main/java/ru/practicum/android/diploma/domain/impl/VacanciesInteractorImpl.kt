@@ -25,8 +25,7 @@ class VacanciesInteractorImpl(
                 is Resource.Error -> {
                     result.code?.let {
                         ResourceVacancy.Error(it)
-                    }  ?: ResourceVacancy.Error(ErrorCode.NOT_FOUND)
-
+                    } ?: ResourceVacancy.Error(ErrorCode.NOT_FOUND)
                 }
             }
 

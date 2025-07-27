@@ -35,7 +35,7 @@ class RetrofitNetworkClient(
             } catch (e: SocketTimeoutException) {
                 Log.e("NetworkClient ERROR: Timeout", e.message.orEmpty())
                 Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
-            } catch (e: HttpException){
+            } catch (e: HttpException) {
                 Log.e("NetworkClient ERROR: Token", e.message.orEmpty())
                 Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
             }
