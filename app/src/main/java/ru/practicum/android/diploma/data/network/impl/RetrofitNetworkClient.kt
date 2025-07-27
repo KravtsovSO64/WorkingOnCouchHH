@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.data.network.impl
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.network.api.YandexVacanciesApi
@@ -34,6 +35,9 @@ class RetrofitNetworkClient(
             } catch (e: SocketTimeoutException) {
                 Log.e("NetworkClient ERROR: Timeout", e.message.orEmpty())
                 Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
+            } catch (e: HttpException){
+                Log.e("NetworkClient ERROR: Token", e.message.orEmpty())
+                Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
             }
         }
     }

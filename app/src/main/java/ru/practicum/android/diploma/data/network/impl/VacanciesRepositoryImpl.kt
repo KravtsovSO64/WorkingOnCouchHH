@@ -19,7 +19,7 @@ class VacanciesRepositoryImpl(
         const val NET_SUCCESS = 200
         const val NET_BAD_REQUEST = 400
         const val UNKNW_HOST = -1
-
+        const val UNAUTHORIZED = 401
         const val REQ_TIMEOUT = 408
     }
 
