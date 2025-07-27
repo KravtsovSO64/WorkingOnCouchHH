@@ -1,20 +1,26 @@
 package ru.practicum.android.diploma.data.dto.vacancy
 
-import com.google.gson.annotations.SerializedName
+import ru.practicum.android.diploma.data.dto.vacancy.elements.AddressDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.ContactsDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.EmployerDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterAreaDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterIndustryDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.SalaryDto
-import ru.practicum.android.diploma.data.dto.vacancy.elements.SnippetDto
 
 data class VacancyDto(
+    val id: String,
     val name: String,
+    val description: String,
     val salary: SalaryDto?,
-    val area: ElementDto?,
-    val employer: EmployerDto?,
-    val experience: ElementDto?,
-    val snippet: SnippetDto, // !requirement!, !responsibility!
-    val schedule: ElementDto, // id, !name!
+    val address: AddressDto?,
+    val experience: ElementDto,
+    val schedule: ElementDto,
     val employment: ElementDto,
-    @SerializedName("professional_roles")
-    val professionalRoles: List<ElementDto>?,
+    val contacts: ContactsDto?,
+    val employer: EmployerDto,
+    val area: FilterAreaDto,
+    val skills: List<String>?,
+    val url: String,
+    val industry: FilterIndustryDto
 )
