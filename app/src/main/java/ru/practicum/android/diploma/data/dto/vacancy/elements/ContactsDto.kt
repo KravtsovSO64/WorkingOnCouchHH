@@ -4,5 +4,5 @@ data class ContactsDto(
     val id: String,
     val name: String,
     val email: String,
-    //val phone: List<String>, //возвращает список с comment и formatted
+    // val phone: List<String>, //возвращает список с comment и formatted
 )

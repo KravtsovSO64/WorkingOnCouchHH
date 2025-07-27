@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.data.dto.VacancyResponse
 interface YandexVacanciesApi {
     @GET("vacancies")
     suspend fun getVacancies(
-        @Query("text") text: String, @Query("page") page: Int // Номер страницы списка вакансий
+        @Query("text") text: String,
+        @Query("page") page: Int // Номер страницы списка вакансий
     ): VacancyResponse
 }

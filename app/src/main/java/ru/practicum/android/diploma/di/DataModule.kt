@@ -25,7 +25,7 @@ val data = module {
         RetrofitNetworkClient(yandexVacanciesApi = get())
     }
 
-    single<OkHttpClient>{
+    single<OkHttpClient> {
         OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()

@@ -13,7 +13,7 @@ val repository = module {
         )
     }
 
-    factory <VacanciesRepository> {
+    factory<VacanciesRepository> {
         VacanciesRepositoryImpl(
             networkClient = get()
         )

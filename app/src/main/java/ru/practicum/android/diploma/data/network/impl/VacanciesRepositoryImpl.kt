@@ -18,14 +18,15 @@ class VacanciesRepositoryImpl(
     companion object {
         const val NET_SUCCESS = 200
         const val NET_BAD_REQUEST = 400
-    }
+        const val UNKNW_HOST = -1
 
+        const val REQ_TIMEOUT = 408
+    }
 
     override fun searchVacancies(
         text: String,
         page: Int,
     ): Flow<Resource<List<Vacancy>>> = flow {
-
         val networkClientResponse = networkClient.doRequest(
             VacanciesRequest(text, page)
         )
@@ -35,9 +36,14 @@ class VacanciesRepositoryImpl(
                 emit(Resource.Success(convertFromDto((networkClientResponse as VacancyResponse).items)))
             }
 
-            NET_BAD_REQUEST -> {
+            UNKNW_HOST -> {
                 emit(Resource.Error("Проверьте подключение к интернету"))
             }
+
+            REQ_TIMEOUT -> {
+                emit(Resource.Error("Время подключение к серверу истекло"))
+            }
+
             else -> {
                 emit(Resource.Error("Ошибка сервера"))
             }

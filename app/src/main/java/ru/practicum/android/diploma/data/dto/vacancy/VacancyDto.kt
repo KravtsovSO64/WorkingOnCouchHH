@@ -23,6 +23,4 @@ data class VacancyDto(
     val skills: List<String>?,
     val url: String,
     val industry: FilterIndustryDto
-
-
 )
