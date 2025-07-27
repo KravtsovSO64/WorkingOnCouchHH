@@ -29,14 +29,11 @@ class RetrofitNetworkClient(
                 )
                 response.apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
             } catch (e: UnknownHostException) {
-                Log.e("NetworkClient ERROR", e.message.orEmpty())
+                Log.e("NetworkClient ERROR: No Connection", e.message.orEmpty())
                 Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNKNW_HOST }
             } catch (e: SocketTimeoutException) {
-                Log.e("NetworkClient ERROR", e.message.orEmpty())
+                Log.e("NetworkClient ERROR: Timeout", e.message.orEmpty())
                 Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
-            } catch (e: Exception) {
-                Log.e("NetworkClient ERROR", e.message.orEmpty())
-                Response().apply { resultCode = 1 }
             }
         }
     }
