@@ -15,5 +15,11 @@
     <string name="no_internet_connection">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="no_vacancies">Таких вакансий нет</string>
-
+    <string name="vacancy">Вакансия</string>
+    <string name="vacancy_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_obligations">Обязанности</string>
+    <string name="vacancy_requirement">Требования</string>
+    <string name="vacancy_conditions">Условия</string>
+    <string name="vacancy_skills">Ключевые навыки</string>
 </resources>
