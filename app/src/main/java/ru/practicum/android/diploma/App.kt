@@ -6,6 +6,7 @@ import org.koin.core.context.startKoin
 import ru.practicum.android.diploma.di.data
 import ru.practicum.android.diploma.di.interactor
 import ru.practicum.android.diploma.di.repository
+import ru.practicum.android.diploma.di.uiModule
 import ru.practicum.android.diploma.di.viewModel
 
 class App : Application() {
@@ -14,7 +15,7 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(data, repository, interactor, viewModel)
+            modules(data, repository, interactor, viewModel, uiModule)
         }
     }
 
