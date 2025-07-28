@@ -25,8 +25,12 @@ class SwipeHelper(
     private var mAnimationDuration = SwipeStack.DEFAULT_ANIMATION_DURATION
 
     @SuppressLint("ClickableViewAccessibility")
+    @Suppress("LongMethod")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         if (!mListenForTouchEvents) return false
+
+        var handled = false
+
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 v.parent.requestDisallowInterceptTouchEvent(true)
@@ -34,47 +38,54 @@ class SwipeHelper(
                 mPointerId = event.getPointerId(0)
                 mDownX = event.getX(mPointerId)
                 mDownY = event.getY(mPointerId)
-                return true
+                handled = true
             }
 
             MotionEvent.ACTION_MOVE -> {
                 val pointerIndex = event.findPointerIndex(mPointerId)
-                if (pointerIndex < 0) return false
-                val dx = event.getX(pointerIndex) - mDownX
-                val dy = event.getY(pointerIndex) - mDownY
-                val newX = mObservedView!!.x + dx
-                val newY = mObservedView!!.y + dy
-                mObservedView!!.x = newX
-                mObservedView!!.y = newY
-                val dragDistanceX = newX - mInitialX
-                val swipeProgress =
-                    (dragDistanceX / mSwipeStack.width)
-                        .coerceAtLeast(-1f).coerceAtMost(1f)
-                mSwipeStack.onSwipeProgress(swipeProgress)
-                if (mRotateDegrees > 0) {
-                    val rotation = mRotateDegrees * swipeProgress
-                    mObservedView!!.rotation = rotation
+                if (pointerIndex >= 0) {
+                    val dx = event.getX(pointerIndex) - mDownX
+                    val dy = event.getY(pointerIndex) - mDownY
+                    val newX = mObservedView!!.x + dx
+                    val newY = mObservedView!!.y + dy
+                    mObservedView!!.x = newX
+                    mObservedView!!.y = newY
+
+                    val dragDistanceX = newX - mInitialX
+                    val swipeProgress =
+                        (dragDistanceX / mSwipeStack.width)
+                            .coerceIn(-1f, 1f)
+
+                    mSwipeStack.onSwipeProgress(swipeProgress)
+
+                    if (mRotateDegrees > 0) {
+                        val rotation = mRotateDegrees * swipeProgress
+                        mObservedView!!.rotation = rotation
+                    }
+
+                    if (mOpacityEnd < 1f) {
+                        val alpha = 1 - abs(swipeProgress * 2).coerceAtMost(1f)
+                        mObservedView!!.alpha = alpha
+                    }
+
+                    handled = true
                 }
-                if (mOpacityEnd < 1f) {
-                    val alpha = 1 - abs(swipeProgress * 2).coerceAtMost(1f)
-                    mObservedView!!.alpha = alpha
-                }
-                return true
             }
 
             MotionEvent.ACTION_UP -> {
                 v.parent.requestDisallowInterceptTouchEvent(false)
                 mSwipeStack.onSwipeEnd()
                 checkViewPosition()
-                return true
+                handled = true
             }
         }
-        return false
+
+        return handled
     }
 
     private fun checkViewPosition() {
         val viewCenterHorizontal = mObservedView!!.x + mObservedView!!.width / 2
-        val parentFirstThird = mSwipeStack.width / 3f
+        val parentFirstThird = mSwipeStack.width / SWIPE_DIVISOR
         val parentLastThird = parentFirstThird * 2
         if (viewCenterHorizontal < parentFirstThird) {
             swipeViewToLeft(mAnimationDuration / 2)
@@ -85,7 +96,6 @@ class SwipeHelper(
         }
     }
 
-
     private fun resetViewPosition() {
         mObservedView!!.animate()
             .x(mInitialX)
@@ -93,7 +103,7 @@ class SwipeHelper(
             .rotation(0f)
             .alpha(1f)
             .setDuration(mAnimationDuration.toLong())
-            .setInterpolator(OvershootInterpolator(1.4f))
+            .setInterpolator(OvershootInterpolator(OVERSHOOT_TENSION))
             .setListener(null)
     }
 
@@ -164,5 +174,11 @@ class SwipeHelper(
 
     fun swipeViewToRight() {
         swipeViewToRight(mAnimationDuration)
+    }
+
+    companion object {
+        private const val OVERSHOOT_TENSION = 1.4f
+        private const val SWIPE_DIVISOR = 3f
+
     }
 }

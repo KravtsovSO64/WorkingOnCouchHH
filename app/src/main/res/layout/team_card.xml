@@ -54,14 +54,14 @@
             style="@style/Developers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/team_2" />
+            android:text="@string/team_3" />
 
         <TextView
             android:id="@+id/meister"
             style="@style/Developers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/team_3" />
+            android:text="@string/team_4" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

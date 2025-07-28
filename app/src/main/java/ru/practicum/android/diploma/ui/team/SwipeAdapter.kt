@@ -10,7 +10,7 @@ import android.widget.TextView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.ui.team.models.TeamMember
 
-class SwipeAdapter: BaseAdapter() {
+class SwipeAdapter : BaseAdapter() {
 
     val mData = mutableListOf(TeamMember())
 

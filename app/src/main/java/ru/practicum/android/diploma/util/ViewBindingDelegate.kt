@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 import java.lang.reflect.Method
 import kotlin.reflect.KProperty
 
-inline fun<reified T : ViewBinding> Fragment.viewBinding(): ViewBindingDelegate<T> {
+inline fun <reified T : ViewBinding> Fragment.viewBinding(): ViewBindingDelegate<T> {
     val fragment: Fragment = this
     return ViewBindingDelegate(fragment = fragment, viewBindingClass = T::class.java)
 }
@@ -22,8 +22,11 @@ class ViewBindingDelegate<T : ViewBinding>(
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         val viewLifecycleOwner: LifecycleOwner = fragment.viewLifecycleOwner
-        if (fragment.view != null) return getOrCreateBinding(viewLifecycleOwner)
-        else throw IllegalStateException("Called before onViewCreated()/after onDestroyView()")
+        if (fragment.view != null) {
+            return getOrCreateBinding(viewLifecycleOwner)
+        } else {
+            error("Called before onViewCreated()/after onDestroyView()")
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

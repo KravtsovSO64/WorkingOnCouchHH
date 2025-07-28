@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.R
 import java.util.Random
 import kotlin.math.pow
 
+@Suppress("LargeClass")
 class SwipeStack @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet? = null,
@@ -168,45 +169,67 @@ class SwipeStack @JvmOverloads constructor(
             val distanceToViewAbove = topViewIndex * mViewSpacing - x * mViewSpacing
             val newPositionX = (width - childView.measuredWidth) / 2
             val newPositionY = distanceToViewAbove + paddingTop
-            childView.layout(
-                newPositionX,
-                paddingTop,
-                newPositionX + childView.measuredWidth,
-                paddingTop + childView.measuredHeight
-            )
-            childView.translationZ = x.toFloat()
-            val isNewView = childView.getTag(R.id.new_view) as Boolean
-            val scaleFactor =
-                mScaleFactor.toDouble().pow((childCount - x).toDouble()).toFloat()
-            if (x == topViewIndex) {
-                mSwipeHelper!!.unregisterObservedView()
-                topView = childView
-                mSwipeHelper!!.registerObservedView(
-                    topView,
-                    newPositionX.toFloat(),
-                    newPositionY.toFloat()
-                )
-            }
+            val scaleFactor = calculateScaleFactor(x)
+
+            layoutChild(childView, newPositionX)
+            updateZOrder(childView, x)
+            checkTopView(childView, x, topViewIndex, newPositionX, newPositionY)
+
             if (!mIsFirstLayout) {
-                if (isNewView) {
-                    childView.setTag(R.id.new_view, false)
-                    childView.alpha = 0f
-                    childView.y = newPositionY.toFloat()
-                    childView.scaleY = scaleFactor
-                    childView.scaleX = scaleFactor
-                }
-                childView.animate()
-                    .y(newPositionY.toFloat())
-                    .scaleX(scaleFactor)
-                    .scaleY(scaleFactor)
-                    .alpha(1f).duration = mAnimationDuration.toLong()
+                animateOrResetNewView(childView, newPositionY.toFloat(), scaleFactor)
             } else {
-                childView.setTag(R.id.new_view, false)
-                childView.y = newPositionY.toFloat()
-                childView.scaleY = scaleFactor
-                childView.scaleX = scaleFactor
+                resetInitialLayout(childView, newPositionY.toFloat(), scaleFactor)
             }
         }
+    }
+
+    private fun calculateScaleFactor(x: Int): Float {
+        return mScaleFactor.toDouble().pow((childCount - x).toDouble()).toFloat()
+    }
+
+    private fun layoutChild(view: View, newX: Int) {
+        view.layout(
+            newX,
+            paddingTop,
+            newX + view.measuredWidth,
+            paddingTop + view.measuredHeight
+        )
+    }
+
+    private fun updateZOrder(view: View, index: Int) {
+        view.translationZ = index.toFloat()
+    }
+
+    private fun checkTopView(view: View, index: Int, topIndex: Int, posX: Int, posY: Int) {
+        if (index == topIndex) {
+            mSwipeHelper?.unregisterObservedView()
+            topView = view
+            mSwipeHelper?.registerObservedView(view, posX.toFloat(), posY.toFloat())
+        }
+    }
+
+    private fun animateOrResetNewView(view: View, newY: Float, scale: Float) {
+        val isNewView = view.getTag(R.id.new_view) as? Boolean ?: false
+        if (isNewView) {
+            view.setTag(R.id.new_view, false)
+            view.alpha = 0f
+            view.y = newY
+            view.scaleX = scale
+            view.scaleY = scale
+        }
+        view.animate()
+            .y(newY)
+            .scaleX(scale)
+            .scaleY(scale)
+            .alpha(1f)
+            .duration = mAnimationDuration.toLong()
+    }
+
+    private fun resetInitialLayout(view: View, newY: Float, scale: Float) {
+        view.setTag(R.id.new_view, false)
+        view.y = newY
+        view.scaleX = scale
+        view.scaleY = scale
     }
 
     private fun removeTopView() {
@@ -215,7 +238,7 @@ class SwipeStack @JvmOverloads constructor(
             topView = null
         }
         if (childCount == 0) {
-            if (mListener != null) mListener!!.onStackEmpty()
+            mListener?.onStackEmpty()
         }
     }
 
@@ -230,10 +253,12 @@ class SwipeStack @JvmOverloads constructor(
     }
 
     fun onSwipeProgress(progress: Float) {
-        if (mProgressListener != null) mProgressListener!!.onSwipeProgress(
-            currentPosition,
-            progress
-        )
+        if (mProgressListener != null) {
+            mProgressListener!!.onSwipeProgress(
+                currentPosition,
+                progress
+            )
+        }
     }
 
     fun onSwipeEnd() {
@@ -263,7 +288,9 @@ class SwipeStack @JvmOverloads constructor(
          *
          * @return The adapter currently used to display data in this SwipeStack.
          */
+
         get() = mAdapter
+
         /**
          * Sets the data behind this SwipeView.
          *

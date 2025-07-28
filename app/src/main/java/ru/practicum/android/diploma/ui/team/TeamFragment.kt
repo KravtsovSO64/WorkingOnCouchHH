@@ -27,36 +27,36 @@ class TeamFragment : Fragment(R.layout.fragment_team), SwipeStack.SwipeStackList
         val list = mutableListOf<TeamMember>()
         list.add(
             TeamMember(
-            photo = R.drawable.team_image,
-            name = getString(R.string.team_1),
-            description = "Тот, кто знает, где спрятана магия."
-        )
-        )
-        list.add(
-            TeamMember(
-            photo = R.drawable.team_image,
-            name = getString(R.string.team_2),
-            description = "Мастер структуры и скрытых связей."
-        )
+                photo = R.drawable.team_image,
+                name = getString(R.string.team_1),
+                description = "Тот, кто знает, где спрятана магия."
+            )
         )
         list.add(
             TeamMember(
-            photo = R.drawable.team_image,
-            name = getString(R.string.team_3),
-            description = "Видит форму там, где другие видят пустоту."
-        )
+                photo = R.drawable.team_image,
+                name = getString(R.string.team_2),
+                description = "Мастер структуры и скрытых связей."
+            )
         )
         list.add(
             TeamMember(
-            photo = R.drawable.team_image,
-            name = getString(R.string.team_4),
-            description = "Разгадывает то, что другие даже не замечают."
+                photo = R.drawable.team_image,
+                name = getString(R.string.team_3),
+                description = "Видит форму там, где другие видят пустоту."
+            )
         )
+        list.add(
+            TeamMember(
+                photo = R.drawable.team_image,
+                name = getString(R.string.team_4),
+                description = "Разгадывает то, что другие даже не замечают."
+            )
         )
         return list
     }
 
-    override fun onViewSwipedToLeft(position: Int) {}
-    override fun onViewSwipedToRight(position: Int) {}
-    override fun onStackEmpty() {}
+    override fun onViewSwipedToLeft(position: Int) = Unit
+    override fun onViewSwipedToRight(position: Int) = Unit
+    override fun onStackEmpty() = Unit
 }
