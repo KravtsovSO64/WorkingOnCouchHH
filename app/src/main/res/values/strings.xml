@@ -3,10 +3,10 @@
     <string name="main_screen">Главная</string>
     <string name="favourite">Избранное</string>
     <string name="team">Команда</string>
-    <string name="team_1">Егор</string>
-    <string name="team_2">Дмитрий</string>
-    <string name="team_3">Варвара</string>
-    <string name="team_4">Сергей</string>
+    <string name="team_1">Егор Тарасов</string>
+    <string name="team_2">Дмитрий Гнесный</string>
+    <string name="team_3">Варвара Новоселецкая</string>
+    <string name="team_4">Сергей Кравцов</string>
     <string name="working_on_app">Над приложением работали</string>
     <string name="empty_salary">Зарплата не указана</string>
     <string name="min_salary">от %1$s %2$s</string>
@@ -15,5 +15,6 @@
     <string name="no_internet_connection">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="no_vacancies">Таких вакансий нет</string>
+    <string name="description">Над приложением работали</string>
 
 </resources>
