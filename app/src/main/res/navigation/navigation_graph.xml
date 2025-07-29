@@ -8,15 +8,33 @@
         android:id="@+id/mainFragment"
         android:name="ru.practicum.android.diploma.ui.search.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_vacancyFragment2"
+            app:destination="@id/vacancyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="ru.practicum.android.diploma.ui.favourite.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_vacancyFragment"
+            app:destination="@id/vacancyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/teamFragment"
         android:name="ru.practicum.android.diploma.ui.team.TeamFragment"
         android:label="fragment_team"
         tools:layout="@layout/fragment_team" />
+
     <fragment
-        android:id="@+id/favouriteFragment"
-        android:name="ru.practicum.android.diploma.ui.favourite.FavouriteFragment"
-        android:label="fragment_favourite"
-        tools:layout="@layout/fragment_favourite" />
+        android:id="@+id/vacancyFragment"
+        android:name="ru.practicum.android.diploma.ui.vacancy.VacancyFragment"
+        android:label="VacancyFragment">
+
+        <argument
+            android:name="vacancy"
+            app:argType="ru.practicum.android.diploma.domain.models.Vacancy" />
+    </fragment>
 </navigation>

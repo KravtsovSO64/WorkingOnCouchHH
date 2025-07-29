@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavouriteDao {
@@ -21,7 +22,7 @@ interface FavouriteDao {
     suspend fun getFavoriteVacancyById(id: String): FavouriteJob?
 
     @Query("SELECT EXISTS(SELECT 1 FROM favourites WHERE id = :id LIMIT 1)")
-    suspend fun isFavorite(id: String): Boolean
+    fun isFavorite(id: String): Flow<Boolean>
 
     @Update(entity = FavouriteJob::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateFavoriteVacancy(favoritesEntity: FavouriteJob)
