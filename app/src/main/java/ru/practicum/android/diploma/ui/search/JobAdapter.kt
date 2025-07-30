@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.databinding.ItemJobBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class JobAdapter (
-    private val onItemClick: ((String) -> Unit)
+    private val onItemClick: ((Vacancy) -> Unit)
 ) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
 
     private var vacancies: MutableList<Vacancy> = mutableListOf()
@@ -30,6 +30,9 @@ class JobAdapter (
                 vacancyNameTextView.text = name
                 vacancyEmployerTextView.text = employerName
                 vacancySalaryTextView.text = salaryFrom.toString()+"  "+salaryTo.toString()
+                itemView.setOnClickListener {
+                    onItemClick(vacancy)
+                }
             }
         }
     }

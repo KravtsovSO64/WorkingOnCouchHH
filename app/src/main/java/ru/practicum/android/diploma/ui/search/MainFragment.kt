@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,7 +28,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
     private val viewModel: SearchViewModel by viewModel()
     private val adapter by lazy {
-        JobAdapter { id: String -> openVacancy(id) }
+        JobAdapter { vacancy: Vacancy -> openVacancy(vacancy) }
     }
 
     override fun createBinding(
@@ -151,8 +153,13 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         }
     }
 
-    private fun openVacancy(id: String) {
+    private fun openVacancy(vacancy: Vacancy) {
+        val args = bundleOf("vacancy" to vacancy)
 
+        findNavController().navigate(
+            R.id.vacancyFragment,
+            args
+        )
     }
 
     private fun showContent(data: List<Vacancy>, paging: Boolean) {

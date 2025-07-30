@@ -4,12 +4,12 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.data.favourite.FavouriteRepositoryImpl
 import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
 import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl
-import ru.practicum.android.diploma.domain.favourite.FavouriteRepository
+import ru.practicum.android.diploma.domain.api.favourite.FavouriteRepository
 
 val repository = module {
     single<FavouriteRepository> {
         FavouriteRepositoryImpl(
-            get()
+            appDatabase = get()
         )
     }
 

@@ -1,6 +1,6 @@
 <resources>
     <!-- Ligth theme  -->
-    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryVariant">@color/blue</item>
@@ -27,5 +27,8 @@
         <item name="textAppearanceSubtitle1">@style/Text.Medium.16</item>
         <item name="textAppearanceBody1">@style/Text.Regular.16</item>
         <item name="textAppearanceCaption">@style/Text.Regular.12</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/black_day</item>
     </style>
 </resources>
