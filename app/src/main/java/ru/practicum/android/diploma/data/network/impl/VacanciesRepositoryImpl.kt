@@ -3,13 +3,16 @@ package ru.practicum.android.diploma.data.network.impl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
-import ru.practicum.android.diploma.data.dto.VacancyResponse
+import ru.practicum.android.diploma.data.dto.VacanciesResponse
+import ru.practicum.android.diploma.data.dto.VacancyDetailRequest
+import ru.practicum.android.diploma.data.dto.vacancy.VacancyDetailDto
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
 import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.util.Resource
 
 class VacanciesRepositoryImpl(
@@ -33,21 +36,46 @@ class VacanciesRepositoryImpl(
 
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(Resource.Success(convertFromDto((networkClientResponse as VacancyResponse).items)))
+                emit(Resource.Success(convertFromDto((networkClientResponse as VacanciesResponse).items)))
             }
 
             UNKNW_HOST -> {
-                emit(Resource.Error(-1,"Проверьте подключение к интернету"))
+                emit(Resource.Error(UNKNW_HOST, "Проверьте подключение к интернету"))
             }
 
             REQ_TIMEOUT -> {
-                emit(Resource.Error(408,"Время подключение к серверу истекло"))
+                emit(Resource.Error(REQ_TIMEOUT, "Время подключение к серверу истекло"))
             }
 
             else -> {
-                emit(Resource.Error(400,"Ошибка сервера"))
+                emit(Resource.Error(NET_BAD_REQUEST, "Ошибка сервера"))
             }
         }
+    }
+
+    override fun detailsVacancy(id: String): Flow<Resource<VacancyDetail>> = flow {
+        val networkClientResponse = networkClient.doRequest(
+            VacancyDetailRequest(id)
+        )
+
+        when (networkClientResponse.resultCode) {
+            NET_SUCCESS -> {
+                emit(Resource.Success(convertToVacancyDetail(networkClientResponse as VacancyDetailDto)))
+            }
+
+            UNKNW_HOST -> {
+                emit(Resource.Error(UNKNW_HOST, "Проверьте подключение к интернету"))
+            }
+
+            REQ_TIMEOUT -> {
+                emit(Resource.Error(REQ_TIMEOUT, "Время подключение к серверу истекло"))
+            }
+
+            else -> {
+                emit(Resource.Error(NET_BAD_REQUEST, "Ошибка сервера"))
+            }
+        }
+
     }
 
     private fun convertFromDto(listVacancyDto: Array<VacancyDto>): List<Vacancy> {
@@ -59,6 +87,32 @@ class VacanciesRepositoryImpl(
     private fun convertToVacancy(vacancyDto: VacancyDto): Vacancy {
         return with(vacancyDto) {
             Vacancy(
+                id = id,
+                name = name,
+                salaryFrom = salary?.from ?: 0,
+                salaryTo = salary?.to ?: 0,
+                salaryCurrency = salary?.currency ?: "",
+                addressCity = address?.city.orEmpty(),
+                employerName = employer.name,
+                employerLogo = employer.logo,
+                area = FilterArea(
+                    area.id,
+                    area.parentId,
+                    area.name,
+                    area.areas
+                ),
+                industry = FilterIndustry(
+                    industry.id,
+                    industry.name,
+                ),
+            )
+        }
+    }
+
+    private fun convertToVacancyDetail(vacancyDetailDto: VacancyDetailDto): VacancyDetail {
+        if (vacancyDetailDto == null) return VacancyDetail.empty()
+        return with(vacancyDetailDto) {
+            VacancyDetail(
                 id = id,
                 name = name,
                 description = description,
