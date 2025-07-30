@@ -44,14 +44,12 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setSearchIcon()
         setUpListeners()
 
         viewModel.observeSearchTextState().observe(viewLifecycleOwner) {
             updateTextInputLayoutIcon(it)
         }
-
 
         viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -78,18 +76,20 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
     }
 
     private fun setUpListeners() {
-        binding.editTextSearchInput.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.editTextSearchInput.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    //
+                }
 
-            }
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    //
+                }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                override fun afterTextChanged(p0: Editable?) {
+                    viewModel.onSearchTextChanged(p0.toString())
+                }
             }
-
-            override fun afterTextChanged(p0: Editable?) {
-                viewModel.onSearchTextChanged(p0.toString())
-            }
-        }
         )
         binding.editTextSearchInput.setOnEditorActionListener { _, actionId, _ ->
             viewModel.onEditorActionDone()
@@ -115,7 +115,6 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         })
 
     }
-
 
     private fun updateTextInputLayoutIcon(text: String) {
         if (text.isNotEmpty()) {

@@ -9,12 +9,11 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemJobBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class JobAdapter (
+class JobAdapter(
     private val onItemClick: ((String) -> Unit)
 ) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
 
     private var vacancies: MutableList<Vacancy> = mutableListOf()
-
 
     inner class ViewHolder(private val binding: ItemJobBinding) : RecyclerView.ViewHolder(binding.root) {
         private val logo = binding.imageVacancyLogo
@@ -29,15 +28,13 @@ class JobAdapter (
                     .into(logo)
                 vacancyNameTextView.text = name
                 vacancyEmployerTextView.text = employerName
-                vacancySalaryTextView.text = salaryFrom.toString()+"  "+salaryTo.toString()
+                vacancySalaryTextView.text = salaryFrom.toString() + "  " + salaryTo.toString()
                 itemView.setOnClickListener {
                     onItemClick(vacancy.id)
                 }
             }
         }
     }
-
-
 
     override fun getItemCount(): Int = vacancies.size
     override fun onCreateViewHolder(

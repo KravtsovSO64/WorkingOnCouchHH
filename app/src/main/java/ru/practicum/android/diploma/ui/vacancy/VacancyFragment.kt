@@ -46,9 +46,9 @@ class VacancyFragment : Fragment() {
         val vacancyId = arguments?.getString("vacancy") ?: ""
         viewModel.getJobDetails(vacancyId)
 
-        showBottomNavigation(false)  //Отключаем нижнюю панель навигации
-        startObserving() //Настройка наблюдателей
-        clickHandler()  //Обработка всех кнопок экрана
+        showBottomNavigation(false) // Отключаем нижнюю панель навигации
+        startObserving() // Настройка наблюдателей
+        clickHandler() // Обработка всех кнопок экрана
 
     }
 
@@ -59,10 +59,9 @@ class VacancyFragment : Fragment() {
     }
 
     private fun startScreen() {
-
-        //Загрузка текстовой информации и лого из параметров переданной Вакансии
+        // Загрузка текстовой информации и лого из параметров переданной Вакансии
         binding.apply {
-            loadVacancyLogo(requireContext(),vacancy.employerLogo, vacancyLogo)
+            loadVacancyLogo(requireContext(), vacancy.employerLogo, vacancyLogo)
             vacancyName.text = vacancy.name
             vacancySalary.text = formatSalary(vacancy.salaryFrom, vacancy.salaryTo, vacancy.salaryCurrency)
             vacancySphere.text = formatCompanyName(vacancy.employerName, vacancy.industry.name)
@@ -72,7 +71,7 @@ class VacancyFragment : Fragment() {
             vacancySkillsList.text = formatSkills(vacancy.skills)
         }
 
-        //Проверка Вакансии на наличие в списке избранного
+        // Проверка Вакансии на наличие в списке избранного
         viewModel.checkJobInFavourites(vacancy.id)
     }
 
@@ -102,13 +101,12 @@ class VacancyFragment : Fragment() {
     }
 
     private fun startObserving() {
-
         viewModel.stateFavourite.observe(viewLifecycleOwner) { isFavourite ->
             binding.favouriteButton.isSelected = isFavourite
         }
 
         viewModel.stateScreen.observe(viewLifecycleOwner) { state ->
-            when(state) {
+            when (state) {
                 is VacancyScreenState.Content -> {
                     vacancy = state.data
                     showContent()
@@ -132,7 +130,6 @@ class VacancyFragment : Fragment() {
     }
 
     private fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currencyCode: String?): String {
-
         fun getCurrencySymbol(code: String?): String = when (code?.uppercase()) {
             "RUB" -> "₽"
             "USD", "NZD", "SGD" -> "$"
@@ -239,7 +236,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun showContent() {
-        startScreen()  //Настройка экрана Вакансии
+        startScreen() // Настройка экрана Вакансии
 
         binding.loadingView.loadingViewRoot.visibility = View.GONE
         binding.errorView.errorViewRoot.visibility = View.GONE

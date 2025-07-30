@@ -17,53 +17,47 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
-        when (dto) {
-            is VacanciesRequest -> {
-                return withContext(Dispatchers.IO) {
-                    try {
+        try {
+            return when (dto) {
+                is VacanciesRequest ->
+                    withContext(Dispatchers.IO) {
+
                         val response = yandexVacanciesApi.getVacancies(
                             dto.text,
                             dto.page,
                         )
                         response.apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
-                    } catch (e: UnknownHostException) {
-                        Log.e("NetworkClient ERROR: No Connection", e.message.orEmpty())
-                        Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNKNW_HOST }
-                    } catch (e: SocketTimeoutException) {
-                        Log.e("NetworkClient ERROR: Timeout", e.message.orEmpty())
-                        Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
-                    } catch (e: HttpException) {
-                        Log.e("NetworkClient ERROR: Token", e.message.orEmpty())
-                        Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
-                    }
-                }
-            }
 
-            is VacancyDetailRequest -> {
-                return withContext(Dispatchers.IO) {
-                    try {
+                    }
+
+                is VacancyDetailRequest ->
+                    withContext(Dispatchers.IO) {
+
                         val response = yandexVacanciesApi.getVacancyDetails(
                             dto.id,
                         )
                         response.apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
-                    } catch (e: UnknownHostException) {
-                        Log.e("NetworkClient ERROR: No Connection", e.message.orEmpty())
-                        Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNKNW_HOST }
-                    } catch (e: SocketTimeoutException) {
-                        Log.e("NetworkClient ERROR: Timeout", e.message.orEmpty())
-                        Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
-                    } catch (e: HttpException) {
-                        Log.e("NetworkClient ERROR: Token", e.message.orEmpty())
-                        Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
-                    }
-                }
-            }
 
-            else -> {
-                return Response().apply {
-                    resultCode = VacanciesRepositoryImpl.Companion.NET_BAD_REQUEST
-                }
+                    }
+
+                else -> badRequest()
             }
+        } catch (e: UnknownHostException) {
+            Log.e("NetworkClient ERROR: No Connection", e.message.orEmpty())
+            Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNKNW_HOST }
+        } catch (e: SocketTimeoutException) {
+            Log.e("NetworkClient ERROR: Timeout", e.message.orEmpty())
+            Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
+        } catch (e: HttpException) {
+            Log.e("NetworkClient ERROR: Token", e.message.orEmpty())
+            Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
+        }
+        return badRequest()
+    }
+
+    private fun badRequest(): Response{
+        return Response().apply {
+            resultCode = VacanciesRepositoryImpl.Companion.NET_BAD_REQUEST
         }
     }
 }
