@@ -216,7 +216,6 @@ class VacancyFragment : Fragment() {
     }
 
     private fun showError(type: ErrorType) {
-
         binding.apply {
             loadingView.loadingViewRoot.visibility = View.GONE
             errorView.errorViewRoot.visibility = View.VISIBLE

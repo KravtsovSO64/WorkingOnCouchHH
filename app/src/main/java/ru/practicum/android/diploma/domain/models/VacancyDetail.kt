@@ -22,7 +22,7 @@ data class VacancyDetail(
     val skills: List<String>,
     val url: String,
     val industry: FilterIndustry,
-)  {
+) {
     companion object {
         fun empty() = VacancyDetail(
             id = "",
