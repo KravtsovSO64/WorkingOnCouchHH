@@ -22,4 +22,5 @@
     <string name="vacancy_requirement">Требования</string>
     <string name="vacancy_conditions">Условия</string>
     <string name="vacancy_skills">Ключевые навыки</string>
+    <string name="industry">Сфера деятельности</string>
 </resources>

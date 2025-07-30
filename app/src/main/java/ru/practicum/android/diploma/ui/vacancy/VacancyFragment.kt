@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.vacancy
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,13 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.imageview.ShapeableImageView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.vacancy.VacancyViewModel
 
+@Suppress("DEPRECATION")
 class VacancyFragment : Fragment() {
 
     private var _binding: FragmentVacancyBinding? = null
@@ -54,10 +58,16 @@ class VacancyFragment : Fragment() {
         //Отключаем нижнюю панель навигации
         showBottomNavigation(false)
 
-        //Загрузка текстовой информации из параметров переданной Вакансии
+        //Загрузка текстовой информации и лого из параметров переданной Вакансии
         binding.apply {
+            loadVacancyLogo(requireContext(),vacancy.employerLogo, vacancyLogo)
             vacancyName.text = vacancy.name
             vacancySalary.text = formatSalary(vacancy.salaryFrom, vacancy.salaryTo, vacancy.salaryCurrency)
+            vacancySphere.text = formatCompanyName(vacancy.employerName, vacancy.industry.name)
+            vacancyRegion.text = formatAddress(vacancy.addressCity, vacancy.addressStreet, vacancy.addressBuilding)
+            vacancyYear.text = formatExperience(vacancy.experience, vacancy.schedule, vacancy.employment)
+            vacancyDescription.text = vacancy.description
+            vacancySkillsList.text = formatSkills(vacancy.skills)
         }
 
         //Проверка Вакансии на наличие в списке избранного
@@ -95,15 +105,41 @@ class VacancyFragment : Fragment() {
         }
     }
 
-    private fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currencyCode: String?): String {
-        val currencySymbol = getCurrencySymbol(currencyCode)
-
-        fun formatAmount(amount: Int?): String {
-            return amount?.takeIf { it != 0 }?.formatWithSpaces() ?: return ""
+    private fun loadVacancyLogo(context: Context, imageUrl: String?, imageView: ShapeableImageView) {
+        if (imageUrl.isNullOrEmpty()) {
+            imageView.setImageResource(R.drawable.ic_placeholder)
+            return
         }
 
-        val from = formatAmount(salaryFrom)
-        val to = formatAmount(salaryTo)
+        Glide.with(context)
+            .load(imageUrl)
+            .placeholder(R.drawable.ic_placeholder)
+            .into(imageView)
+    }
+
+    private fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currencyCode: String?): String {
+
+        fun getCurrencySymbol(code: String?): String = when (code?.uppercase()) {
+            "RUB" -> "₽"
+            "USD", "NZD", "SGD" -> "$"
+            "EUR" -> "€"
+            "GBP" -> "£"
+            "JPY" -> "¥"
+            "CNY" -> "¥"
+            "KZT" -> "₸"
+            "UAH" -> "₴"
+            else -> code ?: ""
+        }
+
+        fun Int?.formatWithSpaces(): String = when {
+            this == null -> ""
+            this == 0 -> ""
+            else -> "%,d".format(this).replace(',', ' ')
+        }
+
+        val currencySymbol = getCurrencySymbol(currencyCode)
+        val from = salaryFrom.formatWithSpaces()
+        val to = salaryTo.formatWithSpaces()
 
         return when {
             from.isNotEmpty() && to.isNotEmpty() -> "от $from $currencySymbol до $to $currencySymbol"
@@ -113,23 +149,37 @@ class VacancyFragment : Fragment() {
         }
     }
 
-    private fun Int?.formatWithSpaces(): String {
-        if (this == null) return ""
-        return "%,d".format(this).replace(',', ' ')
+    private fun formatCompanyName(employerName: String?, industry: String?): String {
+        return employerName?.takeIf { it.isNotBlank() } ?: industry?.takeIf { it.isNotBlank() } ?: ""
     }
 
-    private fun getCurrencySymbol(currencyCode: String?): String {
-        return when (currencyCode?.uppercase()) {
-            "RUB" -> "₽"
-            "USD" -> "$"
-            "EUR" -> "€"
-            "GBP" -> "£"
-            "JPY" -> "¥"
-            "CNY" -> "¥"
-            "KZT" -> "₸"
-            "UAH" -> "₴"
-            else -> currencyCode ?: ""
+    private fun formatAddress(addressCity: String, addressStreet: String?, addressBuilding: String?): String {
+        val streetAndBuilding = listOfNotNull(addressStreet, addressBuilding)
+            .takeIf { it.isNotEmpty() }
+            ?.joinToString(", ")
+
+        return listOfNotNull(streetAndBuilding, addressCity)
+            .joinToString(", ")
+    }
+
+    private fun formatExperience(experience: String, schedule: String, employment: String): String {
+        val secondLine = listOfNotNull(
+            schedule.takeIf { it.isNotBlank() },
+            employment.takeIf { it.isNotBlank() }
+        ).joinToString(", ")
+
+        return listOfNotNull(
+            experience.takeIf { it.isNotBlank() },
+            secondLine.takeIf { it.isNotBlank() }
+        ).joinToString("\n")
+    }
+
+    private fun formatSkills(skills: List<String>): String {
+        if (skills.isEmpty()) {
+            binding.vacancySkills.visibility = View.GONE
+            return ""
         }
+        return skills.joinToString("\n") { " • $it" }
     }
 
     private fun showBottomNavigation(flag: Boolean) {

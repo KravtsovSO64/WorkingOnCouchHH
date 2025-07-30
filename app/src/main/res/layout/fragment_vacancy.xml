@@ -50,13 +50,13 @@
             android:id="@+id/vacancy_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Android-разработчик" />
+            android:text="" />
 
         <TextView style="@style/Text.Medium.22"
             android:id="@+id/vacancy_salary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="от 100 000 руб." />
+            android:text="" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -66,12 +66,13 @@
             android:background="@drawable/edit_text_bg">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_vacancy_logo"
+                android:id="@+id/vacancy_logo"
                 android:layout_width="@dimen/_48dp"
                 android:layout_height="@dimen/_48dp"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_gravity="center_vertical"
                 android:scaleType="fitCenter"
+                app:shapeAppearanceOverlay="@style/RoundedShape"
                 android:src="@drawable/ic_placeholder"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -89,132 +90,85 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_day"
-                    android:text="Еда" />
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/industry" />
 
                 <TextView style="@style/Text.Medium.16"
                     android:id="@+id/vacancy_region"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_day"
-                    android:text="Москва" />
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:text="" />
             </LinearLayout>
         </FrameLayout>
 
     </LinearLayout>
 
-    <TextView style="@style/Text.Medium.16"
-        android:id="@+id/vacancy_experience"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_24dp"
-        android:layout_marginStart="@dimen/_16dp"
-        android:text="@string/vacancy_experience"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/vacancy_label" />
-
-    <TextView
-        android:id="@+id/vacancy_year"
-        style="@style/Text.Regular.16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_16dp"
-        android:text="От 1 года до 3 лет"
-        app:layout_constraintTop_toBottomOf="@+id/vacancy_experience" />
-
-    <TextView
-        android:id="@+id/vacancy_type_employment"
-        style="@style/Text.Regular.16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_16dp"
-        android:text="Полная занятость, Удаленная работа"
-        app:layout_constraintTop_toBottomOf="@+id/vacancy_year" />
-
     <ScrollView
         android:id="@+id/scroll_vacancy"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_32dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@+id/vacancy_type_employment">
+        android:layout_marginTop="@dimen/_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vacancy_label">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView  style="@style/Text.Medium.22"
+            <TextView
+                android:id="@+id/vacancy_experience"
+                style="@style/Text.Medium.16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16dp"
+                android:text="@string/vacancy_experience"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/vacancy_year"
+                style="@style/Text.Regular.16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text=""/>
+
+            <TextView style="@style/Text.Medium.22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16dp"
+                android:text="@string/vacancy_description" />
+
+            <TextView style="@style/Text.Regular.16"
                 android:id="@+id/vacancy_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16dp"
-                android:text="@string/vacancy_description"/>
-
-            <TextView   style="@style/Text.Medium.16"
-                android:id="@+id/vacancy_obligations"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginStart="@dimen/_16dp"
-                android:textStyle="bold"
-                android:text="@string/vacancy_obligations"/>
+                android:text="" />
 
-            <TextView
-                android:id="@+id/vacancy_obligations_list"
-                style="@style/Text.Regular.16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24dp"
-                android:text="- тут будет список"/>
-
-            <TextView   style="@style/Text.Medium.16"
-                android:id="@+id/vacancy_requirement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginStart="@dimen/_16dp"
-                android:textStyle="bold"
-                android:text="@string/vacancy_requirement"/>
-
-            <TextView
-                android:id="@+id/vacancy_requirement_list"
-                style="@style/Text.Regular.16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24dp"
-                android:text="- тут будет список"/>
-
-            <TextView  style="@style/Text.Medium.16"
-                android:id="@+id/vacancy_conditions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginStart="@dimen/_16dp"
-                android:textStyle="bold"
-                android:text="@string/vacancy_conditions"/>
-
-            <TextView  style="@style/Text.Regular.16"
-                android:id="@+id/vacancy_conditions_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24dp"
-                android:text="- тут будет список"/>
-
-            <TextView   style="@style/Text.Medium.22"
+            <TextView style="@style/Text.Medium.22"
                 android:id="@+id/vacancy_skills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_24dp"
                 android:layout_marginStart="@dimen/_16dp"
-                android:text="@string/vacancy_skills"/>
+                android:layout_marginTop="@dimen/_24dp"
+                android:text="@string/vacancy_skills" />
 
             <TextView style="@style/Text.Regular.16"
                 android:id="@+id/vacancy_skills_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginStart="@dimen/_24dp"
-                android:text="- тут будет список"/>
+                android:text="" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
