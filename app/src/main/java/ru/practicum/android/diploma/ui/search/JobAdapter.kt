@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.content.ClipData
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +30,9 @@ class JobAdapter (
                 vacancyNameTextView.text = name
                 vacancyEmployerTextView.text = employerName
                 vacancySalaryTextView.text = salaryFrom.toString()+"  "+salaryTo.toString()
+                itemView.setOnClickListener {
+                    onItemClick(vacancy.id)
+                }
             }
         }
     }
@@ -56,11 +59,10 @@ class JobAdapter (
     ) {
         with(vacancies[position]) {
             holder.bind(this)
-            //В Vacancy id нужен для перехода в подробности
-            //holder.itemView.setOnClickListener { onItemClick(this.id) }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setItems(items: List<Vacancy>) {
         clear()
         vacancies.addAll(items)

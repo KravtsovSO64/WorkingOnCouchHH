@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -152,7 +154,12 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
     }
 
     private fun openVacancy(id: String) {
+        val args = bundleOf("vacancy" to id)
 
+        findNavController().navigate(
+            R.id.vacancyFragment,
+            args
+        )
     }
 
     private fun showContent(data: List<Vacancy>, paging: Boolean) {
@@ -251,12 +258,5 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
     private fun setPagingProgressVisibility(isVisible: Boolean) {
         binding.progressBarPaging.isVisible = isVisible
     }
-
-
-    companion object {
-        const val VACANCY_KEY = "vacancy"
-    }
-
-
 
 }

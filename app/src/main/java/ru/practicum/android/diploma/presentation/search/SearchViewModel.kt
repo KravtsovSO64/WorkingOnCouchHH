@@ -45,7 +45,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         }
     }
 
-
     private fun search(text: String) {
         if (text.isBlank() || searching) {
             return
