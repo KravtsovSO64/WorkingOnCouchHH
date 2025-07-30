@@ -50,6 +50,10 @@ class VacanciesRepositoryImpl(
         }
     }
 
+//    override fun detailsVacancy(id: Int): Flow<VacancyDetail> {
+//        TODO("Not yet implemented")
+//    }
+
     private fun convertFromDto(listVacancyDto: Array<VacancyDto>): List<Vacancy> {
         return listVacancyDto.map {
             convertToVacancy(it)
@@ -61,19 +65,10 @@ class VacanciesRepositoryImpl(
             Vacancy(
                 id = id,
                 name = name,
-                description = description,
                 salaryFrom = salary?.from ?: 0,
                 salaryTo = salary?.to ?: 0,
                 salaryCurrency = salary?.currency ?: "",
                 addressCity = address?.city.orEmpty(),
-                addressStreet = address?.street.orEmpty(),
-                addressBuilding = address?.building.orEmpty(),
-                experience = experience.name,
-                schedule = schedule.name,
-                employment = employment.name,
-                contactsName = contacts?.name.orEmpty(),
-                contactsEmail = contacts?.email.orEmpty(),
-                contactsPhone = listOf(),
                 employerName = employer.name,
                 employerLogo = employer.logo,
                 area = FilterArea(
@@ -82,8 +77,6 @@ class VacanciesRepositoryImpl(
                     area.name,
                     area.areas
                 ),
-                skills = skills.orEmpty(),
-                url = url,
                 industry = FilterIndustry(
                     industry.id,
                     industry.name,

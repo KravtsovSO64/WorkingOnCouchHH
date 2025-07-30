@@ -9,4 +9,6 @@ interface VacanciesInteractor {
         text: String,
         page: Int,
     ): Flow<ResourceVacancy>
+
+//    fun detailsVacancy(): Flow<VacancyDeta>
 }

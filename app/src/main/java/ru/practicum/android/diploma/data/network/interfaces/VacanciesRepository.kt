@@ -9,4 +9,8 @@ interface VacanciesRepository {
         text: String,
         page: Int,
     ): Flow<Resource<List<Vacancy>>>
+
+//    fun detailsVacancy(
+//        id: Int
+//    ): Flow<VacancyDetail>
 }
