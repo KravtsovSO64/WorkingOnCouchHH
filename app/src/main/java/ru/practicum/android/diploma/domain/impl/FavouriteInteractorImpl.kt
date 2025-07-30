@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetail
 
 class FavouriteInteractorImpl(
     private val favouriteRepository: FavouriteRepository
-): FavouritesInteractor {
+) : FavouritesInteractor {
 
     override suspend fun addToFavourites(vacancy: VacancyDetail) {
         favouriteRepository.addToFavourites(vacancy)
@@ -25,8 +25,8 @@ class FavouriteInteractorImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getAllFavourites(): Flow<List<VacancyDetail>> {
-        TODO("Not yet implemented")
+    override suspend fun getAllFavourites(): Flow<List<VacancyDetail>> {
+        return favouriteRepository.getFavourites()
     }
 
     override fun checkJobInFavourites(id: String): Flow<Boolean> {
