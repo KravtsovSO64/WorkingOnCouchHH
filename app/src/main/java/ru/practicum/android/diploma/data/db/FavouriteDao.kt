@@ -26,5 +26,4 @@ interface FavouriteDao {
 
     @Update(entity = FavouriteJob::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateFavoriteVacancy(favoritesEntity: FavouriteJob)
-
 }

@@ -11,10 +11,11 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:id="@+id/error_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
-        android:src="@drawable/im_vacancy_error"/>
+        android:src="@drawable/im_vacancy_empty"/>
 
     <TextView
         android:id="@+id/error_message"

@@ -5,12 +5,13 @@ import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.FavouriteJob
 import ru.practicum.android.diploma.domain.api.favourite.FavouriteRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetail
 
 class FavouriteRepositoryImpl(
     private val appDatabase: AppDatabase
 ) : FavouriteRepository {
 
-    override suspend fun addToFavourites(vacancy: Vacancy) {
+    override suspend fun addToFavourites(vacancy: VacancyDetail) {
         appDatabase.favouriteDao().insert(map(vacancy))
     }
 
@@ -34,7 +35,7 @@ class FavouriteRepositoryImpl(
        return appDatabase.favouriteDao().isFavorite(id)
     }
 
-    private fun map(vacancy: Vacancy): FavouriteJob {
+    private fun map(vacancy: VacancyDetail): FavouriteJob {
         return FavouriteJob(
             id = vacancy.id,
             name = vacancy.name,

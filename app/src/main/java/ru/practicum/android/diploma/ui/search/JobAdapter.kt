@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.content.ClipData
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.databinding.ItemJobBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class JobAdapter (
-    private val onItemClick: ((Vacancy) -> Unit)
+    private val onItemClick: ((String) -> Unit)
 ) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
 
     private var vacancies: MutableList<Vacancy> = mutableListOf()
@@ -31,7 +31,7 @@ class JobAdapter (
                 vacancyEmployerTextView.text = employerName
                 vacancySalaryTextView.text = salaryFrom.toString()+"  "+salaryTo.toString()
                 itemView.setOnClickListener {
-                    onItemClick(vacancy)
+                    onItemClick(vacancy.id)
                 }
             }
         }
@@ -59,11 +59,10 @@ class JobAdapter (
     ) {
         with(vacancies[position]) {
             holder.bind(this)
-            //В Vacancy id нужен для перехода в подробности
-            //holder.itemView.setOnClickListener { onItemClick(this.id) }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setItems(items: List<Vacancy>) {
         clear()
         vacancies.addAll(items)

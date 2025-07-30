@@ -35,6 +35,6 @@
 
         <argument
             android:name="vacancy"
-            app:argType="ru.practicum.android.diploma.domain.models.Vacancy" />
+            app:argType="string" />
     </fragment>
 </navigation>

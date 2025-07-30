@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -15,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.ErrorType
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.presentation.vacancy.VacancyViewModel
 import ru.practicum.android.diploma.presentation.vacancy.state.VacancyScreenState
 
@@ -25,7 +26,7 @@ class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VacancyViewModel by viewModel()
-    private lateinit var vacancy: Vacancy
+    private lateinit var vacancy: VacancyDetail
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +43,13 @@ class VacancyFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        val vacancyId = arguments?.getString("vacancy") ?: ""
+        viewModel.getJobDetails(vacancyId)
+
         showBottomNavigation(false)  //Отключаем нижнюю панель навигации
         startObserving() //Настройка наблюдателей
         clickHandler()  //Обработка всех кнопок экрана
+
     }
 
     override fun onDestroyView() {
@@ -211,9 +216,26 @@ class VacancyFragment : Fragment() {
     }
 
     private fun showError(type: ErrorType) {
-        binding.loadingView.loadingViewRoot.visibility = View.GONE
-        binding.errorView.errorViewRoot.visibility = View.VISIBLE
-        binding.contentView.visibility = View.GONE
+        binding.apply {
+            loadingView.loadingViewRoot.visibility = View.GONE
+            errorView.errorViewRoot.visibility = View.VISIBLE
+            contentView.visibility = View.GONE
+        }
+
+        when (type) {
+            ErrorType.EMPTY -> {
+                binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
+                    .setImageResource(R.drawable.im_vacancy_empty)
+            }
+            ErrorType.NO_CONNECTION -> {
+                binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
+                    .setImageResource(R.drawable.im_vacancy_not_internet)
+            }
+            ErrorType.SERVER_ERROR -> {
+                binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
+                    .setImageResource(R.drawable.im_vacancy_server_error)
+            }
+        }
     }
 
     private fun showContent() {
