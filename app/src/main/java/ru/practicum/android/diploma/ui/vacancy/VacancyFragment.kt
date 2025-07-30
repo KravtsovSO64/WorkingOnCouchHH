@@ -14,8 +14,10 @@ import com.google.android.material.imageview.ShapeableImageView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.vacancy.VacancyViewModel
+import ru.practicum.android.diploma.presentation.vacancy.state.VacancyScreenState
 
 @Suppress("DEPRECATION")
 class VacancyFragment : Fragment() {
@@ -23,9 +25,7 @@ class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VacancyViewModel by viewModel()
-    private val vacancy by lazy {
-        requireArguments().getParcelable<Vacancy>("vacancy")!!
-    }
+    private lateinit var vacancy: Vacancy
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +42,9 @@ class VacancyFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        showBottomNavigation(false)  //Отключаем нижнюю панель навигации
         startObserving() //Настройка наблюдателей
         clickHandler()  //Обработка всех кнопок экрана
-        startScreen()  //Настройка экрана Вакансии
     }
 
     override fun onDestroyView() {
@@ -54,9 +54,6 @@ class VacancyFragment : Fragment() {
     }
 
     private fun startScreen() {
-
-        //Отключаем нижнюю панель навигации
-        showBottomNavigation(false)
 
         //Загрузка текстовой информации и лого из параметров переданной Вакансии
         binding.apply {
@@ -100,8 +97,20 @@ class VacancyFragment : Fragment() {
     }
 
     private fun startObserving() {
+
         viewModel.stateFavourite.observe(viewLifecycleOwner) { isFavourite ->
             binding.favouriteButton.isSelected = isFavourite
+        }
+
+        viewModel.stateScreen.observe(viewLifecycleOwner) { state ->
+            when(state) {
+                is VacancyScreenState.Content -> {
+                    vacancy = state.data
+                    showContent()
+                }
+                is VacancyScreenState.Error -> showError(state.type)
+                VacancyScreenState.Loading -> showLoading()
+            }
         }
     }
 
@@ -194,5 +203,26 @@ class VacancyFragment : Fragment() {
             divider.visibility = View.GONE
         }
     }
+
+    private fun showLoading() {
+        binding.loadingView.loadingViewRoot.visibility = View.VISIBLE
+        binding.errorView.errorViewRoot.visibility = View.GONE
+        binding.contentView.visibility = View.GONE
+    }
+
+    private fun showError(type: ErrorType) {
+        binding.loadingView.loadingViewRoot.visibility = View.GONE
+        binding.errorView.errorViewRoot.visibility = View.VISIBLE
+        binding.contentView.visibility = View.GONE
+    }
+
+    private fun showContent() {
+        startScreen()  //Настройка экрана Вакансии
+
+        binding.loadingView.loadingViewRoot.visibility = View.GONE
+        binding.errorView.errorViewRoot.visibility = View.GONE
+        binding.contentView.visibility = View.VISIBLE
+    }
+
 }
 

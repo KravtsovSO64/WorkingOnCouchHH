@@ -9,6 +9,6 @@ val viewModel = module {
         SearchViewModel(get())
     }
     viewModel {
-        VacancyViewModel(get())
+        VacancyViewModel(get(), get())
     }
 }

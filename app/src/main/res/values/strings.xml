@@ -23,4 +23,5 @@
     <string name="vacancy_conditions">Условия</string>
     <string name="vacancy_skills">Ключевые навыки</string>
     <string name="industry">Сфера деятельности</string>
+    <string name="error_empty_vacancy">Вакансия не найдена или удалена</string>
 </resources>
