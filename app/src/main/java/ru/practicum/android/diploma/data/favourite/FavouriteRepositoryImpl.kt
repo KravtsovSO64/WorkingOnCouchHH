@@ -66,7 +66,10 @@ class FavouriteRepositoryImpl(
             salaryTo = favoruteJob.salaryTo ?: 0,
             salaryCurrency = favoruteJob.salaryCurrency.orEmpty(),
             area = FilterArea(
-                id = 0, name = favoruteJob.area.orEmpty(), areas = listOf(), parentId = 0
+                id = 0,
+                name = favoruteJob.area.orEmpty(),
+                areas = listOf(),
+                parentId = 0
             ),
             employment = favoruteJob.employment.orEmpty(),
             schedule = favoruteJob.schedule.orEmpty(),
@@ -80,7 +83,8 @@ class FavouriteRepositoryImpl(
             addressStreet = "",
             employerLogo = "",
             industry = FilterIndustry(
-                id = 0, name = ""
+                id = 0,
+                name = ""
             ),
             addressCity = "",
             addressBuilding = "",
