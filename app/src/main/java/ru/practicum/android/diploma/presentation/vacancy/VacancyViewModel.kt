@@ -36,13 +36,18 @@ class VacancyViewModel(
         _stateScreen.postValue(VacancyScreenState.Loading)
 
         viewModelScope.launch {
-           vacancyInteractor.detailsVacancy(id)
-               .collect { content ->
-                   when(content) {
-                       is ResourceVacancyDetail.Error -> { handleErrorCode(content.code) }
-                       is ResourceVacancyDetail.Success -> { _stateScreen.postValue(VacancyScreenState.Content(content.data)) }
-                   }
-               }
+            vacancyInteractor.detailsVacancy(id)
+                .collect { content ->
+                    when (content) {
+                        is ResourceVacancyDetail.Error -> {
+                            handleErrorCode(content.code)
+                        }
+
+                        is ResourceVacancyDetail.Success -> {
+                            _stateScreen.postValue(VacancyScreenState.Content(content.data))
+                        }
+                    }
+                }
 
         }
     }
@@ -64,7 +69,7 @@ class VacancyViewModel(
     fun checkJobInFavourites(id: String) {
         viewModelScope.launch {
             favouritesInteractor.checkJobInFavourites(id)
-                .collect {isFavourite ->
+                .collect { isFavourite ->
                     _stateFavourite.postValue(isFavourite)
                 }
         }
@@ -72,9 +77,17 @@ class VacancyViewModel(
 
     private fun handleErrorCode(code: Int) {
         when (code) {
-            ErrorCode.NO_CONNECTION -> { _stateScreen.postValue(VacancyScreenState.Error(ErrorType.NO_CONNECTION)) }
-            ErrorCode.NOT_FOUND -> { _stateScreen.postValue(VacancyScreenState.Error(ErrorType.EMPTY)) }
-            else -> { _stateScreen.postValue(VacancyScreenState.Error(ErrorType.SERVER_ERROR)) }
+            ErrorCode.NO_CONNECTION -> {
+                _stateScreen.postValue(VacancyScreenState.Error(ErrorType.NO_CONNECTION))
+            }
+
+            ErrorCode.NOT_FOUND -> {
+                _stateScreen.postValue(VacancyScreenState.Error(ErrorType.EMPTY))
+            }
+
+            else -> {
+                _stateScreen.postValue(VacancyScreenState.Error(ErrorType.SERVER_ERROR))
+            }
         }
     }
 }

@@ -18,29 +18,20 @@ class RetrofitNetworkClient(
 
     override suspend fun doRequest(dto: Any): Response {
         try {
-            return when (dto) {
+            return withContext(Dispatchers.IO) {
+             when (dto) {
                 is VacanciesRequest ->
-                    withContext(Dispatchers.IO) {
-
-                        val response = yandexVacanciesApi.getVacancies(
+                        yandexVacanciesApi.getVacancies(
                             dto.text,
                             dto.page,
-                        )
-                        response.apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
-
-                    }
+                        ).apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
 
                 is VacancyDetailRequest ->
-                    withContext(Dispatchers.IO) {
-
-                        val response = yandexVacanciesApi.getVacancyDetails(
+                        yandexVacanciesApi.getVacancyDetails(
                             dto.id,
-                        )
-                        response.apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
+                        ).apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
 
-                    }
-
-                else -> badRequest()
+                else -> badRequest()}
             }
         } catch (e: UnknownHostException) {
             Log.e("NetworkClient ERROR: No Connection", e.message.orEmpty())
@@ -55,7 +46,7 @@ class RetrofitNetworkClient(
         return badRequest()
     }
 
-    private fun badRequest(): Response{
+    private fun badRequest(): Response {
         return Response().apply {
             resultCode = VacanciesRepositoryImpl.Companion.NET_BAD_REQUEST
         }

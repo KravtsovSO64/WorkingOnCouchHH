@@ -26,7 +26,7 @@ class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VacancyViewModel by viewModel()
-    private lateinit var vacancy: VacancyDetail
+    private var vacancy = VacancyDetail.empty()
 
     override fun onCreateView(
         inflater: LayoutInflater,

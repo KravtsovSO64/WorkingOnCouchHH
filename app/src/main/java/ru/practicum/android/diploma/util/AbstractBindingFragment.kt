@@ -12,14 +12,11 @@ abstract class AbstractBindingFragment<T : ViewBinding> : Fragment() {
     protected val binding get() = _binding!!
 
     abstract fun createBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
+        inflater: LayoutInflater, container: ViewGroup?
     ): T
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = createBinding(inflater, container)
         return binding.root
