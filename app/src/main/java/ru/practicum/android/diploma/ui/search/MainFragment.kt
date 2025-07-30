@@ -28,7 +28,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
     private val viewModel: SearchViewModel by viewModel()
     private val adapter by lazy {
-        JobAdapter { vacancy: Vacancy -> openVacancy(vacancy) }
+        JobAdapter { id: String -> openVacancy(id) }
     }
 
     override fun createBinding(
@@ -153,8 +153,8 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         }
     }
 
-    private fun openVacancy(vacancy: Vacancy) {
-        val args = bundleOf("vacancy" to vacancy)
+    private fun openVacancy(id: String) {
+        val args = bundleOf("vacancy" to id)
 
         findNavController().navigate(
             R.id.vacancyFragment,
@@ -258,12 +258,5 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
     private fun setPagingProgressVisibility(isVisible: Boolean) {
         binding.progressBarPaging.isVisible = isVisible
     }
-
-
-    companion object {
-        const val VACANCY_KEY = "vacancy"
-    }
-
-
 
 }
