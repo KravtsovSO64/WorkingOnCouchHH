@@ -19,8 +19,8 @@ class FavouritesViewModel(
     fun getFavourites() {
         viewModelScope.launch {
             favouritesInteractor.getAllFavourites().collect { vacancies ->
-                    stateLiveData.value = FavouritesState.Favorites(vacancies)
-                }
+                stateLiveData.value = FavouritesState.Favorites(vacancies)
+            }
         }
     }
 

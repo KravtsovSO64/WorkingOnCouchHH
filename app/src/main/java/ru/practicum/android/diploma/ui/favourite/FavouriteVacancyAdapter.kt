@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemJobBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 
 class FavouriteVacancyAdapter(
@@ -15,7 +14,6 @@ class FavouriteVacancyAdapter(
 ) : RecyclerView.Adapter<FavouriteVacancyAdapter.ViewHolder>() {
 
     private var vacancies: MutableList<VacancyDetail> = mutableListOf()
-
 
     inner class ViewHolder(private val binding: ItemJobBinding) : RecyclerView.ViewHolder(binding.root) {
         private val logo = binding.imageVacancyLogo
@@ -35,20 +33,23 @@ class FavouriteVacancyAdapter(
         }
     }
 
-
     override fun getItemCount(): Int = vacancies.size
     override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
+        parent: ViewGroup,
+        viewType: Int
     ): ViewHolder {
         return ViewHolder(
             ItemJobBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
     }
 
     override fun onBindViewHolder(
-        holder: ViewHolder, position: Int
+        holder: ViewHolder,
+        position: Int
     ) {
         with(vacancies[position]) {
             holder.bind(this)

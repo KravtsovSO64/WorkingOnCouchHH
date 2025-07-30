@@ -84,8 +84,6 @@ class FavouriteRepositoryImpl(
             ),
             addressCity = "",
             addressBuilding = "",
-
-
-            )
+        )
     }
 }

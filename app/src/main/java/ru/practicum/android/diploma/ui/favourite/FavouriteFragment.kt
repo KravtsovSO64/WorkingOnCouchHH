@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.presentation.favourites.FavouritesViewModel
 import ru.practicum.android.diploma.presentation.favourites.state.FavouritesState
-import ru.practicum.android.diploma.ui.search.JobAdapter
 import kotlin.getValue
 
 class FavouriteFragment : Fragment() {
@@ -27,14 +26,17 @@ class FavouriteFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(
-        view: View, savedInstanceState: Bundle?
+        view: View,
+        savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
         favouritesViewModel.observeState().observe(viewLifecycleOwner) {
@@ -81,7 +83,6 @@ class FavouriteFragment : Fragment() {
         binding.favouriteEmpty.isVisible = false
         binding.favouriteError.isVisible = false
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
