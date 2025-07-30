@@ -23,7 +23,7 @@ data class VacancyDetail(
     val url: String,
     val industry: FilterIndustry,
 ) {
-    companion object{
+    companion object {
         fun empty() = VacancyDetail(
             id = "",
             name = "",

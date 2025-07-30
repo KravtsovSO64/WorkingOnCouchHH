@@ -14,6 +14,6 @@ interface YandexVacanciesApi {
 
     @GET("vacancies/items")
     suspend fun getVacancyDetails(
-        @Query("id") id : String
+        @Query("id") id: String
     ): VacancyDetailDto
 }

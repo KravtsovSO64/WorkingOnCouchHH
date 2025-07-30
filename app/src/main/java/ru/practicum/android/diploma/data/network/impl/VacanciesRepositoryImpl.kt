@@ -40,45 +40,43 @@ class VacanciesRepositoryImpl(
             }
 
             UNKNW_HOST -> {
-                emit(Resource.Error(-1,"Проверьте подключение к интернету"))
+                emit(Resource.Error(UNKNW_HOST, "Проверьте подключение к интернету"))
             }
 
             REQ_TIMEOUT -> {
-                emit(Resource.Error(408,"Время подключение к серверу истекло"))
+                emit(Resource.Error(REQ_TIMEOUT, "Время подключение к серверу истекло"))
             }
 
             else -> {
-                emit(Resource.Error(400,"Ошибка сервера"))
+                emit(Resource.Error(NET_BAD_REQUEST, "Ошибка сервера"))
             }
         }
     }
 
-    override fun detailsVacancy(id: String): Flow<Resource<VacancyDetail>> =flow {
+    override fun detailsVacancy(id: String): Flow<Resource<VacancyDetail>> = flow {
         val networkClientResponse = networkClient.doRequest(
             VacancyDetailRequest(id)
         )
 
-
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(Resource.Success(convertToVacancyDetail((networkClientResponse as VacancyDetailDto))))
+                emit(Resource.Success(convertToVacancyDetail(networkClientResponse as VacancyDetailDto)))
             }
 
             UNKNW_HOST -> {
-                emit(Resource.Error(-1,"Проверьте подключение к интернету"))
+                emit(Resource.Error(UNKNW_HOST, "Проверьте подключение к интернету"))
             }
 
             REQ_TIMEOUT -> {
-                emit(Resource.Error(408,"Время подключение к серверу истекло"))
+                emit(Resource.Error(REQ_TIMEOUT, "Время подключение к серверу истекло"))
             }
 
             else -> {
-                emit(Resource.Error(400,"Ошибка сервера"))
+                emit(Resource.Error(NET_BAD_REQUEST, "Ошибка сервера"))
             }
         }
 
     }
-
 
     private fun convertFromDto(listVacancyDto: Array<VacancyDto>): List<Vacancy> {
         return listVacancyDto.map {

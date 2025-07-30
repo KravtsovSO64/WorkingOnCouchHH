@@ -17,7 +17,6 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
-
         when (dto) {
             is VacanciesRequest -> {
                 return withContext(Dispatchers.IO) {
@@ -66,7 +65,5 @@ class RetrofitNetworkClient(
                 }
             }
         }
-
-
     }
 }
