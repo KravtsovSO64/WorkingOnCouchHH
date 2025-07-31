@@ -21,8 +21,8 @@ class FavouriteInteractorImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getJobById(id: String): Flow<String?> {
-        TODO("Not yet implemented")
+    override fun getJobById(id: String): Flow<VacancyDetail?> {
+        return favouriteRepository.getJobById(id)
     }
 
     override suspend fun getAllFavourites(): Flow<List<VacancyDetail>> {

@@ -27,6 +27,8 @@ class VacancyFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: VacancyViewModel by viewModel()
     private var vacancy = VacancyDetail.empty()
+    private var isFavourite: Boolean = false
+    private var vacancyId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +45,7 @@ class VacancyFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vacancyId = arguments?.getString("vacancy") ?: ""
+        vacancyId = arguments?.getString("vacancy") ?: ""
         viewModel.getJobDetails(vacancyId)
 
         showBottomNavigation(false) // Отключаем нижнюю панель навигации
@@ -102,6 +104,7 @@ class VacancyFragment : Fragment() {
 
     private fun startObserving() {
         viewModel.stateFavourite.observe(viewLifecycleOwner) { isFavourite ->
+            this.isFavourite = isFavourite
             binding.favouriteButton.isSelected = isFavourite
         }
 
@@ -225,8 +228,12 @@ class VacancyFragment : Fragment() {
                     .setImageResource(R.drawable.im_vacancy_empty)
             }
             ErrorType.NO_CONNECTION -> {
-                binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
-                    .setImageResource(R.drawable.im_vacancy_not_internet)
+               if (isFavourite) {
+                   viewModel.getJobByIdLocal(vacancyId)
+               } else {
+                   binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
+                       .setImageResource(R.drawable.im_vacancy_not_internet)
+               }
             }
             ErrorType.SERVER_ERROR -> {
                 binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)

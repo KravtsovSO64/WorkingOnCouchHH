@@ -25,8 +25,9 @@ class FavouriteRepositoryImpl(
         TODO("Not yet implemented updateFavouriteJob")
     }
 
-    override fun getJobById(id: String): Flow<String?> {
-        TODO("Not yet implemented getJobById")
+    override fun getJobById(id: String): Flow<VacancyDetail?> = flow {
+        val job = appDatabase.favouriteDao().getFavoriteVacancyById(id)
+        emit(job?.let { map(it) })
     }
 
     override suspend fun getFavourites(): Flow<List<VacancyDetail>> = flow {
@@ -57,26 +58,26 @@ class FavouriteRepositoryImpl(
         )
     }
 
-    private fun map(favoruteJob: FavouriteJob): VacancyDetail {
+    private fun map(favouriteJob: FavouriteJob): VacancyDetail {
         return VacancyDetail(
-            id = favoruteJob.id,
-            name = favoruteJob.name.orEmpty(),
-            employerName = favoruteJob.employerName.orEmpty(),
-            salaryFrom = favoruteJob.salaryFrom ?: 0,
-            salaryTo = favoruteJob.salaryTo ?: 0,
-            salaryCurrency = favoruteJob.salaryCurrency.orEmpty(),
+            id = favouriteJob.id,
+            name = favouriteJob.name.orEmpty(),
+            employerName = favouriteJob.employerName.orEmpty(),
+            salaryFrom = favouriteJob.salaryFrom ?: 0,
+            salaryTo = favouriteJob.salaryTo ?: 0,
+            salaryCurrency = favouriteJob.salaryCurrency.orEmpty(),
             area = FilterArea(
                 id = 0,
-                name = favoruteJob.area.orEmpty(),
+                name = favouriteJob.area.orEmpty(),
                 areas = listOf(),
                 parentId = 0
             ),
-            employment = favoruteJob.employment.orEmpty(),
-            schedule = favoruteJob.schedule.orEmpty(),
-            experience = favoruteJob.experience.orEmpty(),
-            skills = favoruteJob.keySkills?.split(", ").orEmpty(),
-            description = favoruteJob.description.orEmpty(),
-            url = favoruteJob.url.orEmpty(),
+            employment = favouriteJob.employment.orEmpty(),
+            schedule = favouriteJob.schedule.orEmpty(),
+            experience = favouriteJob.experience.orEmpty(),
+            skills = favouriteJob.keySkills?.split(", ").orEmpty(),
+            description = favouriteJob.description.orEmpty(),
+            url = favouriteJob.url.orEmpty(),
             contactsEmail = "",
             contactsPhone = listOf(),
             contactsName = "",

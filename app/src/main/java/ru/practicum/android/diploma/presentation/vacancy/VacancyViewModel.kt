@@ -75,6 +75,21 @@ class VacancyViewModel(
         }
     }
 
+    fun getJobByIdLocal(id: String) {
+        _stateScreen.postValue(VacancyScreenState.Loading)
+
+        viewModelScope.launch {
+            favouritesInteractor.getJobById(id)
+                .collect { job ->
+                    if (job != null) {
+                        _stateScreen.postValue(VacancyScreenState.Content(job))
+                    } else {
+                        _stateScreen.postValue(VacancyScreenState.Error(ErrorType.EMPTY))
+                    }
+                }
+        }
+    }
+
     private fun handleErrorCode(code: Int) {
         when (code) {
             ErrorCode.NO_CONNECTION -> {
