@@ -25,4 +25,12 @@
     <string name="industry">Сфера деятельности</string>
     <string name="error_empty_vacancy">Вакансия не найдена или удалена</string>
     <string name="description">Над приложением работали</string>
+    <string name="filter_settings_fragment">Настройки фильтрации</string>
+    <string name="job_location">Место работы</string>
+    <string name="vacancy_type">Отрасль</string>
+    <string name="expected_salary">Ожидаемая зарплата</string>
+    <string name="enter_a_sum">Введите сумму</string>
+    <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
 </resources>
