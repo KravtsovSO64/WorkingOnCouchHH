@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="invisible"
-        app:layout_constraintGuide_end="660dp" />
+        app:layout_constraintGuide_end="720dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textlayout_vacancy_region"
