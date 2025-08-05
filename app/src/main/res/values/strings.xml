@@ -25,4 +25,5 @@
     <string name="industry">Сфера деятельности</string>
     <string name="error_empty_vacancy">Вакансия не найдена или удалена</string>
     <string name="description">Над приложением работали</string>
+    <string name="hint_edit_search">Введите запрос</string>
 </resources>
