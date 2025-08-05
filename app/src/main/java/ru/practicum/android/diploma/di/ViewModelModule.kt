@@ -19,7 +19,7 @@ val viewModel = module {
         FavouritesViewModel(get())
     }
     viewModel {
-        FilterSettingsViewModel()
+        FilterSettingsViewModel(get(), get())
     }
     viewModel{
         FilterIndustryViewModel(get(), get())

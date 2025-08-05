@@ -23,14 +23,14 @@ val repository = module {
         )
     }
 
-    single<FilterRepository> {
+    factory<FilterRepository> {
         FilterRepositoryImpl(
             get(filtersQualifier),
             get(),
         )
     }
 
-    single<FilterCacheRepository> {
+    factory<FilterCacheRepository> {
         FilterCacheRepositoryImpl(
             get(filtersQualifier),
             get()
