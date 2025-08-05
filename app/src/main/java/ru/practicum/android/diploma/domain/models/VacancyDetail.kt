@@ -51,7 +51,7 @@ data class VacancyDetail(
             skills = listOf(),
             url = "",
             industry = FilterIndustry(
-                0,
+                "",
                 "",
             ),)
     }

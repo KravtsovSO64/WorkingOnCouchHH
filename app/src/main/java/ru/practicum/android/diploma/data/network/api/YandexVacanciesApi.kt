@@ -2,8 +2,10 @@ package ru.practicum.android.diploma.data.network.api
 
 import retrofit2.http.GET
 import retrofit2.http.Query
+import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDetailDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 
 interface YandexVacanciesApi {
     @GET("vacancies")
@@ -16,4 +18,7 @@ interface YandexVacanciesApi {
     suspend fun getVacancyDetails(
         @Query("id") id: String
     ): VacancyDetailDto
+
+    @GET("industries")
+    suspend fun getIndustries(): List<ElementDto>
 }
