@@ -128,10 +128,10 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     fun formatVacancies(count: Int): String {
         return when {
-            count == 0 -> "Таких вакансий нет"
-            count % 100 in 11..14 -> "Найдено $count вакансий"
-            count % 10 == 1 -> "Найдена $count вакансия"
-            count % 10 in 2..4 -> "Найдено $count вакансии"
+            count == DECLENSION_0 -> "Таких вакансий нет"
+            count % PERCENT_100 in DECLENSION_11..DECLENSION_14 -> "Найдено $count вакансий"
+            count % PERCENT_10 == DECLENSION_1 -> "Найдена $count вакансия"
+            count % PERCENT_10 in DECLENSION_2..DECLENSION_4 -> "Найдено $count вакансии"
             else -> "Найдено $count вакансий"
         }
     }
@@ -144,5 +144,15 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val PERCENT_100 = 100
+        private const val PERCENT_10 = 10
+        private const val DECLENSION_11 = 11
+        private const val DECLENSION_14 = 14
+        private const val DECLENSION_0 = 0
+        private const val DECLENSION_1 = 1
+        private const val DECLENSION_2 = 2
+        private const val DECLENSION_4 = 4
+
+
     }
 }

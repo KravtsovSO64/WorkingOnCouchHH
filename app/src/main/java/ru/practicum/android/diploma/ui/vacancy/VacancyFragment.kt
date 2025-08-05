@@ -246,7 +246,6 @@ class VacancyFragment : Fragment() {
                             binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
                                 .setImageResource(R.drawable.im_vacancy_not_internet)
                         }
-                        return@collect
                     }
                 }
             }

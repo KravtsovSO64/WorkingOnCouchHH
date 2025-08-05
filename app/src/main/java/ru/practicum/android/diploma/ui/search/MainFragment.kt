@@ -145,7 +145,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
     private fun updateResultText(message: String) {
         binding.textResult.text = message
-        if (message == "Таких вакансий нет") { getString(R.string.no_vacancies) }
+        if (message == "Таких вакансий нет")  getString(R.string.no_vacancies)
     }
 
     private fun openVacancy(id: String) {
