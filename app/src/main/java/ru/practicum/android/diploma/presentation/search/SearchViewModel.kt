@@ -15,12 +15,12 @@ import ru.practicum.android.diploma.presentation.search.state.SearchState
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
-    val searchTextState = MutableLiveData("")
-    private val totalFoundLiveData = MutableLiveData<Int>()
+    private val searchTextState = MutableLiveData("")
+    private val totalFoundLiveData = MutableLiveData<String>()
 
     fun observeSearchTextState(): LiveData<String> = searchTextState
     fun observeSearchState(): LiveData<SearchState> = searchState
-    fun observeTotalFoundLiveData(): LiveData<Int> = totalFoundLiveData
+    fun observeTotalFoundLiveData(): LiveData<String> = totalFoundLiveData
 
     private var latestSearchText: String? = null
     private var currentPage: Int = 0
@@ -67,7 +67,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
                         is ResourceVacancy.Success -> {
                             if (resource.data.isEmpty()) {
-                                totalFoundLiveData.value = 0
+                                totalFoundLiveData.value = formatVacancies(0)
                                 searchState.postValue(SearchState.Error(ErrorType.EMPTY))
                             } else {
                                 currentPage = 1
@@ -75,6 +75,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 //                                totalFoundLiveData.value = resource.total //Потом при загрузки страниц мониторить по адаптеру
                                 vacancyList.addAll(resource.data)
                                 searchState.postValue(SearchState.Content(vacancyList, false))
+                                totalFoundLiveData.value = formatVacancies(resource.data.size)
                             }
                         }
                     }
@@ -125,6 +126,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         clear()
     }
 
+    fun formatVacancies(count: Int): String {
+        return when {
+            count == DECLENSION_0 -> "Таких вакансий нет"
+            count % PERCENT_100 in DECLENSION_11..DECLENSION_14 -> "Найдено $count вакансий"
+            count % PERCENT_10 == DECLENSION_1 -> "Найдена $count вакансия"
+            count % PERCENT_10 in DECLENSION_2..DECLENSION_4 -> "Найдено $count вакансии"
+            else -> "Найдено $count вакансий"
+        }
+    }
+
     private fun clear() {
         latestSearchText = ""
         searchTextState.value = ""
@@ -133,5 +144,13 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val PERCENT_100 = 100
+        private const val PERCENT_10 = 10
+        private const val DECLENSION_11 = 11
+        private const val DECLENSION_14 = 14
+        private const val DECLENSION_0 = 0
+        private const val DECLENSION_1 = 1
+        private const val DECLENSION_2 = 2
+        private const val DECLENSION_4 = 4
     }
 }
