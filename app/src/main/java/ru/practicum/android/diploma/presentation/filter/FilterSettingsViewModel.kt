@@ -82,7 +82,7 @@ class FilterSettingsViewModel(
         }
     }
 
-    fun clearRegion(){
+    fun clearRegion() {
         // Добавить функционал очистки
     }
 

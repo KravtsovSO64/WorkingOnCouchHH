@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.data.filter
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 import ru.practicum.android.diploma.domain.filter.FilterRepository
 import ru.practicum.android.diploma.domain.models.Filter
-import androidx.core.content.edit
 
 class FilterRepositoryImpl(
     private val sharedPreference: SharedPreferences,
@@ -31,7 +31,7 @@ class FilterRepositoryImpl(
 
     override fun isFilterPresent(): Boolean {
         val filter = getFromStorage() ?: return false
-        val salaryFilled = (filter.salary?.salary ?: 0) != 0
+        val salaryFilled = filter.salary?.salary ?: 0 != 0
         val withSalaryFilled = filter.salary?.onlyWithSalary == true
         val regionFilled = !filter.area?.region?.id.isNullOrEmpty()
         val industryFilled = !filter.industry?.id.isNullOrEmpty()
@@ -63,13 +63,11 @@ class FilterRepositoryImpl(
         filter: Filter,
         setting: Filter
     ) {
-        if(setting.salary != null){
+        if (setting.salary != null) {
             filter.salary = setting.salary
-        }
-        else if(setting.area != null){
+        } else if (setting.area != null) {
             filter.area = setting.area
-        }
-        else if(setting.industry != null){
+        } else if (setting.industry != null) {
             filter.industry = setting.industry
         }
     }

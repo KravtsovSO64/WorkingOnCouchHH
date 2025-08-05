@@ -16,8 +16,7 @@ import ru.practicum.android.diploma.presentation.filter.industry.state.FilterInd
 class FilterIndustryViewModel(
     private val interactor: VacanciesInteractor,
     private val filterCacheInteractor: FilterCacheInteractor
-): ViewModel(
-) {
+) : ViewModel() {
     private var selected: FilterIndustry? = null
     private var savedFilterSetting: Filter? = null
 
@@ -66,6 +65,7 @@ class FilterIndustryViewModel(
                                     FilterIndustryListState.Content(it.data, selected)
                                 }
                             }
+
                             is ResourceIndustries.Error -> {
                                 FilterIndustryListState.Error
                             }
@@ -95,8 +95,11 @@ class FilterIndustryViewModel(
     fun invalidateFilterChanges() {
         viewModelScope.launch {
             filterCacheInteractor.writeCache(
-                Filter(industry = FilterIndustry(savedFilterSetting?.industry!!.id,
-                    savedFilterSetting?.industry!!.name)
+                Filter(
+                    industry = FilterIndustry(
+                        savedFilterSetting?.industry!!.id,
+                        savedFilterSetting?.industry!!.name
+                    )
 
                 )
             )

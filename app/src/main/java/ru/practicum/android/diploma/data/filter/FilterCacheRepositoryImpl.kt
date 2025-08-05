@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.data.filter
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 import ru.practicum.android.diploma.domain.filter.FilterCacheRepository
 import ru.practicum.android.diploma.domain.models.Filter
-import androidx.core.content.edit
 
 class FilterCacheRepositoryImpl(
     private val sharedPreference: SharedPreferences,
@@ -90,7 +90,7 @@ class FilterCacheRepositoryImpl(
                 cachedFilterJson,
                 Filter::class.java
             )
-            val salaryFilled = (cachedFilter.salary?.salary ?: 0) != 0
+            val salaryFilled = cachedFilter.salary?.salary ?: 0 != 0
             val withSalaryFilled = cachedFilter.salary?.onlyWithSalary == true
             val regionFilled = !cachedFilter.area?.region?.id.isNullOrEmpty()
             val industryFilled = !cachedFilter.industry?.id.isNullOrEmpty()
@@ -115,7 +115,6 @@ class FilterCacheRepositoryImpl(
             )
         }
     }
-
 
     override fun invalidateCache() {
         sharedPreference.edit {
@@ -147,13 +146,11 @@ class FilterCacheRepositoryImpl(
         filter: Filter,
         setting: Filter
     ) {
-        if(setting.salary != null){
+        if (setting.salary != null) {
             filter.salary = setting.salary
-        }
-        else if(setting.area != null){
+        } else if (setting.area != null) {
             filter.area = setting.area
-        }
-        else if(setting.industry != null){
+        } else if (setting.industry != null) {
             filter.industry = setting.industry
         }
 
