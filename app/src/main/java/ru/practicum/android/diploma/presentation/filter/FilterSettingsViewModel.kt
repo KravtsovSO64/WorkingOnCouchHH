@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.FilterSalary
 import ru.practicum.android.diploma.presentation.filter.state.FilterSettingsState
 
@@ -20,7 +21,7 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
 
     private var filtersAppliedEvent = MutableLiveData<Boolean>()
     private var currentSalary: Int? = null
-    private var dontShowWithoutSalary: Boolean? = false
+    private var dontShowWithoutSalary: Boolean = false
 
     init{
         viewModelScope.launch {
@@ -32,7 +33,9 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
                 filterInteractor.getFilter()
             }
             currentSalary = filterSettings?.salary?.salary
-            dontShowWithoutSalary = filterSettings?.salary?.onlyWithSalary
+            filterSettings?.salary?.onlyWithSalary?.let {
+                dontShowWithoutSalary = it
+            }
             screenStateLiveData.postValue(FilterSettingsState(filterSettings ?: Filter()))
             applyButtonLiveData.postValue(false)
             resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
@@ -85,7 +88,7 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
     fun onActionDone() {
         viewModelScope.launch {
             filterCacheInteractor.writeCache(
-                    Filter(salary = FilterSalary(currentSalary!!, dontShowWithoutSalary!!))
+                    Filter(salary = FilterSalary(currentSalary!!,dontShowWithoutSalary))
             )
             applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
             resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
