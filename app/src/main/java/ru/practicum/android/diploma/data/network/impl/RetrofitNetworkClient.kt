@@ -4,9 +4,12 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.data.dto.IndustriesRequest
+import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacancyDetailRequest
+import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 import ru.practicum.android.diploma.data.network.api.YandexVacanciesApi
 import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.REQ_TIMEOUT
 import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.UNAUTHORIZED
@@ -34,6 +37,9 @@ class RetrofitNetworkClient(
                             dto.id,
                         ).apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
 
+                    is IndustriesRequest ->
+                        convertRawResponse(yandexVacanciesApi.getIndustries())
+
                     else -> badRequest()
                 }
             }
@@ -45,6 +51,13 @@ class RetrofitNetworkClient(
             errorHandler(error, UNAUTHORIZED)
         }
         return badRequest()
+    }
+
+    private fun convertRawResponse(rawList: List<ElementDto>): IndustriesResponse {
+        return IndustriesResponse().apply {
+            resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS
+            industries = rawList
+        }
     }
 
     private fun badRequest(): Response {

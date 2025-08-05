@@ -83,7 +83,7 @@ class FavouriteRepositoryImpl(
             addressStreet = "",
             employerLogo = "",
             industry = FilterIndustry(
-                id = 0,
+                id = "",
                 name = ""
             ),
             addressCity = "",
