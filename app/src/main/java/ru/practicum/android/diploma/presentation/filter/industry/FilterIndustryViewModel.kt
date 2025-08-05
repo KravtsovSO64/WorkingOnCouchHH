@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.ResourceIndustries
@@ -13,7 +14,8 @@ import ru.practicum.android.diploma.presentation.filter.industry.state.FilterInd
 import ru.practicum.android.diploma.presentation.filter.industry.state.FilterIndustryState
 
 class FilterIndustryViewModel(
-    private val interactor: VacanciesInteractor
+    private val interactor: VacanciesInteractor,
+    private val filterCacheInteractor: FilterCacheInteractor
 ): ViewModel(
 ) {
     private var selected: FilterIndustry? = null
@@ -84,11 +86,17 @@ class FilterIndustryViewModel(
         } else {
             Filter()
         }
+        filterCacheInteractor.writeCache(setting)
     }
 
     fun invalidateFilterChanges() {
         viewModelScope.launch {
+            filterCacheInteractor.writeCache(
+                Filter(industry = FilterIndustry(savedFilterSetting?.industry!!.id,
+                    savedFilterSetting?.industry!!.name)
 
+                )
+            )
             changesInvalidatedEvent.postValue(true)
         }
     }

@@ -1,8 +1,12 @@
 package ru.practicum.android.diploma.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,6 +16,7 @@ import ru.practicum.android.diploma.data.network.api.YandexVacanciesApi
 import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import ru.practicum.android.diploma.data.network.impl.RetrofitNetworkClient
 
+val filtersQualifier = named("filters")
 val data = module {
     single {
         Room.databaseBuilder(
@@ -44,5 +49,14 @@ val data = module {
             .build()
             .create(YandexVacanciesApi::class.java)
     }
+
+    single<SharedPreferences>(filtersQualifier) {
+        androidContext().getSharedPreferences(
+            "local_storage",
+            Context.MODE_PRIVATE
+        )
+    }
+
+    factory { Gson() }
 }
 
