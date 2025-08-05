@@ -1,8 +1,11 @@
 package ru.practicum.android.diploma.ui.filter.industry
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterIndustryBinding
@@ -15,11 +18,32 @@ class FilterIndustryFragment: AbstractBindingFragment<FragmentFilterIndustryBind
 
     private val viewModel: FilterIndustryViewModel by viewModel()
 
+    private val adapter by lazy {
+        FilterIndustryAdapter { viewModel.onChecked(it) }
+    }
+
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentFilterIndustryBinding {
         return FragmentFilterIndustryBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        super.onViewCreated(
+            view,
+            savedInstanceState
+        )
+        binding.recyclerIndustries.adapter = adapter
+        
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+
     }
 
     private fun render(state: FilterIndustryListState) {
