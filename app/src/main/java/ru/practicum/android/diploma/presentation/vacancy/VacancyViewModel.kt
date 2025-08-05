@@ -1,9 +1,13 @@
 package ru.practicum.android.diploma.presentation.vacancy
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.api.favourite.FavouritesInteractor
@@ -29,8 +33,8 @@ class VacancyViewModel(
     private val _stateScreen = MutableLiveData<VacancyScreenState>()
     val stateScreen: LiveData<VacancyScreenState> get() = _stateScreen
 
-    private val _stateFavourite = MutableLiveData<Boolean>()
-    val stateFavourite: LiveData<Boolean> get() = _stateFavourite
+    private val _stateFavourite = MutableStateFlow(false)
+    val stateFavourite: StateFlow<Boolean> = _stateFavourite.asStateFlow()
 
     fun getJobDetails(id: String) {
         _stateScreen.postValue(VacancyScreenState.Loading)
@@ -52,17 +56,29 @@ class VacancyViewModel(
         }
     }
 
+    fun getJobDetailsLocal(id: String) {
+        _stateScreen.postValue(VacancyScreenState.Loading)
+
+        viewModelScope.launch {
+            val job = favouritesInteractor.getJobById(id)
+            Log.e("T", job.toString())
+            job?.let {
+                _stateScreen.postValue(VacancyScreenState.Content(job))
+            }
+        }
+    }
+
     fun addToFavourite(vacancy: VacancyDetail) {
         viewModelScope.launch {
             favouritesInteractor.addToFavourites(vacancy)
-            _stateFavourite.postValue(true)
+            _stateFavourite.value = true
         }
     }
 
     fun removeFromFavourites(id: String) {
         viewModelScope.launch {
             favouritesInteractor.removeFromFavourites(id)
-            _stateFavourite.postValue(false)
+            _stateFavourite.value = false
         }
     }
 
@@ -70,7 +86,7 @@ class VacancyViewModel(
         viewModelScope.launch {
             favouritesInteractor.checkJobInFavourites(id)
                 .collect { isFavourite ->
-                    _stateFavourite.postValue(isFavourite)
+                    _stateFavourite.value = isFavourite
                 }
         }
     }

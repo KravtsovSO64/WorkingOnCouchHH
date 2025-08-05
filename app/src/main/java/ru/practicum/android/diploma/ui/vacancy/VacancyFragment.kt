@@ -3,15 +3,20 @@ package ru.practicum.android.diploma.ui.vacancy
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -27,6 +32,7 @@ class VacancyFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: VacancyViewModel by viewModel()
     private var vacancy = VacancyDetail.empty()
+    private var vacancyId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +49,7 @@ class VacancyFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vacancyId = arguments?.getString("vacancy") ?: ""
+        vacancyId = arguments?.getString("vacancy") ?: ""
         viewModel.getJobDetails(vacancyId)
 
         showBottomNavigation(false) // Отключаем нижнюю панель навигации
@@ -101,8 +107,12 @@ class VacancyFragment : Fragment() {
     }
 
     private fun startObserving() {
-        viewModel.stateFavourite.observe(viewLifecycleOwner) { isFavourite ->
-            binding.favouriteButton.isSelected = isFavourite
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFavourite.collect { isFavourite ->
+                    binding.favouriteButton.isSelected = isFavourite
+                }
+            }
         }
 
         viewModel.stateScreen.observe(viewLifecycleOwner) { state ->
@@ -213,6 +223,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun showError(type: ErrorType) {
+        Log.e("T", "$type")
         binding.apply {
             loadingView.loadingViewRoot.visibility = View.GONE
             errorView.errorViewRoot.visibility = View.VISIBLE
@@ -225,8 +236,18 @@ class VacancyFragment : Fragment() {
                     .setImageResource(R.drawable.im_vacancy_empty)
             }
             ErrorType.NO_CONNECTION -> {
-                binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
-                    .setImageResource(R.drawable.im_vacancy_not_internet)
+                lifecycleScope.launch {
+                    viewModel.checkJobInFavourites(vacancyId)
+
+                    viewModel.stateFavourite.collect { isFavourite ->
+                        if (isFavourite) {
+                            viewModel.getJobDetailsLocal(vacancyId)
+                        } else {
+                            binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)
+                                .setImageResource(R.drawable.im_vacancy_not_internet)
+                        }
+                    }
+                }
             }
             ErrorType.SERVER_ERROR -> {
                 binding.errorView.errorViewRoot.findViewById<ImageView>(R.id.error_poster)

@@ -10,6 +10,9 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
+            android:id="@+id/action_mainFragment_to_filterSettingsFragment"
+            app:destination="@id/filterSettingsFragment" />
+        <action
             android:id="@+id/action_mainFragment_to_vacancyFragment2"
             app:destination="@id/vacancyFragment" />
     </fragment>
@@ -37,4 +40,18 @@
             android:name="vacancy"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/filterSettingsFragment"
+        android:name="ru.practicum.android.diploma.ui.filter.FilterSettingsFragment"
+        android:label="fragment_filter_settings"
+        tools:layout="@layout/fragment_filter_settings" >
+        <action
+            android:id="@+id/action_filterSettingsFragment_to_filterIndustryFragment"
+            app:destination="@id/filterIndustryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterIndustryFragment"
+        android:name="ru.practicum.android.diploma.ui.filter.industry.FilterIndustryFragment"
+        android:label="fragment_filter_industry"
+        tools:layout="@layout/fragment_filter_industry" />
 </navigation>
