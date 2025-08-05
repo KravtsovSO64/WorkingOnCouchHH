@@ -84,10 +84,9 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
 
     fun onActionDone() {
         viewModelScope.launch {
-            filterCacheInteractor.commitCache()
-//            filterCacheInteractor.writeCache(
-//                    Filter(salary = FilterSalary(currentSalary!!, dontShowWithoutSalary!!))
-//            )
+            filterCacheInteractor.writeCache(
+                    Filter(salary = FilterSalary(currentSalary!!, dontShowWithoutSalary!!))
+            )
             applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
             resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
         }
