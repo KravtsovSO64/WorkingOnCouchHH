@@ -15,12 +15,12 @@ import ru.practicum.android.diploma.presentation.search.state.SearchState
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
-    val searchTextState = MutableLiveData("")
-    private val totalFoundLiveData = MutableLiveData<Int>()
+    private val searchTextState = MutableLiveData("")
+    private val totalFoundLiveData = MutableLiveData<String>()
 
     fun observeSearchTextState(): LiveData<String> = searchTextState
     fun observeSearchState(): LiveData<SearchState> = searchState
-    fun observeTotalFoundLiveData(): LiveData<Int> = totalFoundLiveData
+    fun observeTotalFoundLiveData(): LiveData<String> = totalFoundLiveData
 
     private var latestSearchText: String? = null
     private var currentPage: Int = 0
@@ -67,7 +67,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
                         is ResourceVacancy.Success -> {
                             if (resource.data.isEmpty()) {
-                                totalFoundLiveData.value = 0
+                                totalFoundLiveData.value = formatVacancies(0)
                                 searchState.postValue(SearchState.Error(ErrorType.EMPTY))
                             } else {
                                 currentPage = 1
@@ -75,6 +75,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 //                                totalFoundLiveData.value = resource.total //Потом при загрузки страниц мониторить по адаптеру
                                 vacancyList.addAll(resource.data)
                                 searchState.postValue(SearchState.Content(vacancyList, false))
+                                totalFoundLiveData.value = formatVacancies(resource.data.size)
                             }
                         }
                     }
@@ -123,6 +124,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     fun onClearText() {
         clear()
+    }
+
+    fun formatVacancies(count: Int): String {
+        return when {
+            count == 0 -> "Таких вакансий нет"
+            count % 100 in 11..14 -> "Найдено $count вакансий"
+            count % 10 == 1 -> "Найдена $count вакансия"
+            count % 10 in 2..4 -> "Найдено $count вакансии"
+            else -> "Найдено $count вакансий"
+        }
     }
 
     private fun clear() {

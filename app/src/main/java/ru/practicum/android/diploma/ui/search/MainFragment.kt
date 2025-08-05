@@ -64,7 +64,6 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                 }
 
                 is SearchState.Error -> {
-                    updateResultText(0)
                     showError(state.type)
                 }
             }
@@ -144,12 +143,9 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         binding.imageEndIconDrawable.setOnClickListener { }
     }
 
-    private fun updateResultText(count: Int) {
-        binding.textResult.text = if (count > 0) {
-            "Найдено $count"
-        } else {
-            getString(R.string.no_vacancies)
-        }
+    private fun updateResultText(message: String) {
+        binding.textResult.text = message
+        if (message == "Таких вакансий нет") { getString(R.string.no_vacancies) }
     }
 
     private fun openVacancy(id: String) {
