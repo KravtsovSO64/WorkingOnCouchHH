@@ -5,12 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.FilterIndustry
+import ru.practicum.android.diploma.domain.models.ResourceIndustries
 import ru.practicum.android.diploma.presentation.filter.industry.state.FilterIndustryListState
 import ru.practicum.android.diploma.presentation.filter.industry.state.FilterIndustryState
 
-class FilterIndustryViewModel: ViewModel() {
+class FilterIndustryViewModel(
+    private val interactor: VacanciesInteractor
+): ViewModel(
+) {
     private var selected: FilterIndustry? = null
     private var savedFilterSetting: Filter? = null
 
@@ -20,6 +25,10 @@ class FilterIndustryViewModel: ViewModel() {
             selected != null
         )
     )
+
+    init{
+        load()
+    }
 
     private val changesInvalidatedEvent = MutableLiveData<Boolean>()
 
@@ -44,7 +53,23 @@ class FilterIndustryViewModel: ViewModel() {
 
     private fun load() {
         viewModelScope.launch {
-
+            interactor.getIndustries()
+                .collect {
+                    items.postValue(
+                        when (it) {
+                            is ResourceIndustries.Success -> {
+                                if (it.data.isEmpty()) {
+                                    FilterIndustryListState.Error
+                                } else {
+                                    FilterIndustryListState.Content(it.data, selected)
+                                }
+                            }
+                            is ResourceIndustries.Error -> {
+                                FilterIndustryListState.Error
+                            }
+                        }
+                    )
+                }
         }
     }
 

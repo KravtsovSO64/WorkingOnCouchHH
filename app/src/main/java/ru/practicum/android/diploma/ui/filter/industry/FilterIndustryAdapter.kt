@@ -38,7 +38,7 @@ class FilterIndustryAdapter(
 
     private fun getItemPosition(
         list: List<FilterItem>,
-        id: Int
+        id: String
     ): Int {
         return list.indexOfFirst {
             it.industry.id == id
@@ -99,7 +99,7 @@ class FilterIndustryAdapter(
 
     private fun setIsChecked(
         list: List<FilterItem>,
-        id: Int,
+        id: String,
         isChecked: Boolean,
         toNotify: Boolean
     ): Int {
