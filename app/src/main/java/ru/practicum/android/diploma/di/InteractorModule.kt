@@ -3,7 +3,11 @@ package ru.practicum.android.diploma.di
 import org.koin.dsl.module
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.api.favourite.FavouritesInteractor
+import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
+import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.impl.FavouriteInteractorImpl
+import ru.practicum.android.diploma.domain.impl.FilterCacheInteractorImpl
+import ru.practicum.android.diploma.domain.impl.FilterInteractorImpl
 import ru.practicum.android.diploma.domain.impl.VacanciesInteractorImpl
 
 val interactor = module {
@@ -18,6 +22,14 @@ val interactor = module {
         FavouriteInteractorImpl(
             favouriteRepository = get()
         )
+    }
+
+    factory<FilterCacheInteractor> {
+        FilterCacheInteractorImpl(get())
+    }
+
+    factory<FilterInteractor>{
+        FilterInteractorImpl(get())
     }
 
 }

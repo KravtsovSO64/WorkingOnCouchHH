@@ -47,6 +47,10 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         setSearchIcon()
         setUpListeners()
 
+        binding.btnFilter.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_filterSettingsFragment)
+        }
+
         viewModel.observeSearchTextState().observe(viewLifecycleOwner) {
             updateTextInputLayoutIcon(it)
         }
