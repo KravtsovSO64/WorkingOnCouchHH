@@ -152,7 +152,5 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         private const val DECLENSION_1 = 1
         private const val DECLENSION_2 = 2
         private const val DECLENSION_4 = 4
-
-
     }
 }
