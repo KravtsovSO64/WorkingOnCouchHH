@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Co
 import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.UNAUTHORIZED
 import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.UNKNW_HOST
 import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
+import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -20,8 +21,8 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
-        try {
-            return withContext(Dispatchers.IO) {
+        return try {
+            withContext(Dispatchers.IO) {
                 when (dto) {
                     is VacanciesRequest ->
                         yandexVacanciesApi.getVacancies(
@@ -37,14 +38,16 @@ class RetrofitNetworkClient(
                     else -> badRequest()
                 }
             }
-        } catch (error: UnknownHostException) {
+        } catch (error: IOException) {
             errorHandler(error, UNKNW_HOST)
+            Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNKNW_HOST }
         } catch (error: SocketTimeoutException) {
             errorHandler(error, REQ_TIMEOUT)
+            Response().apply { resultCode = VacanciesRepositoryImpl.Companion.REQ_TIMEOUT }
         } catch (error: HttpException) {
             errorHandler(error, UNAUTHORIZED)
+            Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
         }
-        return badRequest()
     }
 
     private fun badRequest(): Response {
