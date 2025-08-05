@@ -28,7 +28,7 @@ class JobAdapter(
                     .into(logo)
                 vacancyNameTextView.text = name
                 vacancyEmployerTextView.text = employerName
-                vacancySalaryTextView.text = salaryFrom.toString() + "  " + salaryTo.toString()
+                vacancySalaryTextView.text = formatSalary(vacancy.salaryFrom, vacancy.salaryTo, vacancy.salaryCurrency)
                 itemView.setOnClickListener {
                     onItemClick(vacancy.id)
                 }
@@ -68,5 +68,36 @@ class JobAdapter(
 
     private fun clear() {
         vacancies.clear()
+    }
+
+    private fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currencyCode: String?): String {
+        fun getCurrencySymbol(code: String?): String = when (code?.uppercase()) {
+            "RUB" -> "₽"
+            "USD", "NZD", "SGD" -> "$"
+            "EUR" -> "€"
+            "GBP" -> "£"
+            "JPY" -> "¥"
+            "CNY" -> "¥"
+            "KZT" -> "₸"
+            "UAH" -> "₴"
+            else -> code ?: ""
+        }
+
+        fun Int?.formatWithSpaces(): String = when {
+            this == null -> ""
+            this == 0 -> ""
+            else -> "%,d".format(this).replace(',', ' ')
+        }
+
+        val currencySymbol = getCurrencySymbol(currencyCode)
+        val from = salaryFrom.formatWithSpaces()
+        val to = salaryTo.formatWithSpaces()
+
+        return when {
+            from.isNotEmpty() && to.isNotEmpty() -> "от $from $currencySymbol до $to $currencySymbol"
+            from.isNotEmpty() -> "от $from $currencySymbol"
+            to.isNotEmpty() -> "до $to $currencySymbol"
+            else -> "Уровень зарплаты не указан"
+        }
     }
 }
