@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FilterIndustry(
+data class AreaEntity(
     val id: String,
     val name: String,
-) : Parcelable
+    val parentCountry: AreaEntity? = null
+): Parcelable

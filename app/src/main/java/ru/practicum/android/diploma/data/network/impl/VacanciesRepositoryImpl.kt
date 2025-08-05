@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.data.network.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.IndustriesRequest
+import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailRequest
@@ -76,6 +78,39 @@ class VacanciesRepositoryImpl(
             }
         }
 
+    }
+
+    override fun getIndustries(): Flow<Resource<List<FilterIndustry>>> = flow {
+        val networkClientResponse = networkClient.doRequest(
+            IndustriesRequest()
+        )
+
+        when (networkClientResponse.resultCode) {
+            NET_SUCCESS -> {
+                emit(Resource.Success(convertFilterIndustry(networkClientResponse as IndustriesResponse)))
+            }
+
+            UNKNW_HOST -> {
+                emit(Resource.Error(UNKNW_HOST, "Проверьте подключение к интернету"))
+            }
+
+            REQ_TIMEOUT -> {
+                emit(Resource.Error(REQ_TIMEOUT, "Время подключение к серверу истекло"))
+            }
+
+            else -> {
+                emit(Resource.Error(NET_BAD_REQUEST, "Ошибка сервера"))
+            }
+        }
+    }
+
+    private fun convertFilterIndustry(industriesResponse: IndustriesResponse): List<FilterIndustry> {
+        return industriesResponse.industries.map {
+            FilterIndustry(
+                id = it.id,
+                name = it.name
+            )
+        }
     }
 
     private fun convertFromDto(listVacancyDto: Array<VacancyDto>): List<Vacancy> {
