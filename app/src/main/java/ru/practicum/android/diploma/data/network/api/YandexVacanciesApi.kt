@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.data.network.api
 
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDetailDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto

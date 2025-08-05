@@ -104,7 +104,7 @@ class VacanciesRepositoryImpl(
         }
     }
 
-    private fun convertFilterIndustry(industriesResponse: IndustriesResponse): List<FilterIndustry>{
+    private fun convertFilterIndustry(industriesResponse: IndustriesResponse): List<FilterIndustry> {
         return industriesResponse.industries.map {
             FilterIndustry(
                 id = it.id,

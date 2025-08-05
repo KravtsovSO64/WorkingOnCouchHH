@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.data.network.interfaces
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetail

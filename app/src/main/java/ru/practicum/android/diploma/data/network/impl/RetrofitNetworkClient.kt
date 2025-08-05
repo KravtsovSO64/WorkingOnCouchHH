@@ -53,7 +53,7 @@ class RetrofitNetworkClient(
         return badRequest()
     }
 
-    private fun convertRawResponse(rawList: List<ElementDto>) : IndustriesResponse{
+    private fun convertRawResponse(rawList: List<ElementDto>): IndustriesResponse {
         return IndustriesResponse().apply {
             resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS
             industries = rawList
