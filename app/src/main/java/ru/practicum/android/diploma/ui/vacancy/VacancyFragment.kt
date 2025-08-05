@@ -107,7 +107,6 @@ class VacancyFragment : Fragment() {
     }
 
     private fun startObserving() {
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFavourite.collect { isFavourite ->
