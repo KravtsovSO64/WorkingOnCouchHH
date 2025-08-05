@@ -23,7 +23,7 @@ import ru.practicum.android.diploma.presentation.filter.industry.state.FilterInd
 import ru.practicum.android.diploma.presentation.filter.industry.state.FilterIndustryState
 import ru.practicum.android.diploma.util.AbstractBindingFragment
 
-class FilterIndustryFragment: AbstractBindingFragment<FragmentFilterIndustryBinding>() {
+class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBinding>() {
 
     private val viewModel: FilterIndustryViewModel by viewModel()
     private var currentState: FilterIndustryListState? = null

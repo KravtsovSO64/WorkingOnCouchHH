@@ -8,11 +8,12 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
-import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.FilterSalary
 import ru.practicum.android.diploma.presentation.filter.state.FilterSettingsState
 
-class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, private val filterCacheInteractor: FilterCacheInteractor,
+class FilterSettingsViewModel(
+    private val filterInteractor: FilterInteractor,
+    private val filterCacheInteractor: FilterCacheInteractor,
 ) : ViewModel() {
     private var screenStateLiveData = MutableLiveData<FilterSettingsState>()
     private var applyButtonLiveData = MutableLiveData<Boolean>()
@@ -23,7 +24,7 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
     private var currentSalary: Int? = null
     private var dontShowWithoutSalary: Boolean = false
 
-    init{
+    init {
         viewModelScope.launch {
             filterCacheInteractor.createCache()
             val filterSettings = if (filterInteractor.getFilter() == null) {
@@ -81,14 +82,14 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
         }
     }
 
-    fun clearRegion() {
-
+    fun clearRegion(){
+        // Добавить функционал очистки
     }
 
     fun onActionDone() {
         viewModelScope.launch {
             filterCacheInteractor.writeCache(
-                    Filter(salary = FilterSalary(currentSalary!!,dontShowWithoutSalary))
+                Filter(salary = FilterSalary(currentSalary!!, dontShowWithoutSalary))
             )
             applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
             resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
@@ -115,7 +116,7 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor, pr
         }
     }
 
-    fun addSalaryCheckFilter(checked: Boolean) {}
-
-
+    fun addSalaryCheckFilter(checked: Boolean) {
+        // Добавить фильтрацию
+    }
 }

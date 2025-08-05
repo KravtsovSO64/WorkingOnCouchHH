@@ -21,7 +21,7 @@ val viewModel = module {
     viewModel {
         FilterSettingsViewModel(get(), get())
     }
-    viewModel{
+    viewModel {
         FilterIndustryViewModel(get(), get())
     }
 }

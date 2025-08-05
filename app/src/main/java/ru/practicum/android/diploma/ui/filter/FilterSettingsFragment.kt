@@ -15,14 +15,14 @@ import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.presentation.filter.FilterSettingsViewModel
 import ru.practicum.android.diploma.util.AbstractBindingFragment
 
-class FilterSettingsFragment: AbstractBindingFragment<FragmentFilterSettingsBinding>() {
+class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBinding>() {
     private val filterSettingsViewModel: FilterSettingsViewModel by viewModel()
 
     override fun createBinding(
@@ -62,7 +62,7 @@ class FilterSettingsFragment: AbstractBindingFragment<FragmentFilterSettingsBind
             filterSettingsViewModel.applyFilters(true)
         }
         binding.edittextVacancyRegion.setOnClickListener {
-            //findNavController().navigate(R.id.action_filterSettingsFragment_to_filterLocationFragment)
+            // findNavController().navigate(R.id.action_filterSettingsFragment_to_filterLocationFragment)
         }
         binding.edittextVacancyType.setOnClickListener {
             findNavController().navigate(R.id.action_filterSettingsFragment_to_filterIndustryFragment)
@@ -146,7 +146,7 @@ class FilterSettingsFragment: AbstractBindingFragment<FragmentFilterSettingsBind
             R.drawable.ic_arrow_forward
         )
         binding.textlayoutVacancyRegion.setEndIconOnClickListener {
-           // findNavController().navigate(R.id.action_filterSettingsFragment_to_filterLocationFragment)
+            // findNavController().navigate(R.id.action_filterSettingsFragment_to_filterLocationFragment)
         }
     }
 

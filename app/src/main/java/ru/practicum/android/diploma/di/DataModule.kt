@@ -13,8 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.network.api.YandexVacanciesApi
-import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import ru.practicum.android.diploma.data.network.impl.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 
 val filtersQualifier = named("filters")
 val data = module {

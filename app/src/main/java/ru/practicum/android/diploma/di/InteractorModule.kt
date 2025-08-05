@@ -28,7 +28,7 @@ val interactor = module {
         FilterCacheInteractorImpl(get())
     }
 
-    factory<FilterInteractor>{
+    factory<FilterInteractor> {
         FilterInteractorImpl(get())
     }
 

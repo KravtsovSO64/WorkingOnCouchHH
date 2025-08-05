@@ -4,13 +4,13 @@ import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.filter.FilterCacheRepository
 import ru.practicum.android.diploma.domain.models.Filter
 
-class FilterCacheInteractorImpl(private val filterCacheRepository: FilterCacheRepository): FilterCacheInteractor {
+class FilterCacheInteractorImpl(private val filterCacheRepository : FilterCacheRepository): FilterCacheInteractor {
     override fun createCache() {
         filterCacheRepository.createCache()
     }
 
     override fun getCache(): Filter? {
-       return filterCacheRepository.getCache()
+        return filterCacheRepository.getCache()
     }
 
     override fun commitCache() {

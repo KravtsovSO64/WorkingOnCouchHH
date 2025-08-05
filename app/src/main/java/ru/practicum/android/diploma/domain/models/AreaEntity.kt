@@ -8,4 +8,4 @@ data class AreaEntity(
     val id: String,
     val name: String,
     val parentCountry: AreaEntity? = null
-): Parcelable
+) : Parcelable

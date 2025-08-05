@@ -28,7 +28,7 @@ class FilterIndustryViewModel(
         )
     )
 
-    init{
+    init {
         load()
     }
 
@@ -79,8 +79,11 @@ class FilterIndustryViewModel(
         selected = industry
         state.value = state.value?.copy(isSaveEnable = industry != null)
         val setting = if (industry != null) {
-            Filter(industry = FilterIndustry(industry.id,
-                industry.name)
+            Filter(
+                industry = FilterIndustry(
+                    industry.id,
+                    industry.name
+                )
 
             )
         } else {
