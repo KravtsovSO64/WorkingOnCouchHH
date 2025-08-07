@@ -61,10 +61,10 @@ class RetrofitNetworkClient(
         options["text"] = dto.text
         options["page"] = dto.page.toString()
         if (dto.area != null){
-            options["area"] = dto.area.toString()
+            options["area"] = dto.area
         }
         if (dto.industry != null){
-            options["industry"] = dto.industry.toString()
+            options["industry"] = dto.industry
         }
         if (dto.salary != null){
             options["salary"] = dto.salary.toString()

@@ -19,8 +19,8 @@ class VacanciesInteractorImpl(
     override fun searchVacancies(
         text: String,
         page: Int,
-        area: Int?,
-        industry: Int?,
+        area: String?,
+        industry: String?,
         salary: Int?,
         onlyWithSalary: Boolean,
         ): Flow<ResourceVacancy> {

@@ -7,13 +7,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode
 import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.state.SearchState
 
-class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val filterInteractor: FilterInteractor,
+) : ViewModel() {
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
     private val searchTextState = MutableLiveData("")
     private val totalFoundLiveData = MutableLiveData<String>()
@@ -54,15 +58,15 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         maxPages = null
         vacancyList.clear()
         viewModelScope.launch {
+            val filterParams = filterInteractor.getFilter()
             searchState.postValue(SearchState.Loading)
             vacanciesInteractor.searchVacancies(
-                // TODO
                 text = text,
                 page = 0,
-                area = null,
-                industry = null,
-                salary = null,
-                onlyWithSalary = false)
+                area = filterParams?.area?.region?.id,
+                industry = filterParams?.industry?.id,
+                salary = filterParams?.salary?.salary,
+                onlyWithSalary = filterParams?.salary?.onlyWithSalary ?: false)
                 .catch {
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
                 }
