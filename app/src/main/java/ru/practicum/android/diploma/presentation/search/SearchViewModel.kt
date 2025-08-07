@@ -55,7 +55,14 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         vacancyList.clear()
         viewModelScope.launch {
             searchState.postValue(SearchState.Loading)
-            vacanciesInteractor.searchVacancies(text = text, 0)
+            vacanciesInteractor.searchVacancies(
+                // TODO
+                text = text,
+                page = 0,
+                area = null,
+                industry = null,
+                salary = null,
+                onlyWithSalary = false)
                 .catch {
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
                 }
@@ -66,16 +73,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
                         }
 
                         is ResourceVacancy.Success -> {
-                            if (resource.data.isEmpty()) {
+                            if (resource.data.items.isEmpty()) {
                                 totalFoundLiveData.value = formatVacancies(0)
                                 searchState.postValue(SearchState.Error(ErrorType.EMPTY))
                             } else {
-                                currentPage = 1
-//                                maxPages = resource.pages
-//                                totalFoundLiveData.value = resource.total //Потом при загрузки страниц мониторить по адаптеру
-                                vacancyList.addAll(resource.data)
+                                currentPage = 0
+                                maxPages = resource.data.pages
+                                totalFoundLiveData.value = resource.data.found.toString()
+                                vacancyList.addAll(resource.data.items)
                                 searchState.postValue(SearchState.Content(vacancyList, false))
-                                totalFoundLiveData.value = formatVacancies(resource.data.size)
+                                totalFoundLiveData.value = formatVacancies(resource.data.found)
                             }
                         }
                     }
@@ -99,7 +106,14 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
             isNextPageLoading = true
             viewModelScope.launch {
                 searchState.postValue(SearchState.PageLoading)
-                vacanciesInteractor.searchVacancies(latestSearchText!!, currentPage).catch {
+                vacanciesInteractor.searchVacancies(
+                    text = latestSearchText!!,
+                    page = currentPage,
+                    area = null,
+                    industry = null,
+                    salary = null,
+                    onlyWithSalary = false
+                ).catch {
                     currentPage = 0
                     maxPages = null
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
@@ -111,7 +125,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
                         is ResourceVacancy.Success -> {
                             currentPage += 1
-                            vacancyList.addAll(resource.data)
+                            vacancyList.addAll(resource.data.items)
                             searchState.postValue(SearchState.Content(vacancyList, true))
                         }
                     }
