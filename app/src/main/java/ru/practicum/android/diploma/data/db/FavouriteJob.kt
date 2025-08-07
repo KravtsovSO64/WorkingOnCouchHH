@@ -21,4 +21,5 @@ data class FavouriteJob(
     @ColumnInfo(name = "insertion_timestamp")
     val insertionTimestamp: Long = System.currentTimeMillis(),
     val url: String?,
+    val address: String,
 )
