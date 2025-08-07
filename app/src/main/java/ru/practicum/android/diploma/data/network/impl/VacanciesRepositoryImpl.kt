@@ -43,13 +43,16 @@ class VacanciesRepositoryImpl(
 
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(Resource.Success(
-                    SearchResult(
-                        found = (networkClientResponse as VacanciesResponse).found,
-                        pages = (networkClientResponse as VacanciesResponse).pages,
-                        page = (networkClientResponse as VacanciesResponse).page,
-                        items = convertFromDto((networkClientResponse as VacanciesResponse).items)
-                    )))
+                emit(
+                    Resource.Success(
+                        SearchResult(
+                            found = (networkClientResponse as VacanciesResponse).found,
+                            pages = (networkClientResponse as VacanciesResponse).pages,
+                            page = (networkClientResponse as VacanciesResponse).page,
+                            items = convertFromDto((networkClientResponse as VacanciesResponse).items)
+                        )
+                    )
+                )
             }
 
             UNKNW_HOST -> {

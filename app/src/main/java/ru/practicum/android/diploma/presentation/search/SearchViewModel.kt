@@ -66,7 +66,8 @@ class SearchViewModel(
                 area = filterParams?.area?.region?.id,
                 industry = filterParams?.industry?.id,
                 salary = filterParams?.salary?.salary,
-                onlyWithSalary = filterParams?.salary?.onlyWithSalary ?: false)
+                onlyWithSalary = filterParams?.salary?.onlyWithSalary ?: false
+            )
                 .catch {
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
                 }

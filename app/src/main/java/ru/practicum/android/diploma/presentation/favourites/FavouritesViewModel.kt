@@ -20,7 +20,7 @@ class FavouritesViewModel(
         viewModelScope.launch {
             stateLiveData.value = FavouritesState.Loading
             favouritesInteractor.getAllFavourites().collect { vacancies ->
-                if (vacancies.isEmpty()){
+                if (vacancies.isEmpty()) {
                     stateLiveData.value = FavouritesState.Empty
                 } else {
                     stateLiveData.value = FavouritesState.Favorites(vacancies)

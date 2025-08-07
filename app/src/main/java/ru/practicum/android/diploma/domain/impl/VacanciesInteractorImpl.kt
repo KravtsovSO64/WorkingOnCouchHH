@@ -23,20 +23,21 @@ class VacanciesInteractorImpl(
         industry: String?,
         salary: Int?,
         onlyWithSalary: Boolean,
-        ): Flow<ResourceVacancy> {
+    ): Flow<ResourceVacancy> {
         return vacanciesRepository.searchVacancies(
             text = text,
             page = page,
             area = area,
             industry = industry,
             salary = salary,
-            onlyWithSalary = onlyWithSalary).map { result ->
+            onlyWithSalary = onlyWithSalary
+        ).map { result ->
 
             when (result) {
                 is Resource.Success -> {
                     result.data?.let {
                         ResourceVacancy.Success(it)
-                    } ?: ResourceVacancy.Success(SearchResult(0, 0, 0,emptyList()))
+                    } ?: ResourceVacancy.Success(SearchResult(0, 0, 0, emptyList()))
                 }
 
                 is Resource.Error -> {
