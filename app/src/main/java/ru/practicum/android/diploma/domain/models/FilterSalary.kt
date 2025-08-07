@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FilterSalary(
-    val salary: Int,
-    val onlyWithSalary: Boolean
+    val salary: Int?,
+    val onlyWithSalary: Boolean?
 ) : Parcelable
