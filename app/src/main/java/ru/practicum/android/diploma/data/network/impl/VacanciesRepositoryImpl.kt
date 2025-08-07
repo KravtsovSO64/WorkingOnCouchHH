@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterIndustry
+import ru.practicum.android.diploma.domain.models.SearchResult
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.util.Resource
@@ -31,14 +32,27 @@ class VacanciesRepositoryImpl(
     override fun searchVacancies(
         text: String,
         page: Int,
-    ): Flow<Resource<List<Vacancy>>> = flow {
+        area: String?,
+        industry: String?,
+        salary: Int?,
+        onlyWithSalary: Boolean,
+    ): Flow<Resource<SearchResult>> = flow {
         val networkClientResponse = networkClient.doRequest(
-            VacanciesRequest(text, page)
+            VacanciesRequest(text, page, area, industry, salary, onlyWithSalary)
         )
 
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(Resource.Success(convertFromDto((networkClientResponse as VacanciesResponse).items)))
+                emit(
+                    Resource.Success(
+                        SearchResult(
+                            found = (networkClientResponse as VacanciesResponse).found,
+                            pages = (networkClientResponse as VacanciesResponse).pages,
+                            page = (networkClientResponse as VacanciesResponse).page,
+                            items = convertFromDto((networkClientResponse as VacanciesResponse).items)
+                        )
+                    )
+                )
             }
 
             UNKNW_HOST -> {

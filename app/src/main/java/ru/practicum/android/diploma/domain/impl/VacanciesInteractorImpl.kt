@@ -8,6 +8,7 @@ import ru.practicum.android.diploma.domain.models.ErrorCode
 import ru.practicum.android.diploma.domain.models.ResourceIndustries
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.ResourceVacancyDetail
+import ru.practicum.android.diploma.domain.models.SearchResult
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.util.Resource
 
@@ -15,14 +16,28 @@ class VacanciesInteractorImpl(
     private val vacanciesRepository: VacanciesRepository
 ) : VacanciesInteractor {
 
-    override fun searchVacancies(text: String, page: Int): Flow<ResourceVacancy> {
-        return vacanciesRepository.searchVacancies(text, page).map { result ->
+    override fun searchVacancies(
+        text: String,
+        page: Int,
+        area: String?,
+        industry: String?,
+        salary: Int?,
+        onlyWithSalary: Boolean,
+    ): Flow<ResourceVacancy> {
+        return vacanciesRepository.searchVacancies(
+            text = text,
+            page = page,
+            area = area,
+            industry = industry,
+            salary = salary,
+            onlyWithSalary = onlyWithSalary
+        ).map { result ->
 
             when (result) {
                 is Resource.Success -> {
                     result.data?.let {
                         ResourceVacancy.Success(it)
-                    } ?: ResourceVacancy.Success(emptyList())
+                    } ?: ResourceVacancy.Success(SearchResult(0, 0, 0, emptyList()))
                 }
 
                 is Resource.Error -> {

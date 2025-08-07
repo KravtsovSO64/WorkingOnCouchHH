@@ -57,7 +57,12 @@ class FavouriteRepositoryImpl(
             experience = vacancy.experience,
             keySkills = vacancy.skills.joinToString(", "),
             description = vacancy.description,
-            url = vacancy.url
+            url = vacancy.employerLogo,
+            address = formatAddress(
+                vacancy.addressCity,
+                vacancy.addressStreet,
+                vacancy.addressBuilding
+            )
         )
     }
 
@@ -80,18 +85,27 @@ class FavouriteRepositoryImpl(
             experience = favouriteJob.experience.orEmpty(),
             skills = favouriteJob.keySkills?.split(", ").orEmpty(),
             description = favouriteJob.description.orEmpty(),
-            url = favouriteJob.url.orEmpty(),
+            url = "",
             contactsEmail = "",
             contactsPhone = listOf(),
             contactsName = "",
-            addressStreet = "",
-            employerLogo = "",
+            addressStreet = favouriteJob.address.split(", ")[0],
+            employerLogo = favouriteJob.url.orEmpty(),
             industry = FilterIndustry(
                 id = "",
                 name = ""
             ),
-            addressCity = "",
-            addressBuilding = "",
+            addressCity = favouriteJob.address.split(", ")[2],
+            addressBuilding = favouriteJob.address.split(", ")[1],
         )
+    }
+
+    private fun formatAddress(addressCity: String, addressStreet: String?, addressBuilding: String?): String {
+        val streetAndBuilding = listOfNotNull(addressStreet, addressBuilding)
+            .takeIf { it.isNotEmpty() }
+            ?.joinToString(", ")
+
+        return listOfNotNull(streetAndBuilding, addressCity)
+            .joinToString(", ")
     }
 }

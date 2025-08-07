@@ -29,8 +29,7 @@ class RetrofitNetworkClient(
                 when (dto) {
                     is VacanciesRequest ->
                         yandexVacanciesApi.getVacancies(
-                            dto.text,
-                            dto.page,
+                            parseOptions(dto)
                         ).apply { resultCode = VacanciesRepositoryImpl.Companion.NET_SUCCESS }
 
                     is VacancyDetailRequest ->
@@ -54,6 +53,28 @@ class RetrofitNetworkClient(
             errorHandler(error, UNAUTHORIZED)
             Response().apply { resultCode = VacanciesRepositoryImpl.Companion.UNAUTHORIZED }
         }
+    }
+
+    private fun parseOptions(dto: VacanciesRequest): Map<String, String> {
+        val options: HashMap<String, String> = HashMap()
+
+        options["text"] = dto.text
+        options["page"] = dto.page.toString()
+        if (dto.area != null) {
+            options["area"] = dto.area
+        }
+        if (dto.industry != null) {
+            options["industry"] = dto.industry
+        }
+        if (dto.salary != null) {
+            options["salary"] = dto.salary.toString()
+        }
+        if (dto.onlyWithSalary) {
+            options["only_with_salary"] = true.toString()
+        }
+
+        Log.i("OPTIONS", options.toString())
+        return options
     }
 
     private fun convertRawResponse(rawList: List<ElementDto>): IndustriesResponse {

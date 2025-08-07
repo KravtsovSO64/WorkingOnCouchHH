@@ -9,6 +9,10 @@ interface VacanciesInteractor {
     fun searchVacancies(
         text: String,
         page: Int,
+        area: String?,
+        industry: String?,
+        salary: Int?,
+        onlyWithSalary: Boolean,
     ): Flow<ResourceVacancy>
 
     fun detailsVacancy(id: String): Flow<ResourceVacancyDetail>
