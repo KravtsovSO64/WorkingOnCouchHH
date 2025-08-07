@@ -6,7 +6,6 @@ import ru.practicum.android.diploma.data.dto.AreasRequest
 import ru.practicum.android.diploma.data.dto.AreasResponse
 import ru.practicum.android.diploma.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.IndustriesResponse
-import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailRequest
