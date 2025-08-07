@@ -6,6 +6,7 @@ import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDetailDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterAreaDto
 
 interface YandexVacanciesApi {
     @GET("vacancies")
@@ -20,4 +21,7 @@ interface YandexVacanciesApi {
 
     @GET("industries")
     suspend fun getIndustries(): List<ElementDto>
+
+    @GET("areas")
+    suspend fun getAreas(): List<FilterAreaDto>
 }
