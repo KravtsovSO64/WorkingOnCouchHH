@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode
+import ru.practicum.android.diploma.domain.models.ResourceAreas
 import ru.practicum.android.diploma.domain.models.ResourceIndustries
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.ResourceVacancyDetail
@@ -86,6 +87,24 @@ class VacanciesInteractorImpl(
                     } ?: ResourceIndustries.Error(ErrorCode.NOT_FOUND)
                 }
 
+            }
+        }
+    }
+
+    override fun getAreas(): Flow<ResourceAreas> {
+        return vacanciesRepository.getAreas().map { result ->
+            when (result) {
+                is Resource.Success -> {
+                    result.data?.let {
+                        ResourceAreas.Success(it)
+                    } ?: ResourceAreas.Success(listOf())
+                }
+
+                is Resource.Error -> {
+                    result.code?.let {
+                        ResourceAreas.Error(it)
+                    } ?: ResourceAreas.Error(ErrorCode.NOT_FOUND)
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.data.network.interfaces
 
 import kotlinx.coroutines.flow.Flow
+import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.SearchResult
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -22,5 +23,7 @@ interface VacanciesRepository {
     ): Flow<Resource<VacancyDetail>>
 
     fun getIndustries(): Flow<Resource<List<FilterIndustry>>>
+
+    fun getAreas(): Flow<Resource<List<FilterArea>>>
 
 }

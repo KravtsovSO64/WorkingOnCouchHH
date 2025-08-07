@@ -89,7 +89,7 @@ class FilterSettingsViewModel(
     fun onActionDone() {
         viewModelScope.launch {
             filterCacheInteractor.writeCache(
-                Filter(salary = FilterSalary(currentSalary!!, dontShowWithoutSalary))
+                Filter(salary = FilterSalary(currentSalary, dontShowWithoutSalary))
             )
             applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
             resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
@@ -117,6 +117,10 @@ class FilterSettingsViewModel(
     }
 
     fun addSalaryCheckFilter(checked: Boolean) {
-        // Добавить фильтрацию
+        dontShowWithoutSalary = checked
+        onActionDone()
+//        viewModelScope.launch {
+//            filterCacheInteractor.writeCache()
+//        }
     }
 }
