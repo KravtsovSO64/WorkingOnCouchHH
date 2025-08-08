@@ -25,9 +25,15 @@ class FilterCacheInteractorImpl(private val filterCacheRepository: FilterCacheRe
         return filterCacheRepository.isCachedFilterEmpty()
     }
 
-    override fun writeCache(setting: Filter) {
-        filterCacheRepository.writeCache(setting)
+    override fun writeCache(
+        setting: Filter,
+        setRegion: Boolean,
+        setSalary: Boolean,
+        setIndustry: Boolean
+    ) {
+        filterCacheRepository.writeCache(setting, setRegion, setSalary, setIndustry)
     }
+
 
     override fun invalidateCache() {
         filterCacheRepository.invalidateCache()

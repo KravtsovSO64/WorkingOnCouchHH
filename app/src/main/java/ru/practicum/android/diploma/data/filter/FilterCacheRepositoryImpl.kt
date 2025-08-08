@@ -101,12 +101,15 @@ class FilterCacheRepositoryImpl(
         }
     }
 
-    override fun writeCache(setting: Filter) {
+    override fun writeCache(setting: Filter, setRegion: Boolean, setSalary: Boolean, setIndustry:Boolean) {
         val filter = getCache() ?: Filter()
 
         updateSetting(
             filter,
-            setting
+            setting,
+            setRegion = setRegion,
+            setSalary = setSalary,
+            setIndustry = setIndustry
         )
         sharedPreference.edit {
             putString(
@@ -144,13 +147,16 @@ class FilterCacheRepositoryImpl(
 
     private fun updateSetting(
         filter: Filter,
-        setting: Filter
+        setting: Filter,
+        setRegion: Boolean, setSalary: Boolean, setIndustry:Boolean
     ) {
-        if (setting.salary != null) {
-            filter.salary = setting.salary
-        } else if (setting.area != null) {
+        if(setRegion){
             filter.area = setting.area
-        } else if (setting.industry != null) {
+        }
+        if(setSalary){
+            filter.salary = setting.salary
+        }
+        if(setIndustry){
             filter.industry = setting.industry
         }
 

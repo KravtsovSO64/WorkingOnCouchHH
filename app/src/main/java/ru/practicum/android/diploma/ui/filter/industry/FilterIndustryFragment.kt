@@ -49,20 +49,17 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
         )
         binding.recyclerIndustries.adapter = adapter
         binding.btnBack.setOnClickListener {
-            viewModel.invalidateFilterChanges()
+            findNavController().navigateUp()
         }
         binding.buttonSave.setOnClickListener {
             findNavController().navigateUp()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.invalidateFilterChanges()
+            findNavController().navigateUp()
         }
         viewModel.observeItems().observe(viewLifecycleOwner) {
             render(it)
             currentState = it
-        }
-        viewModel.observeChangesInvalidatedEvent().observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
         }
 
         viewModel.observeIndustryState().observe(viewLifecycleOwner) {

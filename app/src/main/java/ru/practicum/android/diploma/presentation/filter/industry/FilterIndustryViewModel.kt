@@ -31,10 +31,8 @@ class FilterIndustryViewModel(
         load()
     }
 
-    private val changesInvalidatedEvent = MutableLiveData<Boolean>()
 
     fun observeIndustryState(): LiveData<FilterIndustryState> = state
-    fun observeChangesInvalidatedEvent(): LiveData<Boolean> = changesInvalidatedEvent
 
     val filterText = MutableLiveData("")
     private val items = MutableLiveData<FilterIndustryListState>()
@@ -89,22 +87,11 @@ class FilterIndustryViewModel(
         } else {
             Filter()
         }
-        filterCacheInteractor.writeCache(setting)
-    }
-
-    fun invalidateFilterChanges() {
-        viewModelScope.launch {
-            filterCacheInteractor.writeCache(
-                Filter(
-                    industry = FilterIndustry(
-                        savedFilterSetting?.industry!!.id,
-                        savedFilterSetting?.industry!!.name
-                    )
-
-                )
-            )
-            changesInvalidatedEvent.postValue(true)
-        }
+        filterCacheInteractor.writeCache(setting,
+            setRegion = false,
+            setSalary = false,
+            setIndustry = true
+        )
     }
 
 }
