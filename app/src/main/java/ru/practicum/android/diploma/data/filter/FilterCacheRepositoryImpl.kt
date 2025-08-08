@@ -64,19 +64,7 @@ class FilterCacheRepositoryImpl(
             FILTER_KEY,
             null
         )
-        if (filterJson != null) {
-            val cachedFilter = gson.fromJson(
-                cachedFilterJson,
-                Filter::class.java
-            )
-            val savedFilter = gson.fromJson(
-                filterJson,
-                Filter::class.java
-            )
-            return cachedFilter != savedFilter
-        } else {
-            return false
-        }
+        return cachedFilterJson!=filterJson
 
     }
 
