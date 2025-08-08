@@ -145,7 +145,7 @@ class SearchViewModel(
         clear()
     }
 
-    fun formatVacancies(count: Int): String {
+    private fun formatVacancies(count: Int): String {
         return when {
             count == DECLENSION_0 -> "Таких вакансий нет"
             count % PERCENT_100 in DECLENSION_11..DECLENSION_14 -> "Найдено $count вакансий"
