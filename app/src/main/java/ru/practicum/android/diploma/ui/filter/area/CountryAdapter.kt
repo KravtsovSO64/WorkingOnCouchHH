@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import ru.practicum.android.diploma.domain.models.FilterArea
 
 class CountryAdapter(
     context: Context,

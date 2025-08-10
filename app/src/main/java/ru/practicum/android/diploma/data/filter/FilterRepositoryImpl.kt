@@ -33,9 +33,9 @@ class FilterRepositoryImpl(
         val filter = getFromStorage() ?: return false
         val salaryFilled = filter.salary?.salary ?: 0 != 0
         val withSalaryFilled = filter.salary?.onlyWithSalary == true
-        val regionFilled = !filter.area?.region?.id.isNullOrEmpty()
+        val regionFilled = filter.area?.region?.id != 0
         val industryFilled = !filter.industry?.id.isNullOrEmpty()
-        val countryFilled = !filter.area?.country?.id.isNullOrEmpty()
+        val countryFilled = filter.area?.country?.id != 0
         return salaryFilled or withSalaryFilled or regionFilled or industryFilled or countryFilled
     }
 
@@ -95,7 +95,6 @@ class FilterRepositoryImpl(
         } else {
             null
         }
-
     }
 
     companion object {

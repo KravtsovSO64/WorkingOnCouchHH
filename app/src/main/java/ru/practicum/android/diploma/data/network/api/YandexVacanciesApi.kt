@@ -24,4 +24,5 @@ interface YandexVacanciesApi {
 
     @GET("areas")
     suspend fun getAreas(): List<FilterAreaDto>
+
 }

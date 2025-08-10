@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
 import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.FilterIndustry
@@ -30,7 +30,6 @@ class FilterIndustryViewModel(
     init {
         load()
     }
-
 
     fun observeIndustryState(): LiveData<FilterIndustryState> = state
 
@@ -82,7 +81,6 @@ class FilterIndustryViewModel(
                     industry.id,
                     industry.name
                 )
-
             )
         } else {
             Filter()
