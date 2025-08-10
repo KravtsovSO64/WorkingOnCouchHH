@@ -51,9 +51,6 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
             findNavController().navigate(R.id.action_mainFragment_to_filterSettingsFragment)
         }
 
-        viewModel.observeSearchTextState().observe(viewLifecycleOwner) {
-            updateTextInputLayoutIcon(it)
-        }
 
         viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -84,8 +81,8 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         }
     }
 
-    private fun showFilterIcon(hasFilters: Boolean){
-        if (hasFilters){
+    private fun showFilterIcon(hasFilters: Boolean) {
+        if (hasFilters) {
             binding.btnFilter.setImageResource(R.drawable.ic_filter_on)
         } else {
             binding.btnFilter.setImageResource(R.drawable.ic_filter_off)
@@ -100,15 +97,16 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    //
+                    setClearIcon()
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
                     if (p0.isNullOrEmpty()) {
                         viewModel.onClearText()
+                        setSearchIcon()
                     } else {
-                        viewModel.onDebounceSearchTextChanged(p0.toString())
                         setClearIcon()
+                        viewModel.onDebounceSearchTextChanged(p0.toString())
                     }
 
 
@@ -136,14 +134,6 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
     }
 
-    private fun updateTextInputLayoutIcon(text: String) {
-        if (text.isNotEmpty()) {
-            setClearIcon()
-        } else {
-            binding.editTextSearchInput.text?.clear()
-            setSearchIcon()
-        }
-    }
 
     @SuppressLint("ServiceCast")
     private fun setClearIcon() {
@@ -152,6 +142,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
             val inputMethodManager =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(binding.editTextSearchInput.windowToken, 0)
+            binding.editTextSearchInput.setText("")
             viewModel.onClearText()
         }
     }

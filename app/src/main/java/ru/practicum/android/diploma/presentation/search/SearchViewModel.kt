@@ -20,7 +20,6 @@ class SearchViewModel(
     private val filterInteractor: FilterInteractor,
 ) : ViewModel() {
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
-    private val searchTextState = MutableLiveData("")
     private val totalFoundLiveData = MutableLiveData<String>()
 
     private val trackSearchDebounce =
@@ -31,7 +30,6 @@ class SearchViewModel(
     private val hasFilters = MutableLiveData<Boolean>()
 
     fun observeHasFilters(): LiveData<Boolean> = hasFilters
-    fun observeSearchTextState(): LiveData<String> = searchTextState
     fun observeSearchState(): LiveData<SearchState> = searchState
     fun observeTotalFoundLiveData(): LiveData<String> = totalFoundLiveData
 
@@ -42,7 +40,7 @@ class SearchViewModel(
     private var searching: Boolean = false
     private val vacancyList = mutableListOf<Vacancy>()
 
-    fun checkFilters(){
+    fun checkFilters() {
         val currentFilters = filterInteractor.getFilter()
         if (
             currentFilters?.area == null &&
@@ -175,7 +173,6 @@ class SearchViewModel(
 
     private fun clear() {
         latestSearchText = ""
-        searchTextState.value = ""
         searchState.value = SearchState.Start
     }
 
