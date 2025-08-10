@@ -77,6 +77,20 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         viewModel.observeTotalFoundLiveData().observe(viewLifecycleOwner) {
             updateResultText(it)
         }
+
+        viewModel.checkFilters()
+
+        viewModel.observeHasFilters().observe(viewLifecycleOwner) {
+            showFilterIcon(it)
+        }
+    }
+
+    private fun showFilterIcon(hasFilters: Boolean){
+        if (hasFilters){
+            binding.btnFilter.setImageResource(R.drawable.ic_filter_on)
+        } else {
+            binding.btnFilter.setImageResource(R.drawable.ic_filter_off)
+        }
     }
 
     private fun setUpListeners() {

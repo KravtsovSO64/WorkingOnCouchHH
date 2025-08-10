@@ -22,6 +22,9 @@ class SearchViewModel(
     private val searchTextState = MutableLiveData("")
     private val totalFoundLiveData = MutableLiveData<String>()
 
+    private val hasFilters = MutableLiveData<Boolean>()
+
+    fun observeHasFilters(): LiveData<Boolean> = hasFilters
     fun observeSearchTextState(): LiveData<String> = searchTextState
     fun observeSearchState(): LiveData<SearchState> = searchState
     fun observeTotalFoundLiveData(): LiveData<String> = totalFoundLiveData
@@ -32,6 +35,19 @@ class SearchViewModel(
     private var isNextPageLoading: Boolean = false
     private var searching: Boolean = false
     private val vacancyList = mutableListOf<Vacancy>()
+
+    fun checkFilters(){
+        val currentFilters = filterInteractor.getFilter()
+        if (
+            currentFilters?.area == null &&
+            currentFilters?.salary == null &&
+            currentFilters?.industry == null
+        ) {
+            hasFilters.postValue(false)
+        } else {
+            hasFilters.postValue(true)
+        }
+    }
 
     fun onSearchTextChanged(
         p0: CharSequence?,
