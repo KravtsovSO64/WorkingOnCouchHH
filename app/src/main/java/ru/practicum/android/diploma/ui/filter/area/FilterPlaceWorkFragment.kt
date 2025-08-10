@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.filter.area
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,14 +86,20 @@ class FilterPlaceWorkFragment : Fragment() {
     }
 
     private fun clickHandler() {
-        binding.regionAutoComplete.setOnClickListener {
-            val bundle = bundleOf("countryId" to countryId)
-            findNavController().navigate(
-                R.id.action_filterPlaceWorkFragment_to_filterRegionFragment,
-                bundle)
-        }
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+        with(binding) {
+            regionAutoComplete.setOnClickListener {
+                val bundle = bundleOf("countryId" to countryId)
+                findNavController().navigate(
+                    R.id.action_filterPlaceWorkFragment_to_filterRegionFragment,
+                    bundle)
+            }
+            toolbar.setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+            btnChoose.setOnClickListener {
+               viewModel.saveChange()
+                findNavController().popBackStack()
+            }
         }
     }
 
