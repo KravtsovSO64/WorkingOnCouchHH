@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -105,14 +104,17 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    viewModel.onSearchTextChanged(p0.toString())
+                    if (p0.isNullOrEmpty()) {
+                        viewModel.onClearText()
+                    } else {
+                        viewModel.onDebounceSearchTextChanged(p0.toString())
+                        setClearIcon()
+                    }
+
+
                 }
             }
         )
-        binding.editTextSearchInput.setOnEditorActionListener { _, actionId, _ ->
-            viewModel.onEditorActionDone()
-            false
-        }
 
         binding.recyclerViewVacancies.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewVacancies.adapter = adapter
@@ -148,11 +150,8 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         binding.imageEndIconDrawable.setImageResource(R.drawable.ic_close)
         binding.imageEndIconDrawable.setOnClickListener {
             val inputMethodManager =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(
-                Activity().currentFocus?.windowToken,
-                0
-            )
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.editTextSearchInput.windowToken, 0)
             viewModel.onClearText()
         }
     }

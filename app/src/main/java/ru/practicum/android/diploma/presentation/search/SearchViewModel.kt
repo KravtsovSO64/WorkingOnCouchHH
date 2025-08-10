@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.state.SearchState
+import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
@@ -21,6 +22,11 @@ class SearchViewModel(
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
     private val searchTextState = MutableLiveData("")
     private val totalFoundLiveData = MutableLiveData<String>()
+
+    private val trackSearchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
+            search(changedText)
+        }
 
     private val hasFilters = MutableLiveData<Boolean>()
 
@@ -49,21 +55,16 @@ class SearchViewModel(
         }
     }
 
-    fun onSearchTextChanged(
+    fun onDebounceSearchTextChanged(
         p0: CharSequence?,
     ) {
         if (p0.toString().isNotBlank() && latestSearchText != p0.toString() && !searching) {
             latestSearchText = p0.toString()
+            trackSearchDebounce(p0.toString())
         }
 
     }
 
-    fun onEditorActionDone() {
-        if (searchTextState.value.toString() != latestSearchText) {
-            searchTextState.value = latestSearchText
-            search(searchTextState.value.toString())
-        }
-    }
 
     private fun search(text: String) {
         if (text.isBlank() || searching) {
@@ -158,6 +159,7 @@ class SearchViewModel(
     }
 
     fun onClearText() {
+        trackSearchDebounce(SEARCH_FIELD_DEF)
         clear()
     }
 
@@ -178,6 +180,7 @@ class SearchViewModel(
     }
 
     companion object {
+        private const val SEARCH_FIELD_DEF = ""
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val PERCENT_100 = 100
         private const val PERCENT_10 = 10
