@@ -3,10 +3,12 @@ package ru.practicum.android.diploma.ui.filter.area
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,6 +23,19 @@ class FilterPlaceWorkFragment : Fragment() {
 
     private var _binding: FragmentFilterPlaceWorkBinding? = null
     private val binding get() = _binding!!
+
+    private var countryId: Int = -1
+    private var region: FilterArea? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parentFragmentManager.setFragmentResultListener(
+            "filterArea",
+            this
+        ) { _, bundle ->
+            region = bundle.getParcelable<FilterArea>("region")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFilterPlaceWorkBinding.inflate(inflater, container, false)
@@ -53,7 +68,7 @@ class FilterPlaceWorkFragment : Fragment() {
             }
         }
 
-        viewModel.filterArea.observe(viewLifecycleOwner) { filter ->
+        viewModel.filter.observe(viewLifecycleOwner) { filter ->
             with(binding){
                 countryAutoComplete.setText(filter?.area?.country?.name ?: "")
                 regionAutoComplete.setText(filter?.area?.region?.name ?: "")
@@ -65,11 +80,18 @@ class FilterPlaceWorkFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         showBottomNavigation(false)
+
+        if (region != null) {
+            viewModel.reWriteFilterRegion(region!!)
+        }
     }
 
     private fun clickHandler() {
         binding.regionAutoComplete.setOnClickListener {
-            findNavController().navigate(R.id.action_filterPlaceWorkFragment_to_filterRegionFragment)
+            val bundle = bundleOf("countryId" to countryId)
+            findNavController().navigate(
+                R.id.action_filterPlaceWorkFragment_to_filterRegionFragment,
+                bundle)
         }
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -130,8 +152,8 @@ class FilterPlaceWorkFragment : Fragment() {
             setAdapter(adapter)
 
             setOnItemClickListener { _, _, position, _ ->
-                //setText(adapter.getItem(position))
                 binding.countryInputLayout.hint = "Страна"
+                countryId = list[position].id
                 viewModel.reWriteFilterCountry(list[position])
             }
 
