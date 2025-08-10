@@ -86,7 +86,7 @@ class SearchViewModel(
                                 maxPages = resource.data.pages
                                 totalFoundLiveData.value = resource.data.found.toString()
                                 vacancyList.addAll(resource.data.items)
-                                searchState.postValue(SearchState.Content(vacancyList, false))
+                                searchState.postValue(SearchState.Content(vacancyList, false, hasError = false))
                                 totalFoundLiveData.value = formatVacancies(resource.data.found)
                             }
                         }
@@ -125,13 +125,13 @@ class SearchViewModel(
                 }.collect { resource ->
                     when (resource) {
                         is ResourceVacancy.Error -> {
-                            searchState.postValue(SearchState.Content(vacancyList, true))
+                            searchState.postValue(SearchState.Content(vacancyList, true, hasError = true))
                         }
 
                         is ResourceVacancy.Success -> {
                             currentPage += 1
                             vacancyList.addAll(resource.data.items)
-                            searchState.postValue(SearchState.Content(vacancyList, true))
+                            searchState.postValue(SearchState.Content(vacancyList, true, hasError = false))
                         }
                     }
 

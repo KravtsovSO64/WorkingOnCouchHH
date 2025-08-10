@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -59,7 +60,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
             when (state) {
                 is SearchState.Start -> showStart()
                 is SearchState.Content -> {
-                    showContent(state.data, state.paging)
+                    showContent(state.data, state.paging, state.hasError)
                 }
 
                 is SearchState.Loading -> showLoading()
@@ -161,7 +162,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         )
     }
 
-    private fun showContent(data: List<Vacancy>, paging: Boolean) {
+    private fun showContent(data: List<Vacancy>, paging: Boolean, hasError: Boolean) {
         adapter.setItems(data)
         if (!paging) {
             binding.recyclerViewVacancies.scrollToPosition(0)
@@ -172,6 +173,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         setStartVisibility(false)
         setErrorVisibility(false)
         setPagingProgressVisibility(false)
+        if (hasError) showToast("Проверьте подключение к интернету")
     }
 
     private fun showPageLoading() {
@@ -211,6 +213,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                 binding.imageInfo.setImageResource(R.drawable.skull)
                 binding.textInfo.text = getString(R.string.no_internet_connection)
                 setResultVisibility(false)
+                showToast("Проверьте подключение к интернету")
             }
 
             ErrorType.SERVER_ERROR -> {
@@ -220,6 +223,14 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
             }
         }
 
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(
+            requireContext(),
+            text,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun showStart() {
