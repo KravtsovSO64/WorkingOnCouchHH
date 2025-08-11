@@ -73,7 +73,7 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="@color/black_universal"
-                android:textColorHint="@color/gray" />
+                android:textColorHint="?attr/colorOnSurfaceVariantAlt"  />
 
         </com.google.android.material.textfield.TextInputLayout>
 

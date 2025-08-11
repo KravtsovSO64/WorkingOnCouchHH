@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,31 +38,33 @@
         android:layout_height="@dimen/size_60dp"
         android:layout_marginStart="@dimen/_16dp"
         android:layout_marginTop="@dimen/_16dp"
-        app:boxBackgroundColor="@color/white_day"
+        android:textColorHint="?attr/colorOnSurfaceInverse"
+        app:boxBackgroundColor="?attr/colorSurface"
         app:boxBackgroundMode="outline"
-        app:hintEnabled="true"
-        app:hintAnimationEnabled="true"
-        app:placeholderText="@string/country"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
-        app:endIconTint="@color/black_universal"
+        app:endIconTint="?attr/colorOnSurfaceInverse"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:placeholderText="@string/country"
+        app:placeholderTextColor="?attr/colorTextAlt">
 
         <AutoCompleteTextView
             android:id="@+id/country_auto_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
             android:clickable="true"
             android:focusable="false"
-            android:textColor="@android:color/black"
             android:hint="@string/country"
-            android:textColorHint="@color/gray"
-            android:textAppearance="@style/Text.Regular.16" />
+            android:inputType="none"
+            android:textAppearance="@style/Text.Regular.16"
+            android:textColor="?attr/colorOnSurfaceInverse"
+            android:textColorHint="?attr/colorTextAlt" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,31 +73,32 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/size_60dp"
         android:layout_marginStart="@dimen/_16dp"
-        app:boxBackgroundColor="@color/white_day"
+        android:textColorHint="?attr/colorOnSurfaceInverse"
+        app:boxBackgroundColor="?attr/colorSurface"
         app:boxBackgroundMode="outline"
-        app:hintEnabled="true"
-        app:hintAnimationEnabled="true"
-        app:placeholderText="@string/region"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
-        app:endIconTint="@color/black_universal"
+        app:endIconTint="?attr/colorOnSurfaceInverse"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/country_input_layout">
+        app:layout_constraintTop_toBottomOf="@id/country_input_layout"
+        app:placeholderText="@string/region">
 
         <AutoCompleteTextView
             android:id="@+id/region_auto_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
             android:clickable="true"
             android:focusable="false"
-            android:textColor="@android:color/black"
             android:hint="@string/region"
-            android:textColorHint="@color/gray"
-            android:textAppearance="@style/Text.Regular.16" />
+            android:inputType="none"
+            android:textAppearance="@style/Text.Regular.16"
+            android:textColor="?attr/colorOnSurfaceInverse"
+            android:textColorHint="?attr/colorOnSurfaceVariantAlt" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
