@@ -41,10 +41,11 @@
             app:counterEnabled="false"
             app:cursorColor="@color/blue"
             app:hintEnabled="false"
-            app:shapeAppearanceOverlay="@style/shape_appearance">
+            app:shapeAppearanceOverlay="@style/shape_appearance"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_search">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:id="@+id/edit_text_search_input"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_48dp"
@@ -59,14 +60,6 @@
                 android:textColorHint="@color/gray" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/image_end_icon_drawable"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="16dp"
-            android:src = "@drawable/ic_close"/>
 
     </FrameLayout>
 

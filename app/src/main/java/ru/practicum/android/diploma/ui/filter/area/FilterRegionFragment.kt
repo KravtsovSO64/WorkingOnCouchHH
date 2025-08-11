@@ -1,15 +1,25 @@
 package ru.practicum.android.diploma.ui.filter.area
 
+import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterRegionBinding
@@ -25,6 +35,8 @@ class FilterRegionFragment: Fragment() {
 
     private val countryId by lazy { arguments?.getInt("countryId", -1) ?: -1 }
 
+    private var searchJob: Job? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFilterRegionBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,6 +47,7 @@ class FilterRegionFragment: Fragment() {
 
         showBottomNavigation(false)
         clickHandler()
+        setupSearchInput()
 
         viewModel.getListArea(countryId)
 
@@ -73,6 +86,13 @@ class FilterRegionFragment: Fragment() {
             progressBar.visibility = View.GONE
 
             recyclerViewVacancies.layoutManager = LinearLayoutManager(requireContext())
+
+            viewModel.regions.observe(viewLifecycleOwner) {
+                recyclerViewVacancies.adapter = RegionAdapter(it) { selectedArea ->
+                    handleAreaSelection(selectedArea)
+                }
+            }
+
             recyclerViewVacancies.adapter = RegionAdapter(listArea) { selectedArea ->
                 handleAreaSelection(selectedArea)
             }
@@ -100,6 +120,60 @@ class FilterRegionFragment: Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    private fun setupSearchInput() {
+
+        with(binding) {
+            editTextSearchInput.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(editable: Editable?) {
+                    searchJob?.cancel()
+                    val query = editable?.toString()?.trim() ?: ""
+
+                    updateSearchIcon(query.isNotBlank())
+
+                    searchJob = lifecycleScope.launch {
+                        delay(2000)
+                        viewModel.filterRegions(query)
+                    }
+                }
+            })
+
+            editTextSearchInput.setOnClickListener {
+                if (!binding.editTextSearchInput.text.isNullOrEmpty()) {
+                    searchJob?.cancel()
+                    binding.editTextSearchInput.text?.clear()
+                    viewModel.filterRegions("")
+                }
+            }
+
+            editTextSearchInput.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    searchJob?.cancel()
+                    val query = binding.editTextSearchInput.text?.toString()?.trim() ?: ""
+                    viewModel.filterRegions(query)
+                    hideKeyboard()
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(binding.editTextSearchInput.windowToken, 0)
+    }
+
+    private fun updateSearchIcon(hasText: Boolean) {
+        binding.textInputLayout.endIconDrawable = ContextCompat.getDrawable(
+            requireContext(),
+            if (hasText) R.drawable.ic_close else R.drawable.ic_search
+        )
     }
 
     private fun showBottomNavigation(flag: Boolean) {
