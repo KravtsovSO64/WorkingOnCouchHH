@@ -108,8 +108,6 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                         setClearIcon()
                         viewModel.onDebounceSearchTextChanged(p0.toString())
                     }
-
-
                 }
             }
         )

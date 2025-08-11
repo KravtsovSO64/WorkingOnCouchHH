@@ -31,5 +31,6 @@ class RootActivity : AppCompatActivity() {
             val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             view.updatePadding(top = statusBar.top)
             insets
-        }    }
+        }
+    }
 }
