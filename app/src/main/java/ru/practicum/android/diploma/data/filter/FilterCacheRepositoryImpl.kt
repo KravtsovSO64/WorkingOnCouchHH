@@ -80,9 +80,9 @@ class FilterCacheRepositoryImpl(
             )
             val salaryFilled = cachedFilter.salary?.salary ?: 0 != 0
             val withSalaryFilled = cachedFilter.salary?.onlyWithSalary == true
-            val regionFilled = !cachedFilter.area?.region?.id.isNullOrEmpty()
+            val regionFilled = cachedFilter.area?.region?.id != 0
             val industryFilled = !cachedFilter.industry?.id.isNullOrEmpty()
-            val countryFilled = !cachedFilter.area?.country?.id.isNullOrEmpty()
+            val countryFilled = cachedFilter.area?.country?.id != 0
             return !salaryFilled and !withSalaryFilled and !regionFilled and !industryFilled and !countryFilled
         } else {
             return true
