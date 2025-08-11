@@ -93,7 +93,15 @@ class FilterSettingsViewModel(
     }
 
     fun clearRegion() {
-        // Добавить функционал очистки
+        viewModelScope.launch {
+            filterCacheInteractor.writeCache(Filter(area = null),
+                setRegion = true,
+                setSalary = false,
+                setIndustry = false
+            )
+            val savedFilter = filterCacheInteractor.getCache()
+            screenStateLiveData.postValue(FilterSettingsState(savedFilter ?: Filter()))
+        }
     }
 
     fun onActionDone() {
