@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
 import ru.practicum.android.diploma.domain.api.favourite.FavouritesInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode

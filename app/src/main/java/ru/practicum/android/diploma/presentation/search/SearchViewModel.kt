@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode

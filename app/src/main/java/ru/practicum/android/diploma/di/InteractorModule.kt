@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
-import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
+import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.api.favourite.FavouritesInteractor
 import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
