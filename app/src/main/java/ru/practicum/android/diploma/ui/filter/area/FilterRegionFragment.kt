@@ -124,7 +124,7 @@ class FilterRegionFragment: Fragment() {
     }
 
     private fun clickHandler() {
-        binding.toolbar.setNavigationOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
