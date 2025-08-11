@@ -41,7 +41,7 @@ class FilterPlaceWorkFragment : Fragment() {
         binding.regionAutoComplete.setOnClickListener {
             findNavController().navigate(R.id.action_filterPlaceWorkFragment_to_filterRegionFragment)
         }
-        binding.toolbar.setNavigationOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
