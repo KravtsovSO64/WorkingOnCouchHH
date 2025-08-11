@@ -11,13 +11,13 @@ import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacancyDetailRequest
-import ru.practicum.android.diploma.data.dto.vacancy.VacanciesRepositoryImpl
+import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl
 import ru.practicum.android.diploma.data.dto.vacancy.elements.ElementDto
 import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterAreaDto
 import ru.practicum.android.diploma.data.network.api.YandexVacanciesApi
-import ru.practicum.android.diploma.data.dto.vacancy.VacanciesRepositoryImpl.Companion.REQ_TIMEOUT
-import ru.practicum.android.diploma.data.dto.vacancy.VacanciesRepositoryImpl.Companion.UNAUTHORIZED
-import ru.practicum.android.diploma.data.dto.vacancy.VacanciesRepositoryImpl.Companion.UNKNW_HOST
+import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.REQ_TIMEOUT
+import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.UNAUTHORIZED
+import ru.practicum.android.diploma.data.network.impl.VacanciesRepositoryImpl.Companion.UNKNW_HOST
 import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import java.io.IOException
 import java.net.SocketTimeoutException
