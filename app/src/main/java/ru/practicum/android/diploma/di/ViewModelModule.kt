@@ -27,7 +27,7 @@ val viewModel = module {
         FilterIndustryViewModel(get(), get())
     }
     viewModel {
-        FilterAreaViewModel(get(), get(), get())
+        FilterAreaViewModel(get(), get())
     }
     viewModel {
         FilterRegionViewModel(get())

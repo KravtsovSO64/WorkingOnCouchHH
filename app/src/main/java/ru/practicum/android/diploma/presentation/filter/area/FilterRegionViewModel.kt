@@ -70,7 +70,7 @@ class FilterRegionViewModel(
             currentList
         } else {
             currentList.filter { filterArea ->
-                filterArea.name.contains(searchQuery, ignoreCase = true)
+                filterArea.name.startsWith(searchQuery, ignoreCase = true)
             }
         }
 

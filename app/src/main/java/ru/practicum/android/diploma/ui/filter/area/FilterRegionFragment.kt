@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,26 +28,45 @@ import ru.practicum.android.diploma.presentation.filter.area.state.FilterRegionS
 
 class FilterRegionFragment: Fragment() {
     private val viewModel: FilterRegionViewModel by viewModel()
-
     private var _binding: FragmentFilterRegionBinding? = null
     private val binding get() = _binding!!
-
     private val countryId by lazy { arguments?.getInt("countryId", -1) ?: -1 }
-
     private var searchJob: Job? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View
+    {
         _binding = FragmentFilterRegionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         showBottomNavigation(false)
         clickHandler()
         setupSearchInput()
+        startObserving()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        showBottomNavigation(false)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        showBottomNavigation(true)
+    }
+
+    private fun startObserving() {
         viewModel.getListArea(countryId)
 
         viewModel.stateScreen.observe(viewLifecycleOwner) { state ->
@@ -103,17 +121,6 @@ class FilterRegionFragment: Fragment() {
         val bundle = bundleOf("region" to region)
         parentFragmentManager.setFragmentResult("filterArea", bundle)
         findNavController().popBackStack()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showBottomNavigation(false)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        showBottomNavigation(true)
     }
 
     private fun clickHandler() {
