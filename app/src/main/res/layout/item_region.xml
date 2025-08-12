@@ -15,7 +15,7 @@
         android:layout_height="@dimen/size_60dp"
         android:layout_weight="1"
         android:textAppearance="@style/Text.Regular.16"
-        android:textColor="@android:color/black"
+        android:textColor="?attr/colorOnSurfaceInverse"
         android:gravity="center_vertical"
         tools:text="Регион"/>
 

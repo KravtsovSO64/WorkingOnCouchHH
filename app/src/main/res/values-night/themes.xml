@@ -17,6 +17,10 @@
         <item name="colorSurface">@color/black_night</item>
         <item name="colorOnBackground">@color/white_night</item>
         <item name="colorOnSurface">@color/white_night</item>
+        <item name="colorOnSurfaceInverse">@color/white_day</item>
+        <item name="colorOnSurfaceVariant">@color/gray</item>
+        <item name="colorOnSurfaceVariantAlt">@color/light_gray</item>
+        <item name="colorTextAlt">@color/white_day</item>
 
         <!-- Status bar -->
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>

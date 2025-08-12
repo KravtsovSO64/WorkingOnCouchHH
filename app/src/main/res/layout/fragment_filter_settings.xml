@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16dp"
-        android:background="?attr/colorOnPrimary"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:hint="@string/job_location"
         android:inputType="none"
@@ -49,7 +49,7 @@
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
-        app:endIconTint="@color/black_universal"
+        app:endIconTint="?attr/colorOnSurfaceInverse"
         app:hintTextColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -57,7 +57,7 @@
             android:id="@+id/edittext_vacancy_region"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorOnPrimary"
+            android:background="?attr/colorSurface"
             android:editable="false"
             android:focusable="false"
             android:paddingBottom="0dp"
@@ -68,7 +68,7 @@
         android:id="@+id/textlayout_vacancy_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorOnPrimary"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:hint="@string/vacancy_type"
         android:inputType="none"
@@ -78,7 +78,7 @@
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
-        app:endIconTint="@color/black_universal"
+        app:endIconTint="?attr/colorOnSurfaceInverse"
         app:hintTextColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/textlayout_vacancy_region">
 
@@ -86,7 +86,7 @@
             android:id="@+id/edittext_vacancy_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorOnPrimary"
+            android:background="?attr/colorSurface"
             android:editable="false"
             android:focusable="false"
             android:paddingBottom="0dp"
@@ -104,7 +104,7 @@
         android:hint="@string/expected_salary"
         android:inputType="none"
         android:maxLines="1"
-        android:textColorHint="@color/gray"
+        android:textColorHint="?attr/colorOnSurfaceVariantAlt"
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
@@ -120,7 +120,7 @@
         app:layout_constraintTop_toBottomOf="@id/textlayout_vacancy_type"
         app:placeholderText="@string/enter_a_sum"
         app:placeholderTextAppearance="@style/placeholder_text_appearance"
-        app:placeholderTextColor="@null">
+        app:placeholderTextColor="?attr/colorOnSurfaceVariantAlt">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edittext_salary"
@@ -135,7 +135,7 @@
             android:scrollHorizontally="false"
             android:singleLine="true"
             android:text=""
-            android:textColor="@color/black_universal" />
+            android:textColor="?attr/colorOnSurfaceVariantAlt" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckedTextView
