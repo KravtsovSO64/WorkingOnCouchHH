@@ -10,7 +10,8 @@
     <attr name="cancel_btn_filter" format="reference"/>
     <attr name="blue_white" format="reference"/>
     <attr name="vacancy_text_color" format="reference"/>
-
+    <attr name="colorOnSurfaceVariantAlt" format="color" />
+    <attr name="colorTextAlt" format="color" />
 
     <declare-styleable name="SwipeStack">
         <attr name="animation_duration" format="integer"/>

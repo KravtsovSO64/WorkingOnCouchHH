@@ -64,9 +64,9 @@
             android:hint="@string/industry_hint"
             android:imeOptions="actionDone"
             android:singleLine="true"
+            android:textColorHint="?attr/colorOnSurfaceVariantAlt"
             android:fontFamily="@font/ys_display_regular"
             android:textColor="@color/black_universal"
-            android:textColorHint="@color/gray"
             android:textCursorDrawable="@drawable/edit_text_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>

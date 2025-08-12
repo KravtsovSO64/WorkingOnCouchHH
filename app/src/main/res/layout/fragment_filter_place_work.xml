@@ -54,19 +54,20 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
-                app:boxBackgroundColor="@color/white_day"
                 app:boxBackgroundMode="outline"
-                app:hintEnabled="true"
-                app:hintAnimationEnabled="true"
                 app:placeholderText="@string/country"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
                 app:endIconDrawable="@drawable/ic_arrow_forward"
                 app:endIconMode="custom"
-                app:endIconTint="@color/black_universal"
+                app:endIconTint="?attr/colorOnSurfaceInverse"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColorHint="?attr/colorOnSurfaceInverse"
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <AutoCompleteTextView
                     android:id="@+id/country_auto_complete"
@@ -75,10 +76,10 @@
                     android:inputType="none"
                     android:clickable="true"
                     android:focusable="false"
-                    android:textColor="@android:color/black"
                     android:hint="@string/country"
-                    android:textColorHint="@color/gray"
-                    android:textAppearance="@style/Text.Regular.16" />
+                    android:textAppearance="@style/Text.Regular.16"
+                    android:textColor="?attr/colorOnSurfaceInverse"
+                    android:textColorHint="?attr/colorTextAlt"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,19 +90,20 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
-                app:boxBackgroundColor="@color/white_day"
                 app:boxBackgroundMode="outline"
-                app:hintEnabled="true"
-                app:hintAnimationEnabled="true"
-                app:placeholderText="@string/region"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
                 app:endIconDrawable="@drawable/ic_arrow_forward"
                 app:endIconMode="custom"
-                app:endIconTint="@color/black_universal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/country_input_layout">
+                android:textColorHint="?attr/colorOnSurfaceInverse"
+                app:boxBackgroundColor="?attr/colorSurface"
+                app:layout_constraintTop_toBottomOf="@id/country_input_layout"
+                app:placeholderText="@string/region"
+                app:endIconTint="?attr/colorOnSurfaceInverse"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true">
 
                 <AutoCompleteTextView
                     android:id="@+id/region_auto_complete"
@@ -110,7 +112,7 @@
                     android:inputType="none"
                     android:clickable="true"
                     android:focusable="false"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/colorOnSurfaceInverse"
                     android:hint="@string/region"
                     android:textColorHint="@color/gray"
                     android:textAppearance="@style/Text.Regular.16" />
@@ -126,14 +128,16 @@
                 android:background="@drawable/blue_button_bg"
                 android:elevation="0dp"
                 android:text="@string/choose"
-                android:textAppearance="@style/Text.Medium.16"
-                android:textColor="?attr/colorOnSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/regio_input_layout"
                 app:layout_constraintVertical_bias="1.0"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:inputType="none"
+                android:textAppearance="@style/Text.Regular.16"
+                android:textColor="?attr/colorOnSurfaceInverse"
+                android:textColorHint="?attr/colorOnSurfaceVariantAlt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
