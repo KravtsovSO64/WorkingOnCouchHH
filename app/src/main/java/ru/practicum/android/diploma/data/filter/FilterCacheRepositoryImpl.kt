@@ -136,7 +136,9 @@ class FilterCacheRepositoryImpl(
     private fun updateSetting(
         filter: Filter,
         setting: Filter,
-        setRegion: Boolean, setSalary: Boolean, setIndustry: Boolean
+        setRegion: Boolean,
+        setSalary: Boolean,
+        setIndustry: Boolean
     ) {
         if (setRegion) {
             filter.area = setting.area
