@@ -13,11 +13,10 @@ import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterOneArea
 import ru.practicum.android.diploma.domain.models.ResourceAreas
 
-
 class FilterAreaViewModel(
     private val interactor: VacanciesInteractor,
     private val filterCacheInteractor: FilterCacheInteractor,
-): ViewModel() {
+) : ViewModel() {
 
     // Полученный список храним тут
     private val _listOfRegions = MutableLiveData<List<FilterArea>>()
@@ -46,6 +45,7 @@ class FilterAreaViewModel(
                             _listOfRegions.postValue(areas)
                             _stateLoad.postValue(false)
                         }
+
                         is ResourceAreas.Error -> {
                             _listOfRegions.postValue(emptyList())
                             _stateLoad.postValue(false)
@@ -59,10 +59,11 @@ class FilterAreaViewModel(
     fun reWriteFilterCountry(country: FilterArea) {
         var filter = _filter.value!!
         filter = Filter(
-            area = FilterOneArea(AreaEntity(
-                country.id,
-                country.name,
-                country.parentId
+            area = FilterOneArea(
+                AreaEntity(
+                    country.id,
+                    country.name,
+                    country.parentId
                 ),
                 filter.area?.region
             ),
@@ -112,7 +113,7 @@ class FilterAreaViewModel(
     }
 
     // Сохраняем фильтр в кеш
-    fun saveChange(){
+    fun saveChange() {
         val filter = _filter.value
         filterCacheInteractor.writeCache(
             filter!!,

@@ -64,7 +64,7 @@ class FilterCacheRepositoryImpl(
             FILTER_KEY,
             null
         )
-        return cachedFilterJson!=filterJson
+        return cachedFilterJson != filterJson
 
     }
 
@@ -89,7 +89,7 @@ class FilterCacheRepositoryImpl(
         }
     }
 
-    override fun writeCache(setting: Filter, setRegion: Boolean, setSalary: Boolean, setIndustry:Boolean) {
+    override fun writeCache(setting: Filter, setRegion: Boolean, setSalary: Boolean, setIndustry: Boolean) {
         val filter = getCache() ?: Filter()
 
         updateSetting(
@@ -136,15 +136,15 @@ class FilterCacheRepositoryImpl(
     private fun updateSetting(
         filter: Filter,
         setting: Filter,
-        setRegion: Boolean, setSalary: Boolean, setIndustry:Boolean
+        setRegion: Boolean, setSalary: Boolean, setIndustry: Boolean
     ) {
-        if(setRegion){
+        if (setRegion) {
             filter.area = setting.area
         }
-        if(setSalary){
+        if (setSalary) {
             filter.salary = setting.salary
         }
-        if(setIndustry){
+        if (setIndustry) {
             filter.industry = setting.industry
         }
 
