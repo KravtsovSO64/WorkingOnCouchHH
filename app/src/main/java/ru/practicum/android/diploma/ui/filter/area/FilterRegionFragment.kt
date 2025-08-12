@@ -26,7 +26,7 @@ import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.presentation.filter.area.FilterRegionViewModel
 import ru.practicum.android.diploma.presentation.filter.area.state.FilterRegionState
 
-class FilterRegionFragment: Fragment() {
+class FilterRegionFragment : Fragment() {
     private val viewModel: FilterRegionViewModel by viewModel()
     private var _binding: FragmentFilterRegionBinding? = null
     private val binding get() = _binding!!
@@ -37,8 +37,7 @@ class FilterRegionFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View
-    {
+    ): View {
         _binding = FragmentFilterRegionBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -130,11 +129,14 @@ class FilterRegionFragment: Fragment() {
     }
 
     private fun setupSearchInput() {
-
         with(binding) {
             editTextSearchInput.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    //
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    //
+                }
 
                 override fun afterTextChanged(editable: Editable?) {
                     searchJob?.cancel()
@@ -143,7 +145,7 @@ class FilterRegionFragment: Fragment() {
                     updateSearchIcon(query.isNotBlank())
 
                     searchJob = lifecycleScope.launch {
-                        delay(2000)
+                        delay(DELAY)
                         viewModel.filterRegions(query)
                     }
                 }
@@ -194,5 +196,9 @@ class FilterRegionFragment: Fragment() {
             bottomNavigationView.visibility = View.GONE
             divider.visibility = View.GONE
         }
+    }
+
+    companion object {
+        private const val DELAY = 2000L
     }
 }

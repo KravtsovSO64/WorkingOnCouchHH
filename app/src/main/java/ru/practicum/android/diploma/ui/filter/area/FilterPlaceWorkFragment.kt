@@ -112,7 +112,8 @@ class FilterPlaceWorkFragment : Fragment() {
                 val bundle = bundleOf(COUNTRY_ID to countryId)
                 findNavController().navigate(
                     R.id.action_filterPlaceWorkFragment_to_filterRegionFragment,
-                    bundle)
+                    bundle
+                )
             }
 
             toolbar.setOnClickListener {
@@ -120,7 +121,7 @@ class FilterPlaceWorkFragment : Fragment() {
             }
 
             btnChoose.setOnClickListener {
-               viewModel.saveChange()
+                viewModel.saveChange()
                 findNavController().popBackStack()
             }
         }
@@ -139,10 +140,16 @@ class FilterPlaceWorkFragment : Fragment() {
                     requireContext(),
                     if (hasText) R.drawable.ic_close else R.drawable.ic_arrow_forward
                 )
-                binding.btnChoose.visibility = if (hasText || binding.regionAutoComplete.text.isNotBlank()) View.VISIBLE else View.GONE
+                binding.btnChoose.visibility =
+                    if (hasText || binding.regionAutoComplete.text.isNotBlank()) View.VISIBLE else View.GONE
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //
+            }
         })
 
         countryInputLayout.setEndIconOnClickListener {
@@ -157,9 +164,13 @@ class FilterPlaceWorkFragment : Fragment() {
         val autoCompleteTextView = binding.regionAutoComplete
 
         autoCompleteTextView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //
+            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //
+            }
 
             override fun afterTextChanged(s: Editable?) {
                 val hasText = !s.isNullOrEmpty()
@@ -167,7 +178,8 @@ class FilterPlaceWorkFragment : Fragment() {
                     requireContext(),
                     if (hasText) R.drawable.ic_close else R.drawable.ic_arrow_forward
                 )
-                binding.btnChoose.visibility = if (hasText || binding.countryAutoComplete.text.isNotBlank()) View.VISIBLE else View.GONE
+                binding.btnChoose.visibility =
+                    if (hasText || binding.countryAutoComplete.text.isNotBlank()) View.VISIBLE else View.GONE
             }
         })
 

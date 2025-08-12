@@ -19,15 +19,15 @@ class FilterAreaViewModel(
     private val filterCacheInteractor: FilterCacheInteractor,
 ): ViewModel() {
 
-    //Полученный список храним тут
+    // Полученный список храним тут
     private val _listOfRegions = MutableLiveData<List<FilterArea>>()
     val listOfRegions: LiveData<List<FilterArea>> get() = _listOfRegions
 
-    //Экран простой, поэтому два состояния, загрузка и результат(положительный или отрицательный)
+    // Экран простой, поэтому два состояния, загрузка и результат(положительный или отрицательный)
     private val _stateLoad = MutableLiveData(true)
     val stateLoad: MutableLiveData<Boolean> get() = _stateLoad
 
-    //Храним фильтр для заполнения полей экрана
+    // Храним фильтр для заполнения полей экрана
     private val _filter = MutableLiveData<Filter>()
     val filter: LiveData<Filter> get() = _filter
 
@@ -55,7 +55,7 @@ class FilterAreaViewModel(
         }
     }
 
-    //Перезаписываем в кеш фильтр с выбранной странной
+    // Перезаписываем в кеш фильтр с выбранной странной
     fun reWriteFilterCountry(country: FilterArea) {
         var filter = _filter.value!!
         filter = Filter(
@@ -72,7 +72,7 @@ class FilterAreaViewModel(
         _filter.postValue(filter)
     }
 
-    //Перезаписываем в кеш фильтр с выбранным регионом
+    // Перезаписываем в кеш фильтр с выбранным регионом
     fun reWriteFilterRegion(region: FilterArea) {
         var filter = _filter.value!!
         filter = Filter(
@@ -111,7 +111,7 @@ class FilterAreaViewModel(
         _filter.postValue(filter)
     }
 
-    //Сохраняем фильтр в кеш
+    // Сохраняем фильтр в кеш
     fun saveChange(){
         val filter = _filter.value
         filterCacheInteractor.writeCache(

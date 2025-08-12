@@ -13,8 +13,8 @@ import ru.practicum.android.diploma.presentation.filter.area.state.FilterRegionS
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
 class FilterRegionViewModel(
-   private val interactor: VacanciesInteractor
-): ViewModel() {
+    private val interactor: VacanciesInteractor
+) : ViewModel() {
 
     private val _regions = MutableLiveData<List<FilterArea>>()
     val regions: LiveData<List<FilterArea>> = _regions
@@ -35,6 +35,7 @@ class FilterRegionViewModel(
                                 _regions.postValue(areas)
                                 _stateScreen.postValue(FilterRegionState.Content(areas))
                             }
+
                             is ResourceAreas.Error -> {
                                 _stateScreen.postValue(FilterRegionState.Error(ErrorType.EMPTY))
                             }
@@ -54,6 +55,7 @@ class FilterRegionViewModel(
                                 _regions.postValue(areas)
                                 _stateScreen.postValue(FilterRegionState.Content(areas))
                             }
+
                             is ResourceAreas.Error -> {
                                 _stateScreen.postValue(FilterRegionState.Error(ErrorType.EMPTY))
                             }
@@ -77,5 +79,3 @@ class FilterRegionViewModel(
         _regions.value = filteredList
     }
 }
-
-
