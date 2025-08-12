@@ -115,7 +115,7 @@ class FilterPlaceWorkFragment : Fragment() {
                     bundle)
             }
 
-            toolbar.setNavigationOnClickListener {
+            toolbar.setOnClickListener {
                 findNavController().popBackStack()
             }
 
