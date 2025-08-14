@@ -5,13 +5,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
-class RootActivity : AppCompatActivity() {
+class RootActivity : AppCompatActivity(), NavShow {
 
     private var _binding: ActivityRootBinding? = null
     private val binding get() = _binding!!
@@ -32,5 +33,9 @@ class RootActivity : AppCompatActivity() {
             view.updatePadding(top = statusBar.top)
             insets
         }
+    }
+
+    override fun show(isShow: Boolean) {
+            binding.bottomNavigationView.isVisible = isShow
     }
 }
