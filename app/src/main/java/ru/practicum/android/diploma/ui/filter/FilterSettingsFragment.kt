@@ -121,6 +121,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             setClearIconRegion()
         } else {
             binding.edittextVacancyRegion.setText("")
+            setForwardArrowRegion()
         }
         if (filter.salary?.salary != null) {
             binding.edittextSalary.setText(filter.salary?.salary.toString())
