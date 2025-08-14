@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.presentation.filter.FilterSettingsViewModel
+import ru.practicum.android.diploma.ui.root.RootActivity
 import ru.practicum.android.diploma.util.AbstractBindingFragment
 
 class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBinding>() {
@@ -34,6 +35,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as RootActivity).show(false)
         filterSettingsViewModel.observeScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             renderFilterInfo(state.filterSettings)
         }
@@ -119,6 +121,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             setClearIconRegion()
         } else {
             binding.edittextVacancyRegion.setText("")
+            setForwardArrowRegion()
         }
         if (filter.salary?.salary != null) {
             binding.edittextSalary.setText(filter.salary?.salary.toString())
@@ -136,6 +139,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             setClearIconIndustry()
         } else {
             binding.edittextVacancyType.setText("")
+            setForwardArrowIndustry()
         }
 
     }

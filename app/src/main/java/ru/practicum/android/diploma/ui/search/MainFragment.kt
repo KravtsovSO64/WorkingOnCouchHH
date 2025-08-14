@@ -22,6 +22,7 @@ import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.SearchViewModel
 import ru.practicum.android.diploma.presentation.search.state.SearchState
+import ru.practicum.android.diploma.ui.root.RootActivity
 import ru.practicum.android.diploma.util.AbstractBindingFragment
 
 class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
@@ -43,6 +44,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as RootActivity).show(true)
 
         setSearchIcon()
         setUpListeners()
