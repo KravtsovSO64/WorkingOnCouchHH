@@ -36,6 +36,6 @@ class RootActivity : AppCompatActivity(), NavShow {
     }
 
     override fun show(isShow: Boolean) {
-            binding.bottomNavigationView.isVisible = isShow
+        binding.bottomNavigationView.isVisible = isShow
     }
 }
