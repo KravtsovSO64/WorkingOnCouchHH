@@ -142,9 +142,9 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
     private fun showContent(industries: List<FilterIndustry>) {
         binding.groupError.isVisible = false
         binding.recyclerIndustries.isVisible = true
-       // binding.buttonSave.isVisible = current != null
+        // binding.buttonSave.isVisible = current != null
         adapter.setList(industries)
-        //binding.editTextIndustry.setText(current?.name)
+        // binding.editTextIndustry.setText(current?.name)
     }
 
     private fun showError() {
