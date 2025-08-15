@@ -28,6 +28,8 @@ import ru.practicum.android.diploma.util.AbstractBindingFragment
 
 class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
+    private var searchText: String = ""
+
     private val viewModel: SearchViewModel by viewModel()
     private val adapter by lazy {
         JobAdapter { id: String -> openVacancy(id) }
@@ -81,6 +83,10 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
         viewModel.observeHasFilters().observe(viewLifecycleOwner) {
             showFilterIcon(it)
+
+            if (searchText.isNotBlank()) {
+                viewModel.onDebounceSearchUpdate(searchText, false)
+            }
         }
     }
 
@@ -110,6 +116,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                     } else {
                         setClearIcon()
                         viewModel.onDebounceSearchTextChanged(p0.toString(), false)
+                        searchText = p0.toString()
                     }
                 }
             }
