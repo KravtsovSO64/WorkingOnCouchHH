@@ -13,7 +13,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -62,6 +64,9 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
     private fun setUpListeners() {
         binding.btnApply.setOnClickListener {
             filterSettingsViewModel.applyFilters(true)
+            //Передаем аргумент "changed"
+            setFragmentResult("requestKey", bundleOf("key" to "changed"))
+            findNavController().popBackStack()
         }
         binding.edittextVacancyRegion.setOnClickListener {
             findNavController().navigate(R.id.action_filterSettingsFragment_to_filterPlaceWorkFragment)
