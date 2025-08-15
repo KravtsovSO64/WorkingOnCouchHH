@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode
 import ru.practicum.android.diploma.domain.models.ErrorType
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.state.SearchState

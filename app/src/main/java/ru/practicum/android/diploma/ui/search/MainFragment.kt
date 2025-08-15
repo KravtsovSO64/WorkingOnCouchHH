@@ -52,6 +52,24 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         setSearchIcon()
         setUpListeners()
 
+        // Подписываемся на результат
+        parentFragmentManager.setFragmentResultListener(
+            "requestKey",
+            viewLifecycleOwner
+        ) { requestKey, bundle ->
+            val value = bundle.getString("key")
+
+            when (value) {
+                "changed" -> {
+                    if (searchText.isNotBlank()) {
+                        viewModel.onDebounceSearchUpdate(searchText, false)
+                    }
+                }
+                null -> { }
+                else -> { }
+            }
+        }
+
         binding.btnFilter.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_filterSettingsFragment)
             searchText = binding.editTextSearchInput.text.toString()
@@ -84,10 +102,6 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
         viewModel.observeHasFilters().observe(viewLifecycleOwner) {
             showFilterIcon(it)
-
-            if (searchText.isNotBlank() && it == true) {
-                viewModel.onDebounceSearchUpdate(searchText, false)
-            }
         }
     }
 
