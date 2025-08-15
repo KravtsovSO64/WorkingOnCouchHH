@@ -142,7 +142,7 @@ class FilterIndustryAdapter(
 
     fun setList(
         items: List<FilterIndustry>,
-        //current: FilterIndustry?
+        // current: FilterIndustry?
     ) {
         unfilteredList.clear()
         unfilteredList.addAll(items.map {
