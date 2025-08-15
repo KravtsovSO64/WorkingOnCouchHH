@@ -54,6 +54,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
         binding.btnFilter.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_filterSettingsFragment)
+            searchText = binding.editTextSearchInput.text.toString()
         }
 
 
@@ -84,7 +85,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         viewModel.observeHasFilters().observe(viewLifecycleOwner) {
             showFilterIcon(it)
 
-            if (searchText.isNotBlank()) {
+            if (searchText.isNotBlank() && it == true) {
                 viewModel.onDebounceSearchUpdate(searchText, false)
             }
         }
