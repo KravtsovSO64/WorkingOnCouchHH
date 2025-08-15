@@ -134,17 +134,17 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
     }
     private fun render(state: FilterIndustryListState) {
         when (state) {
-            is FilterIndustryListState.Content -> showContent(state.industries, state.current)
+            is FilterIndustryListState.Content -> showContent(state.industries)
             is FilterIndustryListState.Error -> showError()
         }
     }
 
-    private fun showContent(industries: List<FilterIndustry>, current: FilterIndustry?) {
+    private fun showContent(industries: List<FilterIndustry>) {
         binding.groupError.isVisible = false
         binding.recyclerIndustries.isVisible = true
-        binding.buttonSave.isVisible = current != null
-        adapter.setList(industries, current)
-        binding.editTextIndustry.setText(current?.name)
+        // binding.buttonSave.isVisible = current != null
+        adapter.setList(industries)
+        // binding.editTextIndustry.setText(current?.name)
     }
 
     private fun showError() {
