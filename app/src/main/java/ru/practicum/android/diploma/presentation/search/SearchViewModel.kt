@@ -55,8 +55,14 @@ class SearchViewModel(
 
     fun onDebounceSearchTextChanged(
         p0: CharSequence?,
+        refresh: Boolean
     ) {
-        if (p0.toString().isNotBlank() && latestSearchText != p0.toString() && !searching) {
+
+        if (refresh){
+            trackSearchDebounce(latestSearchText.orEmpty())
+        }
+
+        if (p0.toString().isNotBlank() && latestSearchText != p0.toString() && !searching && !refresh) {
             latestSearchText = p0.toString()
             trackSearchDebounce(p0.toString())
         }
