@@ -60,7 +60,7 @@ class FilterIndustryViewModel(
                                     FilterIndustryListState.Error
                                 } else {
                                     selected = filterCacheInteractor.getCache()?.industry
-                                    FilterIndustryListState.Content(it.data)
+                                    FilterIndustryListState.Content(it.data, selected)
                                 }
                             }
 
