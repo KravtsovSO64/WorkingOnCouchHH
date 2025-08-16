@@ -77,7 +77,7 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    viewModel.onFilterTextChanged(p0.toString())
+                    if (p0 != null && p0.isNotEmpty()) viewModel.onFilterTextChanged(p0.toString())
                 }
             }
         )
@@ -87,6 +87,7 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
         if (text.isNotEmpty()) {
             setClearIcon()
         } else {
+            binding.editTextIndustry.setText("")
             setSearchIcon()
         }
     }
@@ -105,6 +106,7 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
                 0
             )
             viewModel.onClearText()
+            adapter.toggleOff()
         }
     }
 
@@ -141,6 +143,7 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
         binding.recyclerIndustries.isVisible = true
         binding.buttonSave.isVisible = current != null
         adapter.setList(industries, current)
+        binding.editTextIndustry.setText(current?.name)
     }
 
     private fun showError() {

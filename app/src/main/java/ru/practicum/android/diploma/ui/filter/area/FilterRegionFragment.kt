@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -62,7 +61,7 @@ class FilterRegionFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        showBottomNavigation(true)
+        showBottomNavigation(false)
     }
 
     private fun startObserving() {
@@ -186,16 +185,16 @@ class FilterRegionFragment : Fragment() {
     }
 
     private fun showBottomNavigation(flag: Boolean) {
-        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        val divider = requireActivity().findViewById<View>(R.id.divider)
-
-        if (flag) {
-            bottomNavigationView.visibility = View.VISIBLE
-            divider.visibility = View.VISIBLE
-        } else {
-            bottomNavigationView.visibility = View.GONE
-            divider.visibility = View.GONE
-        }
+//        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+//        val divider = requireActivity().findViewById<View>(R.id.divider)
+//
+//        if (flag) {
+//            bottomNavigationView.visibility = View.VISIBLE
+//            divider.visibility = View.VISIBLE
+//        } else {
+//            bottomNavigationView.visibility = View.GONE
+//            divider.visibility = View.GONE
+//        }
     }
 
     companion object {

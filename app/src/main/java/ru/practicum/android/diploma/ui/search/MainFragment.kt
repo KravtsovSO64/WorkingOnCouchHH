@@ -22,9 +22,12 @@ import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.SearchViewModel
 import ru.practicum.android.diploma.presentation.search.state.SearchState
+import ru.practicum.android.diploma.ui.root.RootActivity
 import ru.practicum.android.diploma.util.AbstractBindingFragment
 
 class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
+
+    private var searchText: String = ""
 
     private val viewModel: SearchViewModel by viewModel()
     private val adapter by lazy {
@@ -43,12 +46,32 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as RootActivity).show(true)
 
         setSearchIcon()
         setUpListeners()
 
+        // Подписываемся на результат
+        parentFragmentManager.setFragmentResultListener(
+            "requestKey",
+            viewLifecycleOwner
+        ) { requestKey, bundle ->
+            val value = bundle.getString("key")
+
+            when (value) {
+                "changed" -> {
+                    if (searchText.isNotBlank()) {
+                        viewModel.onDebounceSearchUpdate(searchText, false)
+                    }
+                }
+                null -> { }
+                else -> { }
+            }
+        }
+
         binding.btnFilter.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_filterSettingsFragment)
+            searchText = binding.editTextSearchInput.text.toString()
         }
 
 
@@ -106,7 +129,8 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                         setSearchIcon()
                     } else {
                         setClearIcon()
-                        viewModel.onDebounceSearchTextChanged(p0.toString())
+                        viewModel.onDebounceSearchTextChanged(p0.toString(), false)
+                        searchText = p0.toString()
                     }
                 }
             }

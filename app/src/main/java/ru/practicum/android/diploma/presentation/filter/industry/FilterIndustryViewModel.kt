@@ -59,6 +59,7 @@ class FilterIndustryViewModel(
                                 if (it.data.isEmpty()) {
                                     FilterIndustryListState.Error
                                 } else {
+                                    selected = filterCacheInteractor.getCache()?.industry
                                     FilterIndustryListState.Content(it.data, selected)
                                 }
                             }

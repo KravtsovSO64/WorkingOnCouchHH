@@ -167,6 +167,11 @@ class FilterIndustryAdapter(
         notifyDataSetChanged()
     }
 
+    fun toggleOff() {
+        if (currentPos != -1) unfilteredList[currentPos].isChecked = false
+        currentPos = -1
+    }
+
     class FilterIndustryViewHolder(
         private val binding: ItemIndustryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
