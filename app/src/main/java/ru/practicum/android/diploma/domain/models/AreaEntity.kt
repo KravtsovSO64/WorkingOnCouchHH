@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AreaEntity(
-    val id: String,
+    val id: Int,
     val name: String,
-    val parentCountry: AreaEntity? = null
+    val parentCountry: Int? = null
 ) : Parcelable

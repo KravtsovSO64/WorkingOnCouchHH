@@ -1,68 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/btn_back"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:importantForAccessibility="no"
-        android:padding="8dp"
-        android:src="@drawable/ic_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_filter_settings_fragment_title"
-        style="@style/Text.Medium.22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/filter_settings_fragment"
-        app:layout_constraintBottom_toBottomOf="@id/btn_back"
-        app:layout_constraintStart_toEndOf="@id/btn_back"
-        app:layout_constraintTop_toTopOf="@id/btn_back" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:orientation="horizontal"
-        android:visibility="invisible"
-        app:layout_constraintGuide_end="720dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/text_filter_settings_fragment_title"
+            style="@style/Text.Medium.22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:text="@string/filter_settings_fragment" />
+    </LinearLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textlayout_vacancy_region"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="6dp"
-        android:background="?attr/colorOnPrimary"
+        android:layout_marginTop="@dimen/_16dp"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:hint="@string/job_location"
+        android:inputType="none"
+        android:paddingVertical="6dp"
         android:textColorHint="@color/gray"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
-        android:inputType="none"
-        app:endIconTint="@color/black_universal"
+        app:endIconTint="?attr/colorOnSurfaceInverse"
         app:hintTextColor="?attr/colorOnPrimary"
-        app:layout_constraintTop_toBottomOf="@id/guideline_top">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edittext_vacancy_region"
-            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="0dp"
+            android:background="?attr/colorSurface"
             android:editable="false"
-            android:background="?attr/colorOnPrimary"
+            android:focusable="false"
+            android:paddingBottom="0dp"
             android:textAppearance="@style/Text.Regular.16" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,17 +68,17 @@
         android:id="@+id/textlayout_vacancy_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorOnPrimary"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:hint="@string/vacancy_type"
+        android:inputType="none"
         android:paddingVertical="6dp"
         android:textColorHint="@color/gray"
         app:boxStrokeWidth="0dp"
-        android:inputType="none"
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
-        app:endIconTint="@color/black_universal"
+        app:endIconTint="?attr/colorOnSurfaceInverse"
         app:hintTextColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/textlayout_vacancy_region">
 
@@ -88,9 +86,9 @@
             android:id="@+id/edittext_vacancy_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorOnPrimary"
-            android:focusable="false"
+            android:background="?attr/colorSurface"
             android:editable="false"
+            android:focusable="false"
             android:paddingBottom="0dp"
             android:textAppearance="@style/Text.Regular.16" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -100,14 +98,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text_bg"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
+        android:background="@drawable/edit_text_bg"
         android:hint="@string/expected_salary"
         android:inputType="none"
         android:maxLines="1"
-        android:textColorHint="@color/gray"
-        app:expandedHintEnabled="false"
+        android:textColorHint="?attr/colorOnSurfaceVariantAlt"
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
@@ -117,27 +114,28 @@
         app:cursorColor="@color/blue"
         app:endIconMode="custom"
         app:endIconTint="@color/black_universal"
+        app:expandedHintEnabled="false"
         app:hintTextAppearance="@style/salary_hint_text_appearance"
         app:hintTextColor="@null"
         app:layout_constraintTop_toBottomOf="@id/textlayout_vacancy_type"
         app:placeholderText="@string/enter_a_sum"
         app:placeholderTextAppearance="@style/placeholder_text_appearance"
-        app:placeholderTextColor="@null">
+        app:placeholderTextColor="?attr/colorOnSurfaceVariantAlt">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edittext_salary"
             android:layout_width="match_parent"
-            android:background="@drawable/edit_text_bg"
             android:layout_height="match_parent"
-            android:maxLines="1"
-            android:maxLength="9"
+            android:background="@drawable/edit_text_bg"
             android:ellipsize="end"
             android:imeOptions="actionDone"
-            android:textColor="@color/black_universal"
             android:inputType="number"
+            android:maxLength="9"
+            android:maxLines="1"
             android:scrollHorizontally="false"
             android:singleLine="true"
-            android:text="" />
+            android:text=""
+            android:textColor="?attr/colorOnSurfaceVariantAlt" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckedTextView

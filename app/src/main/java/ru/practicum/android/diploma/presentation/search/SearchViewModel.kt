@@ -6,19 +6,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
+import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode
 import ru.practicum.android.diploma.domain.models.ErrorType
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.state.SearchState
+import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val filterInteractor: FilterInteractor,
+) : ViewModel() {
     private val searchState = MutableLiveData<SearchState>(SearchState.Start)
-    private val searchTextState = MutableLiveData("")
     private val totalFoundLiveData = MutableLiveData<String>()
 
-    fun observeSearchTextState(): LiveData<String> = searchTextState
+    private val trackSearchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
+            search(changedText)
+        }
+
+    private val hasFilters = MutableLiveData<Boolean>()
+
+    fun observeHasFilters(): LiveData<Boolean> = hasFilters
     fun observeSearchState(): LiveData<SearchState> = searchState
     fun observeTotalFoundLiveData(): LiveData<String> = totalFoundLiveData
 
@@ -29,21 +40,29 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
     private var searching: Boolean = false
     private val vacancyList = mutableListOf<Vacancy>()
 
-    fun onSearchTextChanged(
+    fun checkFilters() {
+        val currentFilters = filterInteractor.getFilter()
+        if (
+            currentFilters?.area == null &&
+            currentFilters?.salary == null &&
+            currentFilters?.industry == null
+        ) {
+            hasFilters.postValue(false)
+        } else {
+            hasFilters.postValue(true)
+        }
+    }
+
+    fun onDebounceSearchTextChanged(
         p0: CharSequence?,
     ) {
         if (p0.toString().isNotBlank() && latestSearchText != p0.toString() && !searching) {
             latestSearchText = p0.toString()
+            trackSearchDebounce(p0.toString())
         }
 
     }
 
-    fun onEditorActionDone() {
-        if (searchTextState.value.toString() != latestSearchText) {
-            searchTextState.value = latestSearchText
-            search(searchTextState.value.toString())
-        }
-    }
 
     private fun search(text: String) {
         if (text.isBlank() || searching) {
@@ -54,8 +73,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         maxPages = null
         vacancyList.clear()
         viewModelScope.launch {
+            val filterParams = filterInteractor.getFilter()
             searchState.postValue(SearchState.Loading)
-            vacanciesInteractor.searchVacancies(text = text, 0)
+            vacanciesInteractor.searchVacancies(
+                text = text,
+                page = 0,
+                area = filterParams?.area?.region?.id.toString(),
+                industry = filterParams?.industry?.id,
+                salary = filterParams?.salary?.salary,
+                onlyWithSalary = filterParams?.salary?.onlyWithSalary ?: false
+            )
                 .catch {
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
                 }
@@ -66,16 +93,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
                         }
 
                         is ResourceVacancy.Success -> {
-                            if (resource.data.isEmpty()) {
+                            if (resource.data.items.isEmpty()) {
                                 totalFoundLiveData.value = formatVacancies(0)
                                 searchState.postValue(SearchState.Error(ErrorType.EMPTY))
                             } else {
-                                currentPage = 1
-//                                maxPages = resource.pages
-//                                totalFoundLiveData.value = resource.total //Потом при загрузки страниц мониторить по адаптеру
-                                vacancyList.addAll(resource.data)
-                                searchState.postValue(SearchState.Content(vacancyList, false))
-                                totalFoundLiveData.value = formatVacancies(resource.data.size)
+                                currentPage = 0
+                                maxPages = resource.data.pages
+                                totalFoundLiveData.value = resource.data.found.toString()
+                                vacancyList.addAll(resource.data.items)
+                                searchState.postValue(SearchState.Content(vacancyList, false, hasError = false))
+                                totalFoundLiveData.value = formatVacancies(resource.data.found)
                             }
                         }
                     }
@@ -99,20 +126,27 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
             isNextPageLoading = true
             viewModelScope.launch {
                 searchState.postValue(SearchState.PageLoading)
-                vacanciesInteractor.searchVacancies(latestSearchText!!, currentPage).catch {
+                vacanciesInteractor.searchVacancies(
+                    text = latestSearchText!!,
+                    page = currentPage,
+                    area = null,
+                    industry = null,
+                    salary = null,
+                    onlyWithSalary = false
+                ).catch {
                     currentPage = 0
                     maxPages = null
                     searchState.postValue(SearchState.Error(ErrorType.SERVER_ERROR))
                 }.collect { resource ->
                     when (resource) {
                         is ResourceVacancy.Error -> {
-                            searchState.postValue(SearchState.Content(vacancyList, true))
+                            searchState.postValue(SearchState.Content(vacancyList, true, hasError = true))
                         }
 
                         is ResourceVacancy.Success -> {
                             currentPage += 1
-                            vacancyList.addAll(resource.data)
-                            searchState.postValue(SearchState.Content(vacancyList, true))
+                            vacancyList.addAll(resource.data.items)
+                            searchState.postValue(SearchState.Content(vacancyList, true, hasError = false))
                         }
                     }
 
@@ -123,10 +157,11 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
     }
 
     fun onClearText() {
+        trackSearchDebounce(SEARCH_FIELD_DEF)
         clear()
     }
 
-    fun formatVacancies(count: Int): String {
+    private fun formatVacancies(count: Int): String {
         return when {
             count == DECLENSION_0 -> "Таких вакансий нет"
             count % PERCENT_100 in DECLENSION_11..DECLENSION_14 -> "Найдено $count вакансий"
@@ -138,11 +173,11 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     private fun clear() {
         latestSearchText = ""
-        searchTextState.value = ""
         searchState.value = SearchState.Start
     }
 
     companion object {
+        private const val SEARCH_FIELD_DEF = ""
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val PERCENT_100 = 100
         private const val PERCENT_10 = 10

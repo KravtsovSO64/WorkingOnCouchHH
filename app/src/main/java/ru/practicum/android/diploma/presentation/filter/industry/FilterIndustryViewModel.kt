@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
 import ru.practicum.android.diploma.domain.filter.FilterCacheInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.FilterIndustry
@@ -31,10 +31,7 @@ class FilterIndustryViewModel(
         load()
     }
 
-    private val changesInvalidatedEvent = MutableLiveData<Boolean>()
-
     fun observeIndustryState(): LiveData<FilterIndustryState> = state
-    fun observeChangesInvalidatedEvent(): LiveData<Boolean> = changesInvalidatedEvent
 
     val filterText = MutableLiveData("")
     private val items = MutableLiveData<FilterIndustryListState>()
@@ -84,27 +81,16 @@ class FilterIndustryViewModel(
                     industry.id,
                     industry.name
                 )
-
             )
         } else {
             Filter()
         }
-        filterCacheInteractor.writeCache(setting)
-    }
-
-    fun invalidateFilterChanges() {
-        viewModelScope.launch {
-            filterCacheInteractor.writeCache(
-                Filter(
-                    industry = FilterIndustry(
-                        savedFilterSetting?.industry!!.id,
-                        savedFilterSetting?.industry!!.name
-                    )
-
-                )
-            )
-            changesInvalidatedEvent.postValue(true)
-        }
+        filterCacheInteractor.writeCache(
+            setting = setting,
+            setRegion = false,
+            setSalary = false,
+            setIndustry = true
+        )
     }
 
 }

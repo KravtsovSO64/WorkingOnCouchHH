@@ -1,21 +1,24 @@
-package ru.practicum.android.diploma.data.network.impl
+package ru.practicum.android.diploma.data.dto.vacancy
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.AreasRequest
+import ru.practicum.android.diploma.data.dto.AreasResponse
 import ru.practicum.android.diploma.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailRequest
-import ru.practicum.android.diploma.data.dto.vacancy.VacancyDetailDto
-import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
+import ru.practicum.android.diploma.data.dto.vacancy.elements.FilterAreaDto
 import ru.practicum.android.diploma.data.network.interfaces.NetworkClient
 import ru.practicum.android.diploma.data.network.interfaces.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterIndustry
+import ru.practicum.android.diploma.domain.models.SearchResult
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.util.Resource
+import kotlin.Int
 
 class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient
@@ -31,14 +34,27 @@ class VacanciesRepositoryImpl(
     override fun searchVacancies(
         text: String,
         page: Int,
-    ): Flow<Resource<List<Vacancy>>> = flow {
+        area: String?,
+        industry: String?,
+        salary: Int?,
+        onlyWithSalary: Boolean,
+    ): Flow<Resource<SearchResult>> = flow {
         val networkClientResponse = networkClient.doRequest(
-            VacanciesRequest(text, page)
+            VacanciesRequest(text, page, area, industry, salary, onlyWithSalary)
         )
 
         when (networkClientResponse.resultCode) {
             NET_SUCCESS -> {
-                emit(Resource.Success(convertFromDto((networkClientResponse as VacanciesResponse).items)))
+                emit(
+                    Resource.Success(
+                        SearchResult(
+                            found = (networkClientResponse as VacanciesResponse).found,
+                            pages = (networkClientResponse as VacanciesResponse).pages,
+                            page = (networkClientResponse as VacanciesResponse).page,
+                            items = convertFromDto((networkClientResponse as VacanciesResponse).items)
+                        )
+                    )
+                )
             }
 
             UNKNW_HOST -> {
@@ -104,6 +120,51 @@ class VacanciesRepositoryImpl(
         }
     }
 
+    override fun getAreas(): Flow<Resource<List<FilterArea>>> = flow {
+        val networkClientResponse = networkClient.doRequest(
+            AreasRequest()
+        )
+
+        when (networkClientResponse.resultCode) {
+            NET_SUCCESS -> {
+                emit(
+                    Resource.Success(
+                        convertFilterArea(
+                            (networkClientResponse as AreasResponse).areas
+                        )
+                    )
+                )
+            }
+
+            UNKNW_HOST -> {
+                emit(Resource.Error(UNKNW_HOST, "Проверьте подключение к интернету"))
+            }
+
+            REQ_TIMEOUT -> {
+                emit(Resource.Error(REQ_TIMEOUT, "Время подключение к серверу истекло"))
+            }
+
+            else -> {
+                emit(Resource.Error(NET_BAD_REQUEST, "Ошибка сервера"))
+            }
+        }
+    }
+
+    private fun convertFilterArea(listFilterAreaDto: List<FilterAreaDto>?): List<FilterArea> {
+        return if (listFilterAreaDto.isNullOrEmpty()) {
+            listOf<FilterArea>()
+        } else {
+            listFilterAreaDto.map {
+                FilterArea(
+                    id = it.id,
+                    parentId = it.parentId,
+                    name = it.name,
+                    areas = convertFilterArea(it.areas)
+                )
+            }
+        }
+    }
+
     private fun convertFilterIndustry(industriesResponse: IndustriesResponse): List<FilterIndustry> {
         return industriesResponse.industries.map {
             FilterIndustry(
@@ -134,7 +195,7 @@ class VacanciesRepositoryImpl(
                     area.id,
                     area.parentId,
                     area.name,
-                    area.areas
+                    convertFilterArea(area.areas)
                 ),
                 industry = FilterIndustry(
                     industry.id,
@@ -169,7 +230,7 @@ class VacanciesRepositoryImpl(
                     area.id,
                     area.parentId,
                     area.name,
-                    area.areas
+                    convertFilterArea(area.areas)
                 ),
                 skills = skills.orEmpty(),
                 url = url,

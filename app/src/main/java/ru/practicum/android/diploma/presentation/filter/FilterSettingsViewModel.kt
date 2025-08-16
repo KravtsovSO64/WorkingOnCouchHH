@@ -66,30 +66,53 @@ class FilterSettingsViewModel(
     }
 
     fun clearSalary() {
-        salaryTextState.postValue("")
-        filterCacheInteractor.writeCache(
-            Filter(salary = null)
-        )
-        applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
-        resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
+        viewModelScope.launch {
+            filterCacheInteractor.writeCache(
+                Filter(salary = FilterSalary(null, dontShowWithoutSalary)),
+                false,
+                setSalary = true,
+                setIndustry = false
+            )
+            salaryTextState.postValue("")
+            applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
+            resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
+
+        }
     }
 
     fun clearIndustry() {
         viewModelScope.launch {
-            filterCacheInteractor.writeCache(Filter(industry = null))
+            filterCacheInteractor.writeCache(
+                Filter(industry = null),
+                setRegion = false,
+                setSalary = false,
+                setIndustry = true
+            )
             val savedFilter = filterCacheInteractor.getCache()
             screenStateLiveData.postValue(FilterSettingsState(savedFilter ?: Filter()))
         }
     }
 
     fun clearRegion() {
-        // Добавить функционал очистки
+        viewModelScope.launch {
+            filterCacheInteractor.writeCache(
+                Filter(area = null),
+                setRegion = true,
+                setSalary = false,
+                setIndustry = false
+            )
+            val savedFilter = filterCacheInteractor.getCache()
+            screenStateLiveData.postValue(FilterSettingsState(savedFilter ?: Filter()))
+        }
     }
 
     fun onActionDone() {
         viewModelScope.launch {
             filterCacheInteractor.writeCache(
-                Filter(salary = FilterSalary(currentSalary!!, dontShowWithoutSalary))
+                Filter(salary = FilterSalary(currentSalary, dontShowWithoutSalary)),
+                false,
+                setSalary = true,
+                setIndustry = false
             )
             applyButtonLiveData.postValue(filterCacheInteractor.isCachedFilterChanged())
             resetButtonLiveData.postValue(filterCacheInteractor.isCachedFilterEmpty())
@@ -103,6 +126,7 @@ class FilterSettingsViewModel(
             filterInteractor.saveFilterApplicationSetting(bool)
         }
     }
+
     fun resetFilters() {
         viewModelScope.launch {
             filterInteractor.deleteFilters()
@@ -117,6 +141,15 @@ class FilterSettingsViewModel(
     }
 
     fun addSalaryCheckFilter(checked: Boolean) {
-        // Добавить фильтрацию
+        dontShowWithoutSalary = checked
+        onActionDone()
+        viewModelScope.launch {
+            filterCacheInteractor.writeCache(
+                Filter(salary = FilterSalary(currentSalary, dontShowWithoutSalary)),
+                false,
+                setSalary = true,
+                setIndustry = false
+            )
+        }
     }
 }

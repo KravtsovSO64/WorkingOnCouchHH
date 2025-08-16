@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class FilterArea(
     val id: Int,
-    val parentId: Int,
+    val parentId: Int?,
     val name: String,
-    val areas: List<String>,
+    val areas: List<FilterArea>?,
 ) : Parcelable

@@ -62,7 +62,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             filterSettingsViewModel.applyFilters(true)
         }
         binding.edittextVacancyRegion.setOnClickListener {
-            // findNavController().navigate(R.id.action_filterSettingsFragment_to_filterLocationFragment)
+            findNavController().navigate(R.id.action_filterSettingsFragment_to_filterPlaceWorkFragment)
         }
         binding.edittextVacancyType.setOnClickListener {
             findNavController().navigate(R.id.action_filterSettingsFragment_to_filterIndustryFragment)
@@ -197,6 +197,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             R.drawable.ic_close
         )
         binding.textlayoutSalary.setEndIconOnClickListener {
+            binding.edittextSalary.setText("")
             filterSettingsViewModel.clearSalary()
             val inputMethodManager =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager

@@ -6,28 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/btn_back"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:importantForAccessibility="no"
-        android:padding="8dp"
-        android:src="@drawable/ic_arrow_back"
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/text_filter_industry_title"
-        style="@style/Text.Medium.22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/filter_industry_fragment"
-        app:layout_constraintBottom_toBottomOf="@id/btn_back"
-        app:layout_constraintStart_toEndOf="@id/btn_back"
-        app:layout_constraintTop_toTopOf="@id/btn_back" />
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/text_filter_settings_fragment_title"
+            style="@style/Text.Medium.22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:text="@string/filter_industry_fragment" />
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout"
@@ -35,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_bg"
         android:drawableTint="@color/black_universal"
         android:inputType="text"
@@ -47,7 +52,7 @@
         app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_filter_industry_title"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:shapeAppearanceOverlay="@style/shape_appearance">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -59,9 +64,9 @@
             android:hint="@string/industry_hint"
             android:imeOptions="actionDone"
             android:singleLine="true"
+            android:textColorHint="?attr/colorOnSurfaceVariantAlt"
             android:fontFamily="@font/ys_display_regular"
             android:textColor="@color/black_universal"
-            android:textColorHint="@color/gray"
             android:textCursorDrawable="@drawable/edit_text_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>

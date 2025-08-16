@@ -8,6 +8,6 @@ interface FilterCacheRepository {
     fun commitCache()
     fun isCachedFilterChanged(): Boolean
     fun isCachedFilterEmpty(): Boolean
-    fun writeCache(setting: Filter)
+    fun writeCache(setting: Filter, setRegion: Boolean, setSalary: Boolean, setIndustry: Boolean)
     fun invalidateCache()
 }

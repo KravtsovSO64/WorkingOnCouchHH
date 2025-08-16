@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -51,15 +51,12 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
             findNavController().navigate(R.id.action_mainFragment_to_filterSettingsFragment)
         }
 
-        viewModel.observeSearchTextState().observe(viewLifecycleOwner) {
-            updateTextInputLayoutIcon(it)
-        }
 
         viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SearchState.Start -> showStart()
                 is SearchState.Content -> {
-                    showContent(state.data, state.paging)
+                    showContent(state.data, state.paging, state.hasError)
                 }
 
                 is SearchState.Loading -> showLoading()
@@ -76,6 +73,20 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         viewModel.observeTotalFoundLiveData().observe(viewLifecycleOwner) {
             updateResultText(it)
         }
+
+        viewModel.checkFilters()
+
+        viewModel.observeHasFilters().observe(viewLifecycleOwner) {
+            showFilterIcon(it)
+        }
+    }
+
+    private fun showFilterIcon(hasFilters: Boolean) {
+        if (hasFilters) {
+            binding.btnFilter.setImageResource(R.drawable.ic_filter_on)
+        } else {
+            binding.btnFilter.setImageResource(R.drawable.ic_filter_off)
+        }
     }
 
     private fun setUpListeners() {
@@ -86,18 +97,20 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    //
+                    setClearIcon()
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    viewModel.onSearchTextChanged(p0.toString())
+                    if (p0.isNullOrEmpty()) {
+                        viewModel.onClearText()
+                        setSearchIcon()
+                    } else {
+                        setClearIcon()
+                        viewModel.onDebounceSearchTextChanged(p0.toString())
+                    }
                 }
             }
         )
-        binding.editTextSearchInput.setOnEditorActionListener { _, actionId, _ ->
-            viewModel.onEditorActionDone()
-            false
-        }
 
         binding.recyclerViewVacancies.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewVacancies.adapter = adapter
@@ -119,25 +132,15 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
 
     }
 
-    private fun updateTextInputLayoutIcon(text: String) {
-        if (text.isNotEmpty()) {
-            setClearIcon()
-        } else {
-            binding.editTextSearchInput.text?.clear()
-            setSearchIcon()
-        }
-    }
 
     @SuppressLint("ServiceCast")
     private fun setClearIcon() {
         binding.imageEndIconDrawable.setImageResource(R.drawable.ic_close)
         binding.imageEndIconDrawable.setOnClickListener {
             val inputMethodManager =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(
-                Activity().currentFocus?.windowToken,
-                0
-            )
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.editTextSearchInput.windowToken, 0)
+            binding.editTextSearchInput.setText("")
             viewModel.onClearText()
         }
     }
@@ -161,7 +164,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         )
     }
 
-    private fun showContent(data: List<Vacancy>, paging: Boolean) {
+    private fun showContent(data: List<Vacancy>, paging: Boolean, hasError: Boolean) {
         adapter.setItems(data)
         if (!paging) {
             binding.recyclerViewVacancies.scrollToPosition(0)
@@ -172,6 +175,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
         setStartVisibility(false)
         setErrorVisibility(false)
         setPagingProgressVisibility(false)
+        if (hasError) showToast("Проверьте подключение к интернету")
     }
 
     private fun showPageLoading() {
@@ -211,6 +215,7 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
                 binding.imageInfo.setImageResource(R.drawable.skull)
                 binding.textInfo.text = getString(R.string.no_internet_connection)
                 setResultVisibility(false)
+                showToast("Проверьте подключение к интернету")
             }
 
             ErrorType.SERVER_ERROR -> {
@@ -220,6 +225,14 @@ class MainFragment : AbstractBindingFragment<FragmentMainBinding>() {
             }
         }
 
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(
+            requireContext(),
+            text,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun showStart() {
