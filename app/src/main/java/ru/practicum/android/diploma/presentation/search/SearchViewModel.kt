@@ -10,7 +10,6 @@ import ru.practicum.android.diploma.domain.api.vacancy.VacanciesInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.ErrorCode
 import ru.practicum.android.diploma.domain.models.ErrorType
-import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.ResourceVacancy
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.state.SearchState
@@ -58,12 +57,9 @@ class SearchViewModel(
         p0: CharSequence?,
         refresh: Boolean
     ) {
-
-        if (refresh){
+        if (refresh) {
             trackSearchDebounce(latestSearchText.orEmpty())
-        }
-
-        if (p0.toString().isNotBlank() && latestSearchText != p0.toString() && !searching && !refresh) {
+        } else if (p0.toString().isNotBlank() && latestSearchText != p0.toString() && !searching) {
             latestSearchText = p0.toString()
             trackSearchDebounce(p0.toString())
         }
@@ -74,8 +70,7 @@ class SearchViewModel(
         p0: CharSequence?,
         refresh: Boolean
     ) {
-
-        if (refresh){
+        if (refresh) {
             trackSearchDebounce(latestSearchText.orEmpty())
         }
         latestSearchText = p0.toString()

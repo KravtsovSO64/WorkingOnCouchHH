@@ -64,7 +64,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
     private fun setUpListeners() {
         binding.btnApply.setOnClickListener {
             filterSettingsViewModel.applyFilters(true)
-            //Передаем аргумент "changed"
+            // Передаем аргумент "changed"
             setFragmentResult("requestKey", bundleOf("key" to "changed"))
             findNavController().popBackStack()
         }

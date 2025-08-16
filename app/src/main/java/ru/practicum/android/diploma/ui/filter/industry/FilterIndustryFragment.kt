@@ -77,12 +77,11 @@ class FilterIndustryFragment : AbstractBindingFragment<FragmentFilterIndustryBin
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    if(p0 != null && p0.isNotEmpty()) viewModel.onFilterTextChanged(p0.toString())
+                    if (p0 != null && p0.isNotEmpty()) viewModel.onFilterTextChanged(p0.toString())
                 }
             }
         )
     }
-
 
     private fun updateTextInputLayoutIcon(text: String) {
         if (text.isNotEmpty()) {

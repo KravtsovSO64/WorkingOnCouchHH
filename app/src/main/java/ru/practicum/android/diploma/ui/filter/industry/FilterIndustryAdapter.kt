@@ -167,8 +167,8 @@ class FilterIndustryAdapter(
         notifyDataSetChanged()
     }
 
-    fun toggleOff(){
-        if(currentPos != -1) unfilteredList[currentPos].isChecked = false
+    fun toggleOff() {
+        if (currentPos != -1) unfilteredList[currentPos].isChecked = false
         currentPos = -1
     }
 
