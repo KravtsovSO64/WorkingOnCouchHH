@@ -13,21 +13,20 @@ import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterOneArea
 import ru.practicum.android.diploma.domain.models.ResourceAreas
 
-
 class FilterAreaViewModel(
     private val interactor: VacanciesInteractor,
     private val filterCacheInteractor: FilterCacheInteractor,
-): ViewModel() {
+) : ViewModel() {
 
-    //Полученный список храним тут
+    // Полученный список храним тут
     private val _listOfRegions = MutableLiveData<List<FilterArea>>()
     val listOfRegions: LiveData<List<FilterArea>> get() = _listOfRegions
 
-    //Экран простой, поэтому два состояния, загрузка и результат(положительный или отрицательный)
+    // Экран простой, поэтому два состояния, загрузка и результат(положительный или отрицательный)
     private val _stateLoad = MutableLiveData(true)
     val stateLoad: MutableLiveData<Boolean> get() = _stateLoad
 
-    //Храним фильтр для заполнения полей экрана
+    // Храним фильтр для заполнения полей экрана
     private val _filter = MutableLiveData<Filter>()
     val filter: LiveData<Filter> get() = _filter
 
@@ -46,6 +45,7 @@ class FilterAreaViewModel(
                             _listOfRegions.postValue(areas)
                             _stateLoad.postValue(false)
                         }
+
                         is ResourceAreas.Error -> {
                             _listOfRegions.postValue(emptyList())
                             _stateLoad.postValue(false)
@@ -55,14 +55,15 @@ class FilterAreaViewModel(
         }
     }
 
-    //Перезаписываем в кеш фильтр с выбранной странной
+    // Перезаписываем в кеш фильтр с выбранной странной
     fun reWriteFilterCountry(country: FilterArea) {
         var filter = _filter.value!!
         filter = Filter(
-            area = FilterOneArea(AreaEntity(
-                country.id,
-                country.name,
-                country.parentId
+            area = FilterOneArea(
+                AreaEntity(
+                    country.id,
+                    country.name,
+                    country.parentId
                 ),
                 filter.area?.region
             ),
@@ -72,7 +73,7 @@ class FilterAreaViewModel(
         _filter.postValue(filter)
     }
 
-    //Перезаписываем в кеш фильтр с выбранным регионом
+    // Перезаписываем в кеш фильтр с выбранным регионом
     fun reWriteFilterRegion(region: FilterArea) {
         var filter = _filter.value!!
         filter = Filter(
@@ -111,8 +112,8 @@ class FilterAreaViewModel(
         _filter.postValue(filter)
     }
 
-    //Сохраняем фильтр в кеш
-    fun saveChange(){
+    // Сохраняем фильтр в кеш
+    fun saveChange() {
         val filter = _filter.value
         filterCacheInteractor.writeCache(
             filter!!,

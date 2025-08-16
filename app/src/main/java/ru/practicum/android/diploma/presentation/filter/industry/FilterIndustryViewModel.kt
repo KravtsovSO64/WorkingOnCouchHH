@@ -86,7 +86,8 @@ class FilterIndustryViewModel(
         } else {
             Filter()
         }
-        filterCacheInteractor.writeCache(setting,
+        filterCacheInteractor.writeCache(
+            setting = setting,
             setRegion = false,
             setSalary = false,
             setIndustry = true

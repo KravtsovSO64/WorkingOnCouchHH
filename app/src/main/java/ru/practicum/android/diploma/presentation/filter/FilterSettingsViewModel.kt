@@ -82,7 +82,8 @@ class FilterSettingsViewModel(
 
     fun clearIndustry() {
         viewModelScope.launch {
-            filterCacheInteractor.writeCache(Filter(industry = null),
+            filterCacheInteractor.writeCache(
+                Filter(industry = null),
                 setRegion = false,
                 setSalary = false,
                 setIndustry = true
@@ -94,7 +95,8 @@ class FilterSettingsViewModel(
 
     fun clearRegion() {
         viewModelScope.launch {
-            filterCacheInteractor.writeCache(Filter(area = null),
+            filterCacheInteractor.writeCache(
+                Filter(area = null),
                 setRegion = true,
                 setSalary = false,
                 setIndustry = false
@@ -124,6 +126,7 @@ class FilterSettingsViewModel(
             filterInteractor.saveFilterApplicationSetting(bool)
         }
     }
+
     fun resetFilters() {
         viewModelScope.launch {
             filterInteractor.deleteFilters()
