@@ -13,13 +13,16 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.presentation.filter.FilterSettingsViewModel
+import ru.practicum.android.diploma.ui.root.RootActivity
 import ru.practicum.android.diploma.util.AbstractBindingFragment
 
 class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBinding>() {
@@ -34,6 +37,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as RootActivity).show(false)
         filterSettingsViewModel.observeScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             renderFilterInfo(state.filterSettings)
         }
@@ -60,6 +64,9 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
     private fun setUpListeners() {
         binding.btnApply.setOnClickListener {
             filterSettingsViewModel.applyFilters(true)
+            // Передаем аргумент "changed"
+            setFragmentResult("requestKey", bundleOf("key" to "changed"))
+            findNavController().popBackStack()
         }
         binding.edittextVacancyRegion.setOnClickListener {
             findNavController().navigate(R.id.action_filterSettingsFragment_to_filterPlaceWorkFragment)
@@ -119,6 +126,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             setClearIconRegion()
         } else {
             binding.edittextVacancyRegion.setText("")
+            setForwardArrowRegion()
         }
         if (filter.salary?.salary != null) {
             binding.edittextSalary.setText(filter.salary?.salary.toString())
@@ -136,6 +144,7 @@ class FilterSettingsFragment : AbstractBindingFragment<FragmentFilterSettingsBin
             setClearIconIndustry()
         } else {
             binding.edittextVacancyType.setText("")
+            setForwardArrowIndustry()
         }
 
     }
