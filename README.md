@@ -36,7 +36,7 @@
 
 1.  Клонируйте репозиторий:
     ```bash
-    git clone https://github.com/KravtsovSO64/WorkingOnCouchHH
+    git clone https://github.com/KravtsovSO64/WorkingOnCouchHH.git
     ```
 2.  Откройте проект в Android Studio.
 3.  Получите API-ключ на сайте [HeadHunter API](https://dev.hh.ru/?ysclid=mfrbocnia5560714272).
